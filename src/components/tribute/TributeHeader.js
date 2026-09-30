@@ -3,7 +3,7 @@ import { FaFeatherAlt } from 'react-icons/fa';
 export default function TributeHeader({ onOpenComposer, sortOption, onSortChange, totalCount = 0 }) {
     return (
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{
+            <h2 className="tribute-header-title" style={{
                 fontFamily: "'Great Vibes', cursive",
                 fontSize: '2.8rem',
                 color: '#6e5c53',
@@ -24,7 +24,7 @@ export default function TributeHeader({ onOpenComposer, sortOption, onSortChange
                 &quot;Share a memory, message, or thought to honor their life.&quot;
             </p>
 
-            <div style={{
+            <div className="tribute-header-controls" style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',

@@ -335,7 +335,7 @@ export default function MemorialContent({
                 <div 
                     role="tablist"
                     aria-label="Memorial primary navigation"
-                    className="hide-scrollbar"
+                    className="hide-scrollbar memorial-main-tablist"
                     style={{
                         maxWidth: '1150px',
                         margin: '0 auto',
@@ -358,7 +358,7 @@ export default function MemorialContent({
                                 role="tab"
                                 aria-selected={isActive}
                                 id={`tab-${tab.id}`}
-                                className="memorial-nav-btn"
+                                className="memorial-nav-btn memorial-main-tab-btn"
                                 onClick={() => {
                                     setActiveMainTab(tab.id);
                                     if (tab.id === 'life-journey' && !activeSubTab) {
@@ -406,14 +406,14 @@ export default function MemorialContent({
                 </div>
             </div>
 
-            <div className="container" style={{ position: 'relative', zIndex: 1, padding: '3rem 1rem', maxWidth: '950px', margin: '0 auto' }}>
+            <div className="container memorial-content-container" style={{ position: 'relative', zIndex: 1, padding: '3rem 1rem', maxWidth: '950px', margin: '0 auto' }}>
 
                 {/* Secondary Navigation - Minimal Editorial Style */}
                 {activeMainTab === 'life-journey' && (
                     <div 
                         role="tablist"
                         aria-label="Life Journey sub navigation"
-                        className="hide-scrollbar"
+                        className="hide-scrollbar memorial-sub-tablist"
                         style={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -438,7 +438,7 @@ export default function MemorialContent({
                                     role="tab"
                                     aria-selected={isSubActive}
                                     id={`subtab-${subTab.id}`}
-                                    className="memorial-nav-btn"
+                                    className="memorial-nav-btn memorial-sub-tab-btn"
                                     onClick={() => setActiveSubTab(subTab.id)}
                                     style={{
                                         background: 'transparent',

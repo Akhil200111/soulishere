@@ -45,7 +45,7 @@ export default function TributeReplyComposer({
             )}
 
             {!currentUser && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                <div className="tribute-reply-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
                     <input
                         type="text"
                         placeholder="Your Name *"

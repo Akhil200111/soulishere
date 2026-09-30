@@ -97,7 +97,7 @@ export default function TributeCard({
     const replies = tribute.replies || [];
 
     return (
-        <div style={{
+        <div className="tribute-card-container" style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
             padding: '1.5rem',

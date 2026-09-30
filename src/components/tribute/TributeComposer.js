@@ -59,7 +59,7 @@ export default function TributeComposer({
             justifyContent: 'center',
             padding: '1rem'
         }}>
-            <div style={{
+            <div className="tribute-composer-modal" style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '24px',
                 width: '100%',
@@ -115,7 +115,7 @@ export default function TributeComposer({
                     )}
 
                     {!currentUser && (
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                        <div className="tribute-composer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.85rem', color: '#6e5c53', marginBottom: '0.35rem', fontWeight: '500' }}>
                                     Your Name *

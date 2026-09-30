@@ -200,6 +200,185 @@ header::before {
   }
 }
 
+/* Memorial Page Top-Left Logo (No Navbar) */
+.memorial-top-logo-wrapper {
+  position: absolute;
+  top: 1.25rem;
+  left: 2rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.memorial-top-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.memorial-top-logo:hover {
+  transform: scale(1.04);
+  opacity: 0.92;
+}
+
+.memorial-logo-img {
+  height: 105px !important;
+  width: auto !important;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+@media (max-width: 768px) {
+  .memorial-top-logo-wrapper {
+    top: 0.6rem;
+    left: 0.85rem;
+  }
+  .memorial-logo-img {
+    height: 60px !important;
+  }
+}
+
+/* Primary & Secondary Memorial Navigation Responsive Styles */
+@media (max-width: 768px) {
+  .memorial-main-tablist {
+    gap: 0.75rem !important;
+    justify-content: space-around !important;
+    padding: 0 0.5rem !important;
+    width: 100% !important;
+  }
+
+  .memorial-main-tab-btn {
+    padding: 0.7rem 0.3rem !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.5px !important;
+    gap: 0.35rem !important;
+  }
+
+  .memorial-sub-tablist {
+    gap: 0.6rem !important;
+    justify-content: space-around !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto 1.5rem auto !important;
+    padding: 0 0.25rem 0.1rem 0.25rem !important;
+  }
+
+  .memorial-sub-tab-btn {
+    padding: 0.5rem 0.2rem 0.6rem 0.2rem !important;
+    font-size: 0.8rem !important;
+    gap: 0.3rem !important;
+  }
+
+  .memorial-content-container {
+    padding: 2rem 0.75rem !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .memorial-main-tablist {
+    gap: 0.35rem !important;
+    padding: 0 0.25rem !important;
+  }
+  .memorial-main-tab-btn {
+    font-size: 0.78rem !important;
+    padding: 0.65rem 0.2rem !important;
+    gap: 0.25rem !important;
+  }
+  .memorial-sub-tablist {
+    gap: 0.35rem !important;
+  }
+  .memorial-sub-tab-btn {
+    font-size: 0.78rem !important;
+    padding: 0.45rem 0.15rem 0.55rem 0.15rem !important;
+    gap: 0.25rem !important;
+  }
+}
+
+/* Tribute Wall Responsive Styles */
+.tribute-header-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.8rem;
+  color: #6e5c53;
+  margin: 0 0 0.5rem 0;
+  font-weight: normal;
+}
+
+.tribute-header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.tribute-composer-grid,
+.tribute-reply-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tribute-composer-modal {
+  background-color: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 540px;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+  position: relative;
+  border: 1px solid #e8e2d9;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.tribute-card-container {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  border: 1px solid #eae3d9;
+  box-shadow: 0 4px 18px rgba(115, 80, 145, 0.04);
+  margin-bottom: 1.25rem;
+  position: relative;
+  transition: all 200ms ease;
+}
+
+@media (max-width: 768px) {
+  .tribute-header-title {
+    font-size: 2.1rem !important;
+  }
+
+  .tribute-header-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .tribute-header-controls select,
+  .tribute-header-controls button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .tribute-composer-modal {
+    padding: 1.35rem 1.1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .tribute-composer-grid,
+  .tribute-reply-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .tribute-card-container {
+    padding: 1.1rem !important;
+    border-radius: 16px !important;
+  }
+}
+
 nav ul {
   display: flex;
   list-style: none;

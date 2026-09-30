@@ -38,13 +38,18 @@ export default function Header() {
 
     if (pathname === '/demo' || pathname.startsWith('/memorial/')) {
         return (
-            <header style={{ background: 'transparent', borderBottom: 'none', position: 'absolute', width: '100%', zIndex: 100 }}>
-                <div className="container" style={{ display: 'flex', justifyContent: 'flex-start', padding: '1rem 0' }}>
-                    <Link href="/" className="logo">
-                        <Image src="/logo.png" alt="Soulishere" width={150} height={150} className="logo-img" />
-                    </Link>
-                </div>
-            </header>
+            <div className="memorial-top-logo-wrapper">
+                <Link href="/" className="memorial-top-logo" aria-label="Soulishere Home">
+                    <Image 
+                        src="/logo.png" 
+                        alt="Soulishere" 
+                        width={300} 
+                        height={120} 
+                        className="memorial-logo-img" 
+                        priority 
+                    />
+                </Link>
+            </div>
         );
     }
 
