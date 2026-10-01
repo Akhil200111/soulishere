@@ -95,8 +95,8 @@ export default function TributeWall({ memorialId, memorialStatus = 'published' }
     };
 
     // Like / Unlike Tribute
-    const handleLikeTribute = async (entryId) => {
-        const res = await toggleLikeTribute(memorialId, entryId);
+    const handleLikeTribute = async (entryId, visitorId = null) => {
+        const res = await toggleLikeTribute(memorialId, entryId, visitorId);
         if (res.success) {
             setTributes(prev => prev.map(t => {
                 if (t._id === entryId) {

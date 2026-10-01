@@ -73,3 +73,17 @@ export function getAvatarBg(name) {
     const index = Math.abs(hash) % palette.length;
     return palette[index];
 }
+
+/**
+ * Gets or creates a persistent anonymous visitor ID stored in localStorage.
+ * Used to track likes/unlikes for guest visitors without requiring login.
+ */
+export function getOrCreateVisitorId() {
+    if (typeof window === 'undefined') return null;
+    let visitorId = localStorage.getItem('soulishere_visitor_id');
+    if (!visitorId) {
+        visitorId = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
+        localStorage.setItem('soulishere_visitor_id', visitorId);
+    }
+    return visitorId;
+}

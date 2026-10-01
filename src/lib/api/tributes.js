@@ -20,8 +20,8 @@ export async function deleteTribute(memorialId, entryId) {
     return res.data;
 }
 
-export async function toggleLikeTribute(memorialId, entryId) {
-    const res = await axios.post(`/api/memorials/${memorialId}/guestbook/${entryId}/like`);
+export async function toggleLikeTribute(memorialId, entryId, visitorId = null) {
+    const res = await axios.post(`/api/memorials/${memorialId}/guestbook/${entryId}/like`, { visitorId });
     return res.data;
 }
 

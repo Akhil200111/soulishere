@@ -11,7 +11,7 @@ import {
     FaChevronDown,
     FaChevronUp
 } from 'react-icons/fa';
-import { getRelativeTime, getAuthorInitials, getAvatarBg } from '@/utils/tributeHelpers';
+import { getRelativeTime, getAuthorInitials, getAvatarBg, getOrCreateVisitorId } from '@/utils/tributeHelpers';
 import TributeReplyItem from './TributeReplyItem';
 import TributeReplyComposer from './TributeReplyComposer';
 
@@ -32,20 +32,28 @@ export default function TributeCard({
     const [submittingReply, setSubmittingReply] = useState(false);
     const menuRef = useRef(null);
 
-    // Optimistic Like state
-    const currentUserId = currentUser?.id ? String(currentUser.id) : (currentUser?._id ? String(currentUser._id) : null);
-    const initialLikes = (tribute.likes || []).map(k => String(k));
-    const isLikedByCurrentUser = currentUserId ? initialLikes.includes(currentUserId) : false;
+    const [visitorId, setVisitorId] = useState(null);
 
-    const [liked, setLiked] = useState(isLikedByCurrentUser);
+    useEffect(() => {
+        setVisitorId(getOrCreateVisitorId());
+    }, []);
+
+    // Identity Key (User ID if logged in, persistent Visitor ID if guest)
+    const userIdStr = currentUser?.id ? String(currentUser.id) : (currentUser?._id ? String(currentUser._id) : null);
+    const activeKey = userIdStr || visitorId;
+    const initialLikes = (tribute.likes || []).map(k => String(k));
+    const isLikedByActiveUser = activeKey ? initialLikes.includes(activeKey) : false;
+
+    const [liked, setLiked] = useState(isLikedByActiveUser);
     const [likeCount, setLikeCount] = useState(initialLikes.length);
 
     useEffect(() => {
-        const userIdStr = currentUser?.id ? String(currentUser.id) : (currentUser?._id ? String(currentUser._id) : null);
+        const currentUserIdStr = currentUser?.id ? String(currentUser.id) : (currentUser?._id ? String(currentUser._id) : null);
+        const currentKey = currentUserIdStr || visitorId;
         const currentLikes = (tribute.likes || []).map(k => String(k));
-        setLiked(userIdStr ? currentLikes.includes(userIdStr) : false);
+        setLiked(currentKey ? currentLikes.includes(currentKey) : false);
         setLikeCount(currentLikes.length);
-    }, [tribute.likes, currentUser]);
+    }, [tribute.likes, currentUser, visitorId]);
 
     // Close options menu on outside click
     useEffect(() => {
@@ -59,10 +67,8 @@ export default function TributeCard({
     }, []);
 
     const handleLikeClick = async () => {
-        if (!currentUser) {
-            alert('Please sign in to like a tribute.');
-            return;
-        }
+        const activeVisitorId = visitorId || getOrCreateVisitorId();
+        if (!visitorId) setVisitorId(activeVisitorId);
 
         const prevLiked = liked;
         const prevCount = likeCount;
@@ -73,7 +79,7 @@ export default function TributeCard({
         setLikeCount(nextCount);
 
         try {
-            await onLike(tribute._id);
+            await onLike(tribute._id, activeVisitorId);
         } catch (err) {
             console.error('Failed to toggle like:', err);
             setLiked(prevLiked);

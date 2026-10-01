@@ -10,14 +10,22 @@ export async function POST(request, { params }) {
         const { id, entryId } = await params;
         const session = await getSession(request);
 
-        if (!session) {
+        let body = {};
+        try {
+            body = await request.json();
+        } catch {}
+
+        const visitorId = body.visitorId || request.headers.get('x-visitor-id');
+        const likerKey = session?.id 
+            ? String(session.id) 
+            : (session?._id ? String(session._id) : (visitorId ? String(visitorId) : null));
+
+        if (!likerKey) {
             return NextResponse.json(
-                { success: false, message: 'Please sign in to like a tribute' },
-                { status: 401 }
+                { success: false, message: 'Unable to identify device for like action' },
+                { status: 400 }
             );
         }
-
-        const userKey = String(session.id);
 
         const memorial = await Memorial.findById(id);
         if (!memorial) {
@@ -36,7 +44,7 @@ export async function POST(request, { params }) {
         }
 
         const currentLikes = (tribute.likes || []).map(k => String(k));
-        const likeIndex = currentLikes.indexOf(userKey);
+        const likeIndex = currentLikes.indexOf(likerKey);
         let hasLiked = false;
 
         if (likeIndex > -1) {
@@ -45,7 +53,7 @@ export async function POST(request, { params }) {
             hasLiked = false;
         } else {
             // Add like
-            currentLikes.push(userKey);
+            currentLikes.push(likerKey);
             hasLiked = true;
         }
 
