@@ -22,6 +22,7 @@ export async function POST(request) {
             if (memorialId) {
                 await Memorial.findByIdAndUpdate(memorialId, {
                     status: 'requested',
+                    qrGenerated: false,
                     paymentId: razorpay_payment_id,
                     paymentStatus: 'completed',
                     paymentAmount: amount,

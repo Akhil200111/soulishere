@@ -9,12 +9,19 @@ import { FaPalette, FaMousePointer, FaShareAlt, FaComments, FaInfinity, FaChevro
 import ParticleBackground from '@/components/ParticleBackground';
 import CloudsBackground from '@/components/CloudsBackground';
 import HorizontalScrollSection from '@/components/HorizontalScrollSection';
+import { getMemorialQRUrl } from '@/lib/qr';
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
   const [sampleMemorialId, setSampleMemorialId] = useState(null);
   const [siteSettings, setSiteSettings] = useState(null);
-  const [demoUrl, setDemoUrl] = useState('');
+  const [memorialUrl, setMemorialUrl] = useState('');
+
+  useEffect(() => {
+    if (sampleMemorialId) {
+      setMemorialUrl(getMemorialQRUrl(sampleMemorialId));
+    }
+  }, [sampleMemorialId]);
 
   useEffect(() => {
     const fetchSampleMemorial = async () => {
@@ -39,9 +46,6 @@ export default function Home() {
     };
     fetchSampleMemorial();
     fetchSettings();
-    if (typeof window !== 'undefined') {
-      setDemoUrl(`${window.location.origin}/demo`);
-    }
   }, []);
 
   const toggleFAQ = (index) => {
@@ -135,8 +139,8 @@ export default function Home() {
             boxShadow: '0 10px 20px rgba(0,0,0,0.15)',
             padding: '10px'
           }}>
-            {demoUrl ? (
-              <QRCode value={demoUrl} size={90} style={{ width: '100%', height: '100%' }} />
+            {memorialUrl ? (
+              <QRCode value={memorialUrl} size={90} style={{ width: '100%', height: '100%' }} />
             ) : (
               <FaQrcode style={{ fontSize: '4.5rem', color: 'var(--primary)' }} />
             )}

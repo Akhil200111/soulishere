@@ -70,11 +70,13 @@ function DashboardContent() {
     const filteredMemorials = memorials.filter(m => {
         if (activeTab === 'all') return true;
         if (activeTab === 'published') return m.status === 'published';
+        if (activeTab === 'requested') return m.status === 'requested';
         if (activeTab === 'drafts') return m.status === 'draft';
         return true;
     });
 
     const publishedCount = memorials.filter(m => m.status === 'published').length;
+    const requestedCount = memorials.filter(m => m.status === 'requested').length;
     const draftCount = memorials.filter(m => m.status === 'draft').length;
 
     const handleLogout = () => {
@@ -163,6 +165,12 @@ function DashboardContent() {
                         onClick={() => setActiveTab('published')}
                     >
                         Published
+                    </button>
+                    <button
+                        className={`dashboard-tab-modern ${activeTab === 'requested' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('requested')}
+                    >
+                        Pending Approval ({requestedCount})
                     </button>
                     <button
                         className={`dashboard-tab-modern ${activeTab === 'drafts' ? 'active' : ''}`}

@@ -18,11 +18,11 @@ export default function Modal({ isOpen, onClose, children, title }) {
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-overlay modal active" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>{title}</h2>
-                    <button className="modal-close" onClick={onClose}>
+                <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#2d1b4e', fontFamily: 'serif' }}>{title}</h2>
+                    <button className="modal-close" onClick={onClose} style={{ position: 'static', flexShrink: 0 }}>
                         <FaTimes />
                     </button>
                 </div>

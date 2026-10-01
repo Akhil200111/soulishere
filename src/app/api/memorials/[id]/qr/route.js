@@ -6,52 +6,88 @@ import { getSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(request, { params }) {
+async function checkQRAuth(request, params) {
+    const session = await getSession(request);
+
+    if (!session) {
+        return { error: 'Not authorized', status: 401 };
+    }
+
+    const currentUserId = (session.id || session._id)?.toString();
+    if (!currentUserId) {
+        return { error: 'Not authorized', status: 401 };
+    }
+
+    await connectDB();
+
+    const { id } = await params;
+    const memorial = await Memorial.findById(id);
+
+    if (!memorial) {
+        return { error: 'Memorial not found', status: 404 };
+    }
+
+    // Only published memorials can have an active QR code
+    if (memorial.status !== 'published') {
+        return { error: 'QR code is only available for published memorials', status: 400 };
+    }
+
+    const user = await User.findById(currentUserId);
+    if (!user) {
+        return { error: 'User not found', status: 401 };
+    }
+
+    const isAdmin = user.role === 'admin';
+    const memorialOwnerId = memorial.userId?._id 
+        ? memorial.userId._id.toString() 
+        : (memorial.userId ? memorial.userId.toString() : null);
+
+    const isOwner = Boolean(memorialOwnerId && memorialOwnerId === currentUserId);
+
+    if (!isAdmin && !isOwner) {
+        return { error: 'Not authorized to access QR code for this memorial', status: 403 };
+    }
+
+    return { session, user, memorial, isAdmin, isOwner };
+}
+
+// GET - Check/Fetch QR code authorization and status
+export async function GET(request, { params }) {
     try {
-        const session = await getSession(request);
-
-        if (!session) {
-            return NextResponse.json(
-                { success: false, message: 'Not authorized' },
-                { status: 401 }
-            );
+        const auth = await checkQRAuth(request, params);
+        if (auth.error) {
+            return NextResponse.json({ success: false, message: auth.error }, { status: auth.status });
         }
-
-        await connectDB();
-
-        // Check if user is admin
-        const user = await User.findById(session.id);
-        if (user?.role !== 'admin') {
-            return NextResponse.json(
-                { success: false, message: 'Only admins can generate QR codes' },
-                { status: 403 }
-            );
-        }
-
-        const { id } = await params;
-        const memorial = await Memorial.findById(id);
-
-        if (!memorial) {
-            return NextResponse.json(
-                { success: false, message: 'Memorial not found' },
-                { status: 404 }
-            );
-        }
-
-        // Enable QR code generation
-        memorial.qrGenerated = true;
-        await memorial.save();
 
         return NextResponse.json({
             success: true,
-            data: memorial,
-            message: 'QR Code generation enabled'
+            data: {
+                qrGenerated: auth.memorial.qrGenerated,
+                status: auth.memorial.status
+            }
         });
-
     } catch (err) {
-        return NextResponse.json(
-            { success: false, message: err.message },
-            { status: 500 }
-        );
+        return NextResponse.json({ success: false, message: err.message }, { status: 500 });
+    }
+}
+
+// POST - Generate / Enable QR code
+export async function POST(request, { params }) {
+    try {
+        const auth = await checkQRAuth(request, params);
+        if (auth.error) {
+            return NextResponse.json({ success: false, message: auth.error }, { status: auth.status });
+        }
+
+        auth.memorial.qrGenerated = true;
+        await auth.memorial.save();
+
+        return NextResponse.json({
+            success: true,
+            data: auth.memorial,
+            message: 'QR Code enabled successfully'
+        });
+    } catch (err) {
+        return NextResponse.json({ success: false, message: err.message }, { status: 500 });
     }
 }

@@ -191,7 +191,7 @@ const memorialSchema = new mongoose.Schema({
     }],
     status: {
         type: String,
-        enum: ['draft', 'requested', 'published'],
+        enum: ['draft', 'requested', 'published', 'rejected'],
         default: 'draft'
     },
     paymentId: {

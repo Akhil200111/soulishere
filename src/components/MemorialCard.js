@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { FaQrcode } from 'react-icons/fa';
+import QRModal from '@/components/QRModal';
+import { getMemorialQRUrl } from '@/lib/qr';
 
 export default function MemorialCard({ memorial, showActions = true }) {
     const [loadingPayment, setLoadingPayment] = useState(false);
+    const [showQRModal, setShowQRModal] = useState(false);
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -78,142 +82,217 @@ export default function MemorialCard({ memorial, showActions = true }) {
     };
 
     const getStatusBadge = () => {
-        if (memorial.status === 'draft') return { label: 'Draft', color: '#f59e0b', bg: 'white' };
-        if (memorial.status === 'requested') return { label: 'Pending Admin', color: '#3b82f6', bg: '#e0f2fe' };
+        if (memorial.status === 'draft') return { label: 'Draft', color: '#f59e0b', bg: '#fef3c7' };
+        if (memorial.status === 'requested') return { label: 'Pending Admin', color: '#0284c7', bg: '#e0f2fe' };
         if (memorial.status === 'published') return { label: 'Published', color: '#059669', bg: '#d1fae5' };
+        if (memorial.status === 'rejected') return { label: 'Rejected', color: '#dc2626', bg: '#fee2e2' };
         return { label: memorial.status, color: '#665e75', bg: 'white' };
     };
 
     const badge = getStatusBadge();
+    const [memorialUrl, setMemorialUrl] = useState('');
+
+    useEffect(() => {
+        if (memorial?._id) {
+            setMemorialUrl(getMemorialQRUrl(memorial._id));
+        }
+    }, [memorial?._id]);
 
     return (
-        <div style={{
-            background: 'white',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            boxShadow: '0 10px 30px rgba(162, 118, 212, 0.08)',
-            border: '1px solid #eedbfa',
-            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-            display: 'flex',
-            flexDirection: 'column'
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 40px rgba(162, 118, 212, 0.15)'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(162, 118, 212, 0.08)'; }}
-        >
-            <div style={{ position: 'relative', height: '220px', width: '100%' }}>
-                <Image
-                    src={memorial.profilePicture || '/images/default_profile.png'}
-                    alt={`${memorial.firstName} ${memorial.lastName}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
-                />
-                <div style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    right: '1rem',
-                    background: badge.bg,
-                    color: badge.color,
-                    padding: '0.4rem 1rem',
-                    borderRadius: '50px',
-                    fontSize: '0.8rem',
-                    fontWeight: '600',
-                    boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
-                }}>
-                    {badge.label}
+        <>
+            <div style={{
+                background: 'white',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 30px rgba(162, 118, 212, 0.08)',
+                border: '1px solid #eedbfa',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                display: 'flex',
+                flexDirection: 'column'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 40px rgba(162, 118, 212, 0.15)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(162, 118, 212, 0.08)'; }}
+            >
+                <div style={{ position: 'relative', height: '220px', width: '100%' }}>
+                    <Image
+                        src={memorial.profilePicture || '/images/default_profile.png'}
+                        alt={`${memorial.firstName} ${memorial.lastName}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        style={{ objectFit: 'cover' }}
+                    />
+                    <div style={{
+                        position: 'absolute',
+                        top: '1rem',
+                        right: '1rem',
+                        background: badge.bg,
+                        color: badge.color,
+                        padding: '0.4rem 1rem',
+                        borderRadius: '50px',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                    }}>
+                        {badge.label}
+                    </div>
                 </div>
-            </div>
-            
-            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <h3 style={{ fontSize: '1.3rem', color: '#2d1b4e', marginBottom: '0.5rem', fontFamily: 'serif' }}>
-                    {memorial.firstName} {memorial.lastName}
-                </h3>
                 
-                <p style={{ color: '#665e75', fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>
-                    {formatDate(memorial.birthDate)} - {formatDate(memorial.deathDate)}
-                </p>
-                
-                {showActions && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'auto' }}>
-                        <div style={{ display: 'flex', gap: '0.75rem' }}>
-                            <Link href={`/memorial/${memorial._id}`} style={{
-                                flex: 1,
-                                textAlign: 'center',
-                                background: 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)',
-                                color: 'white',
-                                padding: '0.75rem 1rem',
-                                borderRadius: '12px',
-                                textDecoration: 'none',
-                                fontSize: '0.95rem',
-                                fontWeight: '500',
-                                transition: 'opacity 0.2s ease'
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
-                            >
-                                View
-                            </Link>
-                            
-                            {memorial.status === 'draft' && (
-                                <Link href={`/create-memorial?id=${memorial._id}`} style={{
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <h3 style={{ fontSize: '1.3rem', color: '#2d1b4e', marginBottom: '0.5rem', fontFamily: 'serif' }}>
+                        {memorial.firstName} {memorial.lastName}
+                    </h3>
+                    
+                    <p style={{ color: '#665e75', fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>
+                        {formatDate(memorial.birthDate)} - {formatDate(memorial.deathDate)}
+                    </p>
+                    
+                    {showActions && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'auto' }}>
+                            <div style={{ display: 'flex', gap: '0.75rem' }}>
+                                <Link href={`/memorial/${memorial._id}`} style={{
                                     flex: 1,
                                     textAlign: 'center',
-                                    background: '#faf7fd',
-                                    color: '#6c43a6',
+                                    background: 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)',
+                                    color: 'white',
                                     padding: '0.75rem 1rem',
                                     borderRadius: '12px',
                                     textDecoration: 'none',
                                     fontSize: '0.95rem',
                                     fontWeight: '500',
-                                    border: '1px solid #eedbfa',
-                                    transition: 'all 0.2s ease'
+                                    transition: 'opacity 0.2s ease'
                                 }}
-                                onMouseEnter={(e) => { e.currentTarget.style.background = '#eedbfa'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.background = '#faf7fd'; }}
+                                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                                 >
-                                    Edit
+                                    View
                                 </Link>
+                                
+                                {memorial.status === 'draft' && (
+                                    <Link href={`/create-memorial?id=${memorial._id}`} style={{
+                                        flex: 1,
+                                        textAlign: 'center',
+                                        background: '#faf7fd',
+                                        color: '#6c43a6',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        textDecoration: 'none',
+                                        fontSize: '0.95rem',
+                                        fontWeight: '500',
+                                        border: '1px solid #eedbfa',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.background = '#eedbfa'; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.background = '#faf7fd'; }}
+                                    >
+                                        Edit
+                                    </Link>
+                                )}
+                            </div>
+
+                            {memorial.status === 'draft' && (
+                                <button onClick={handlePayment} disabled={loadingPayment} style={{
+                                    width: '100%',
+                                    background: loadingPayment ? '#ccc' : '#10b981',
+                                    color: 'white',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    cursor: loadingPayment ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.95rem',
+                                    fontWeight: '500',
+                                    transition: 'opacity 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '0.9'; }}
+                                onMouseLeave={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '1'; }}
+                                >
+                                    {loadingPayment ? 'Processing...' : 'Pay ₹1000 & Request QR Code'}
+                                </button>
+                            )}
+
+                            {memorial.status === 'requested' && (
+                                <div style={{
+                                    width: '100%',
+                                    textAlign: 'center',
+                                    background: '#e0f2fe',
+                                    color: '#0284c7',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    border: '1px solid #bae6fd'
+                                }}>
+                                    ⌛ Payment Received. Pending Admin Approval
+                                </div>
+                            )}
+                            
+                            {memorial.status === 'published' && memorial.qrGenerated && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    <button
+                                        onClick={() => setShowQRModal(true)}
+                                        style={{
+                                            width: '100%',
+                                            background: 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)',
+                                            color: 'white',
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            fontSize: '0.95rem',
+                                            fontWeight: '500',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '0.5rem',
+                                            transition: 'opacity 0.2s ease'
+                                        }}
+                                        onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                                        onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+                                    >
+                                        <FaQrcode /> View QR Code
+                                    </button>
+                                    <div style={{
+                                        width: '100%',
+                                        textAlign: 'center',
+                                        background: '#d1fae5',
+                                        color: '#059669',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '12px',
+                                        fontSize: '0.85rem',
+                                        fontWeight: '500',
+                                        border: '1px solid #a7f3d0'
+                                    }}>
+                                        🎉 QR Code Crafted & Shipping
+                                    </div>
+                                </div>
+                            )}
+
+                            {memorial.status === 'rejected' && (
+                                <div style={{
+                                    width: '100%',
+                                    textAlign: 'center',
+                                    background: '#fee2e2',
+                                    color: '#dc2626',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    border: '1px solid #fca5a5'
+                                }}>
+                                    ❌ Request Rejected by Admin
+                                </div>
                             )}
                         </div>
-
-                        {memorial.status === 'draft' && (
-                            <button onClick={handlePayment} disabled={loadingPayment} style={{
-                                width: '100%',
-                                background: loadingPayment ? '#ccc' : '#10b981',
-                                color: 'white',
-                                padding: '0.75rem 1rem',
-                                borderRadius: '12px',
-                                border: 'none',
-                                cursor: loadingPayment ? 'not-allowed' : 'pointer',
-                                fontSize: '0.95rem',
-                                fontWeight: '500',
-                                transition: 'opacity 0.2s ease'
-                            }}
-                            onMouseEnter={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '0.9'; }}
-                            onMouseLeave={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '1'; }}
-                            >
-                                {loadingPayment ? 'Processing...' : 'Pay ₹1000 & Request QR Code'}
-                            </button>
-                        )}
-                        
-                        {memorial.status === 'published' && memorial.qrGenerated && (
-                            <div style={{
-                                width: '100%',
-                                textAlign: 'center',
-                                background: '#fdfafc',
-                                color: '#6c43a6',
-                                padding: '0.75rem 1rem',
-                                borderRadius: '12px',
-                                fontSize: '0.9rem',
-                                fontWeight: '500',
-                                border: '1px solid #eedbfa'
-                            }}>
-                                🎉 QR Code Crafted & Shipping
-                            </div>
-                        )}
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+
+            {/* QR Code Modal with Download and Print Actions */}
+            <QRModal
+                isOpen={showQRModal}
+                onClose={() => setShowQRModal(false)}
+                memorialName={`${memorial.firstName} ${memorial.lastName}`}
+                memorialUrl={memorialUrl}
+            />
+        </>
     );
 }

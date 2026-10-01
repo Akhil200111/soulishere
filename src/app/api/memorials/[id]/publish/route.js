@@ -39,11 +39,12 @@ export async function POST(request, { params }) {
             );
         }
 
-        // Update memorial to published
+        // Update memorial to requested status after payment
         memorial = await Memorial.findByIdAndUpdate(
             id,
             {
-                status: 'published',
+                status: 'requested',
+                qrGenerated: false,
                 paymentId: paymentId,
                 paymentStatus: 'completed',
                 paymentAmount: paymentAmount || 1999,
@@ -54,7 +55,7 @@ export async function POST(request, { params }) {
 
         return NextResponse.json({
             success: true,
-            message: 'Memorial published successfully',
+            message: 'Memorial payment recorded and approval requested successfully',
             data: memorial
         });
     } catch (err) {

@@ -52,13 +52,14 @@ export async function updateMemorialService(session, memorialId, body) {
         return {
             success: false,
             status: 403,
-            message: 'Cannot edit memorial after QR code is requested or generated'
+            message: 'Cannot edit memorial after approval request or publishing'
         };
     }
 
     // Clean update data and protect system fields
     const updateData = { ...body };
     delete updateData.status;
+    delete updateData.qrGenerated;
     delete updateData.paymentId;
     delete updateData.paymentStatus;
     delete updateData.userId;

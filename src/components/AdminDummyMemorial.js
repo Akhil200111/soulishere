@@ -6,7 +6,8 @@ import { FaSave, FaUpload, FaEye, FaPlus, FaTrash, FaQrcode, FaTimes } from 'rea
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import QRCode from 'react-qr-code';
+import QRModal from '@/components/QRModal';
+import { getMemorialQRUrl } from '@/lib/qr';
 
 const LocationPicker = dynamic(() => import('@/components/LocationPicker'), { ssr: false });
 
@@ -16,7 +17,8 @@ export default function AdminDummyMemorial({ token }) {
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState('');
     const [showQRModal, setShowQRModal] = useState(false);
-    const [demoUrl, setDemoUrl] = useState('');
+    const [dummyId, setDummyId] = useState('');
+    const [memorialUrl, setMemorialUrl] = useState('');
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -42,16 +44,21 @@ export default function AdminDummyMemorial({ token }) {
     });
 
     useEffect(() => {
+        const targetId = dummyId || formData?._id;
+        if (targetId) {
+            setMemorialUrl(getMemorialQRUrl(targetId));
+        }
+    }, [dummyId, formData?._id]);
+
+    useEffect(() => {
         const fetchDummyMemorial = async () => {
             try {
-                if (typeof window !== 'undefined') {
-                    setDemoUrl(`${window.location.origin}/demo`);
-                }
                 const config = { headers: { Authorization: `Bearer ${token}` } };
                 const res = await axios.get('/api/admin/dummy-memorial', config);
                 const data = res.data.data;
                 
                 if (data) {
+                    if (data._id) setDummyId(data._id);
                     const formatDate = (dateString) => {
                         if (!dateString) return '';
                         return new Date(dateString).toISOString().split('T')[0];
@@ -905,23 +912,13 @@ export default function AdminDummyMemorial({ token }) {
                 </div>
             </form>
 
-            {/* QR Code Modal */}
-            {showQRModal && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '1rem' }}>
-                    <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', maxWidth: '400px', width: '100%', textAlign: 'center', position: 'relative' }}>
-                        <button onClick={() => setShowQRModal(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', color: '#665e75' }}>
-                            <FaTimes />
-                        </button>
-                        <h3 style={{ color: '#2d1b4e', marginBottom: '1.5rem', fontFamily: 'serif' }}>Demo Memorial QR Code</h3>
-                        <div style={{ background: 'white', padding: '1rem', display: 'inline-block', borderRadius: '12px', border: '1px solid #eedbfa' }}>
-                            <QRCode value={demoUrl} size={256} />
-                        </div>
-                        <p style={{ marginTop: '1.5rem', color: '#665e75', fontSize: '0.9rem' }}>
-                            Scan this code to instantly open the Demo Memorial. You can download or print this code for demonstrations.
-                        </p>
-                    </div>
-                </div>
-            )}
+            {/* QR Code Modal with Download and Print Actions */}
+            <QRModal
+                isOpen={showQRModal && Boolean(memorialUrl)}
+                onClose={() => setShowQRModal(false)}
+                memorialName={`${formData.firstName} ${formData.lastName}`.trim() || 'Demo Memorial'}
+                memorialUrl={memorialUrl}
+            />
         </div>
     );
 }

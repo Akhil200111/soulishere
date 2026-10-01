@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
-import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaStar, FaImages } from 'react-icons/fa';
+import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaTimesCircle, FaStar, FaImages, FaQrcode } from 'react-icons/fa';
 import AdminSettings from '@/components/AdminSettings';
 import AdminDummyMemorial from '@/components/AdminDummyMemorial';
 import AdminGalleryManager from '@/components/AdminGalleryManager';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import QRModal from '@/components/QRModal';
+import { getMemorialQRUrl } from '@/lib/qr';
 
 export default function AdminPanel() {
     const { isAuthenticated, isAdmin, loading: authLoading, token, logout } = useAuth();
@@ -19,6 +21,7 @@ export default function AdminPanel() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('memorials');
+    const [activeQRModal, setActiveQRModal] = useState({ isOpen: false, name: '', url: '' });
 
     useEffect(() => {
         if (!authLoading && (!isAuthenticated || !isAdmin)) {
@@ -94,6 +97,31 @@ export default function AdminPanel() {
         } catch (err) {
             console.error('Error approving memorial:', err);
             alert('Failed to approve memorial');
+        }
+    };
+
+    const handleRejectMemorial = async (id) => {
+        if (!confirm('Are you sure you want to reject this memorial request?')) {
+            return;
+        }
+
+        try {
+            await axios.put(`/api/admin/memorials/${id}/reject`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            // Update local state
+            setMemorials(memorials.map(m => {
+                if (m._id === id) {
+                    return { ...m, status: 'rejected', qrGenerated: false };
+                }
+                return m;
+            }));
+            
+            alert('Memorial request rejected.');
+        } catch (err) {
+            console.error('Error rejecting memorial:', err);
+            alert('Failed to reject memorial');
         }
     };
 
@@ -251,14 +279,14 @@ export default function AdminPanel() {
                                                     <td style={{ padding: '1.25rem 1.5rem', color: '#665e75' }}>{memorial.userId?.name || 'Unknown'}</td>
                                                     <td style={{ padding: '1.25rem 1.5rem' }}>
                                                         <span style={{
-                                                            background: memorial.status === 'published' ? '#d1fae5' : (memorial.status === 'requested' ? '#e0f2fe' : '#fef3c7'),
-                                                            color: memorial.status === 'published' ? '#059669' : (memorial.status === 'requested' ? '#0284c7' : '#d97706'),
+                                                            background: memorial.status === 'published' ? '#d1fae5' : (memorial.status === 'requested' ? '#e0f2fe' : (memorial.status === 'rejected' ? '#fee2e2' : '#fef3c7')),
+                                                            color: memorial.status === 'published' ? '#059669' : (memorial.status === 'requested' ? '#0284c7' : (memorial.status === 'rejected' ? '#dc2626' : '#d97706')),
                                                             padding: '0.4rem 1rem',
                                                             borderRadius: '50px',
                                                             fontSize: '0.85rem',
                                                             fontWeight: '600'
                                                         }}>
-                                                            {memorial.status === 'requested' ? 'Requested' : memorial.status}
+                                                            {memorial.status === 'requested' ? 'Requested' : (memorial.status === 'published' ? 'Published' : (memorial.status === 'rejected' ? 'Rejected' : 'Draft'))}
                                                         </span>
                                                     </td>
                                                     <td style={{ padding: '1.25rem 1.5rem', color: '#665e75' }}>{formatDate(memorial.createdAt)}</td>
@@ -266,15 +294,39 @@ export default function AdminPanel() {
                                                         <Link href={`/memorial/${memorial._id}`} style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#faf7fd', color: '#815bb5', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', transition: 'all 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.background = '#eedbfa'} onMouseLeave={(e) => e.currentTarget.style.background = '#faf7fd'} title="View">
                                                             <FaEye />
                                                         </Link>
-                                                        {memorial.status === 'requested' && (
+                                                        {memorial.status === 'published' && Boolean(memorial.qrGenerated) && (
                                                             <button
-                                                                onClick={() => handleApproveMemorial(memorial._id)}
-                                                                title="Approve & Generate QR"
-                                                                style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#d1fae5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
-                                                                onMouseEnter={(e) => e.currentTarget.style.background = '#a7f3d0'} onMouseLeave={(e) => e.currentTarget.style.background = '#d1fae5'}
+                                                                onClick={() => setActiveQRModal({
+                                                                    isOpen: true,
+                                                                    name: `${memorial.firstName} ${memorial.lastName}`,
+                                                                    url: getMemorialQRUrl(memorial._id)
+                                                                })}
+                                                                title="View, Download or Print QR Code"
+                                                                style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e0f2fe', color: '#0369a1', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                                                                onMouseEnter={(e) => e.currentTarget.style.background = '#bae6fd'} onMouseLeave={(e) => e.currentTarget.style.background = '#e0f2fe'}
                                                             >
-                                                                <FaCheckCircle />
+                                                                <FaQrcode />
                                                             </button>
+                                                        )}
+                                                        {memorial.status === 'requested' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleApproveMemorial(memorial._id)}
+                                                                    title="Approve & Generate QR"
+                                                                    style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#d1fae5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                                                                    onMouseEnter={(e) => e.currentTarget.style.background = '#a7f3d0'} onMouseLeave={(e) => e.currentTarget.style.background = '#d1fae5'}
+                                                                >
+                                                                    <FaCheckCircle />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleRejectMemorial(memorial._id)}
+                                                                    title="Reject Memorial Request"
+                                                                    style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                                                                    onMouseEnter={(e) => e.currentTarget.style.background = '#fca5a5'} onMouseLeave={(e) => e.currentTarget.style.background = '#fee2e2'}
+                                                                >
+                                                                    <FaTimesCircle />
+                                                                </button>
+                                                            </>
                                                         )}
                                                         <Link href={`/create-memorial?id=${memorial._id}`} style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#faf7fd', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', transition: 'all 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.background = '#e0f2fe'} onMouseLeave={(e) => e.currentTarget.style.background = '#faf7fd'} title="Edit">
                                                             <FaEdit />
@@ -362,6 +414,14 @@ export default function AdminPanel() {
 
                 </div>
             </div>
+
+            {/* Admin QR Code Modal */}
+            <QRModal
+                isOpen={activeQRModal.isOpen}
+                onClose={() => setActiveQRModal({ isOpen: false, name: '', url: '' })}
+                memorialName={activeQRModal.name}
+                memorialUrl={activeQRModal.url}
+            />
         </div>
     );
 }
