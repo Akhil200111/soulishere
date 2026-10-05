@@ -44,11 +44,11 @@ export async function updateMemorialService(session, memorialId, body) {
         };
     }
 
-    // Check if update is specifically for galleryPhotos
-    const isGalleryUpdateOnly = Object.keys(body).length === 1 && Boolean(body.galleryPhotos);
+    // Check if update is specifically for galleryPhotos or youtubeVideos (media-only updates)
+    const isMediaUpdateOnly = Object.keys(body).length === 1 && (Boolean(body.galleryPhotos) || Boolean(body.youtubeVideos));
 
-    // If general edit (not gallery-only), check draft status restriction for non-admins
-    if (!isGalleryUpdateOnly && memorial.status !== 'draft' && authResult.user?.role !== 'admin') {
+    // If general edit (not media-only), check draft status restriction for non-admins
+    if (!isMediaUpdateOnly && memorial.status !== 'draft' && authResult.user?.role !== 'admin') {
         return {
             success: false,
             status: 403,

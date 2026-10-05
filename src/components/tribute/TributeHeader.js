@@ -4,7 +4,7 @@ export default function TributeHeader({ onOpenComposer, sortOption, onSortChange
     return (
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <h2 className="tribute-header-title" style={{
-                fontFamily: "'Great Vibes', cursive",
+                fontFamily: "'Playball', 'Great Vibes', cursive",
                 fontSize: '2.8rem',
                 color: '#6e5c53',
                 margin: '0 0 0.5rem 0',

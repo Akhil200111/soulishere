@@ -1,5 +1,71 @@
 import mongoose from 'mongoose';
 
+export function extractYouTubeVideoId(url) {
+    if (!url) return '';
+    const trimmed = String(url).trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+        return trimmed;
+    }
+    const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&].*)?$/i;
+    const match = trimmed.match(youtubeUrlRegex);
+    return (match && match[1]) ? match[1] : '';
+}
+
+const youtubeVideoSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: () => new mongoose.Types.ObjectId()
+    },
+    memorialId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Memorial',
+        default: null
+    },
+    title: {
+        type: String,
+        required: [true, 'Please add video title'],
+        trim: true
+    },
+    youtubeUrl: {
+        type: String,
+        required: [true, 'Please add YouTube URL'],
+        trim: true
+    },
+    youtubeVideoId: {
+        type: String,
+        required: [true, 'Please add YouTube video ID'],
+        trim: true
+    },
+    description: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    displayOrder: {
+        type: Number,
+        default: 0
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+youtubeVideoSchema.virtual('id').get(function () {
+    return this._id ? this._id.toString() : null;
+});
+
+youtubeVideoSchema.virtual('url').get(function () {
+    return this.youtubeUrl || '';
+});
+
 const memorialSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,7 +96,7 @@ const memorialSchema = new mongoose.Schema({
     },
     coverPicture: {
         type: String,
-        default: ''
+        default: '/cover_picture.jpg'
     },
     biography: {
         type: String,
@@ -72,11 +138,7 @@ const memorialSchema = new mongoose.Schema({
         type: Number,
         default: null
     },
-    youtubeVideos: [{
-        title: String,
-        url: String,
-        description: String
-    }],
+    youtubeVideos: [youtubeVideoSchema],
     galleryPhotos: [{
         url: String,
         description: String
@@ -233,7 +295,7 @@ const memorialSchema = new mongoose.Schema({
     }
 });
 
-// Update the updatedAt field and ensure family members have unique ids before saving
+// Update the updatedAt field and ensure subdocuments are properly formatted before saving
 memorialSchema.pre('save', function () {
     this.updatedAt = Date.now();
     if (this.familyMembers && Array.isArray(this.familyMembers)) {
@@ -241,6 +303,29 @@ memorialSchema.pre('save', function () {
             if (!member.id) {
                 member.id = new mongoose.Types.ObjectId().toString();
             }
+        });
+    }
+    if (this.youtubeVideos && Array.isArray(this.youtubeVideos)) {
+        this.youtubeVideos.forEach((video, index) => {
+            if (!video._id) {
+                video._id = new mongoose.Types.ObjectId();
+            }
+            if (!video.memorialId && this._id) {
+                video.memorialId = this._id;
+            }
+            if (!video.youtubeUrl && video.url) {
+                video.youtubeUrl = video.url;
+            }
+            if (!video.youtubeVideoId && video.youtubeUrl) {
+                video.youtubeVideoId = extractYouTubeVideoId(video.youtubeUrl);
+            }
+            if (typeof video.displayOrder !== 'number') {
+                video.displayOrder = index;
+            }
+            if (!video.createdAt) {
+                video.createdAt = Date.now();
+            }
+            video.updatedAt = Date.now();
         });
     }
 });

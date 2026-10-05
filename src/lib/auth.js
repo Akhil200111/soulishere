@@ -102,11 +102,18 @@ export async function canManageMemorialGallery(session, memorial) {
         return { authorized: true, user };
     }
 
-    // Rule 3: Other users cannot modify the gallery
+    // Rule 3: Other users cannot modify the memorial media or gallery
     return {
         authorized: false,
         status: 403,
-        message: 'Not authorized to manage this memorial gallery'
+        message: 'Forbidden: You are not authorized to modify this memorial.'
     };
 }
+
+/**
+ * Reusable authorization check to verify if a session user can manage a memorial's YouTube videos.
+ * Alias for canManageMemorialGallery enforcing creator/owner or admin rule.
+ */
+export const canManageMemorialVideos = canManageMemorialGallery;
+export const canManageMemorialMedia = canManageMemorialGallery;
 

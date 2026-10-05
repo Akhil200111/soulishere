@@ -26,7 +26,7 @@ export default function TributeEmptyState({ onOpenComposer }) {
             </div>
 
             <h3 style={{
-                fontFamily: "'Great Vibes', cursive",
+                fontFamily: "'Playball', 'Great Vibes', cursive",
                 fontSize: '2.2rem',
                 color: '#6e5c53',
                 margin: '0 0 0.5rem 0',

@@ -18,6 +18,8 @@ export async function GET() {
                     keywords: 'memorial, tribute, digital memorial'
                 },
                 images: {
+                    logo: '/logo.png',
+                    favicon: '/logo.png',
                     homeHeroFamily: '/images/home_hero_family.png',
                     memorialSample: '/images/memorial_sample.png',
                     processFlow: '/images/process_flow.png',

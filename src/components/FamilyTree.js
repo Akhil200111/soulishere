@@ -833,7 +833,7 @@ export default function FamilyTree({ familyMembers = [], memorial = null }) {
                                             <span style={{ 
                                                 fontSize: '3rem', 
                                                 color: isMain ? '#C48F95' : '#5C4A42', 
-                                                fontFamily: "'Alex Brush', 'Great Vibes', cursive", 
+                                                fontFamily: "'Playball', 'Alex Brush', 'Great Vibes', cursive", 
                                                 fontWeight: '400',
                                                 lineHeight: 1
                                             }}>

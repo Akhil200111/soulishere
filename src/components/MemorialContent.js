@@ -9,6 +9,7 @@ import {
     FaBook, 
     FaImages, 
     FaVideo, 
+    FaPlay,
     FaMapMarkerAlt,
     FaCompass,
     FaFeatherAlt,
@@ -30,6 +31,7 @@ export default function MemorialContent({
     const [activeSubTab, setActiveSubTab] = useState('bio');
     const [guestbookForm, setGuestbookForm] = useState({ name: '', email: '', message: '' });
     const [previewPhoto, setPreviewPhoto] = useState(null);
+    const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
 
     if (!memorial) return null;
 
@@ -169,7 +171,7 @@ export default function MemorialContent({
                     justifyContent: 'center',
                     backgroundImage: memorial.coverPicture 
                         ? `url('${memorial.coverPicture}')`
-                        : `url('/images/floral_corner.jpg')`,
+                        : `url('/cover_picture.jpg')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -201,7 +203,7 @@ export default function MemorialContent({
                         backdropFilter: 'blur(4px)',
                         WebkitBackdropFilter: 'blur(4px)',
                         borderRadius: '20px',
-                        padding: '1.25rem 2rem',
+                        padding: '1.15rem 1.15rem',
                         boxShadow: '0 4px 15px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(255, 255, 255, 0.3)',
                         border: '1px solid rgba(255, 255, 255, 0.3)'
                     }}>
@@ -236,12 +238,12 @@ export default function MemorialContent({
                         {/* Memorial Quote */}
                         {quoteText && (
                             <p style={{
-                                fontFamily: "'Great Vibes', 'Alex Brush', cursive",
+                                fontFamily: "'Playball', 'Great Vibes', 'Alex Brush', cursive",
                                 fontSize: '1.5rem',
-                                color: '#654278',
+                                color: '#540835',
                                 margin: '0 0 0.75rem 0',
                                 lineHeight: 1.3,
-                                maxWidth: '580px',
+                                maxWidth: '700px',
                                 textShadow: '0 1px 2px rgba(255,255,255,0.7)'
                             }}>
                                 &quot;{quoteText}&quot;
@@ -493,7 +495,7 @@ export default function MemorialContent({
                         borderRadius: '24px', 
                         padding: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
                             ? '0' 
-                            : '2.25rem', 
+                            : '1.75rem 1.25rem', 
                         border: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
                             ? 'none' 
                             : '1.5px solid rgba(228, 210, 242, 0.65)',
@@ -507,7 +509,7 @@ export default function MemorialContent({
                     {/* LIFE JOURNEY: BIO */}
                     {activeMainTab === 'life-journey' && activeSubTab === 'bio' && (
                         <div>
-                            <h2 style={{ fontFamily: "'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
+                            <h2 style={{ fontFamily: "'Playball', 'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
                                 Biography
                             </h2>
                             <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.8, color: '#5c544d' }}>
@@ -566,7 +568,7 @@ export default function MemorialContent({
                     {/* LIFE JOURNEY: MEMORIAL SITE */}
                     {activeMainTab === 'life-journey' && activeSubTab === 'memorial-site' && (
                         <div>
-                            <h2 style={{ fontFamily: "'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
+                            <h2 style={{ fontFamily: "'Playball', 'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
                                 Memorial Site
                             </h2>
                             {memorial.cemeteryName || memorial.graveLocation ? (
@@ -618,7 +620,7 @@ export default function MemorialContent({
                     {/* STORIES */}
                     {activeMainTab === 'stories' && (
                         <div>
-                            <h2 style={{ fontFamily: "'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
+                            <h2 style={{ fontFamily: "'Playball', 'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
                                 Stories & Media
                             </h2>
 
@@ -697,24 +699,131 @@ export default function MemorialContent({
 
                             {/* Videos */}
                             <div>
-                                <h3 style={{ color: '#6e5c53', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <h3 style={{ color: '#6e5c53', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem' }}>
                                     <FaVideo style={{ color: '#c48f95' }} /> Video Memories
                                 </h3>
                                 {memorial.youtubeVideos && memorial.youtubeVideos.length > 0 ? (
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
-                                        {memorial.youtubeVideos.map((video, i) => (
-                                            <div key={i}>
-                                                <iframe
-                                                    src={video.url.replace('watch?v=', 'embed/')}
-                                                    title={video.title}
-                                                    frameBorder="0"
-                                                    allowFullScreen
-                                                    style={{ width: '100%', aspectRatio: '16/9', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}
-                                                />
-                                                <h4 style={{ margin: '1rem 0 0.5rem 0', color: '#6e5c53' }}>{video.title}</h4>
-                                                {video.description && <p style={{ margin: 0, color: '#5c544d', fontSize: '0.9rem' }}>{video.description}</p>}
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                        {/* Active Selected Video Embed */}
+                                        {(() => {
+                                            const currentVideo = memorial.youtubeVideos[selectedVideoIndex] || memorial.youtubeVideos[0];
+                                            
+                                            // Helper to extract YouTube video ID from object
+                                            const getVideoId = (v) => {
+                                                if (v.youtubeVideoId) return v.youtubeVideoId;
+                                                const rawUrl = v.youtubeUrl || v.url || '';
+                                                if (!rawUrl) return '';
+                                                const match = rawUrl.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                                                return match ? match[1] : (rawUrl.length === 11 ? rawUrl : '');
+                                            };
+
+                                            const currentId = getVideoId(currentVideo);
+
+                                            return (
+                                                <div style={{ background: '#faf7fd', padding: '1.25rem', borderRadius: '16px', border: '1px solid #eedbfa' }}>
+                                                    <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '12px', overflow: 'hidden', backgroundColor: '#000' }}>
+                                                        {currentId ? (
+                                                            <iframe
+                                                                src={`https://www.youtube.com/embed/${currentId}`}
+                                                                title={currentVideo.title || 'Video Memory'}
+                                                                frameBorder="0"
+                                                                allowFullScreen
+                                                                style={{ width: '100%', height: '100%' }}
+                                                            />
+                                                        ) : (
+                                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'white' }}>
+                                                                Video player unavailable
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <h4 style={{ margin: '1rem 0 0.35rem 0', color: '#6e5c53', fontSize: '1.2rem', fontWeight: '600' }}>
+                                                        {currentVideo.title}
+                                                    </h4>
+                                                    {currentVideo.description && (
+                                                        <p style={{ margin: 0, color: '#5c544d', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                                                            {currentVideo.description}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
+
+                                        {/* Multiple Video Selection Grid / Thumbnails */}
+                                        {memorial.youtubeVideos.length > 1 && (
+                                            <div>
+                                                <h4 style={{ color: '#6e5c53', fontSize: '1.05rem', marginBottom: '1rem', fontWeight: '600' }}>
+                                                    All Video Memories ({memorial.youtubeVideos.length})
+                                                </h4>
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.25rem' }}>
+                                                    {memorial.youtubeVideos.map((video, idx) => {
+                                                        const getVideoId = (v) => {
+                                                            if (v.youtubeVideoId) return v.youtubeVideoId;
+                                                            const rawUrl = v.youtubeUrl || v.url || '';
+                                                            if (!rawUrl) return '';
+                                                            const match = rawUrl.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                                                            return match ? match[1] : (rawUrl.length === 11 ? rawUrl : '');
+                                                        };
+
+                                                        const vId = getVideoId(video);
+                                                        const thumb = vId ? `https://img.youtube.com/vi/${vId}/hqdefault.jpg` : null;
+                                                        const isSelected = idx === selectedVideoIndex;
+
+                                                        return (
+                                                            <div
+                                                                key={idx}
+                                                                onClick={() => setSelectedVideoIndex(idx)}
+                                                                style={{
+                                                                    background: 'white',
+                                                                    borderRadius: '12px',
+                                                                    border: isSelected ? '2px solid #c48f95' : '1px solid #eedbfa',
+                                                                    boxShadow: isSelected ? '0 4px 14px rgba(196, 143, 149, 0.25)' : '0 2px 8px rgba(0,0,0,0.04)',
+                                                                    overflow: 'hidden',
+                                                                    cursor: 'pointer',
+                                                                    transition: 'all 0.2s ease',
+                                                                    opacity: isSelected ? 1 : 0.85
+                                                                }}
+                                                            >
+                                                                <div style={{ position: 'relative', width: '100%', height: '125px', backgroundColor: '#1a1025' }}>
+                                                                    {thumb ? (
+                                                                        <img
+                                                                            src={thumb}
+                                                                            alt={video.title || `Video ${idx + 1}`}
+                                                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                                        />
+                                                                    ) : (
+                                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#8c7e75' }}>
+                                                                            <FaVideo style={{ fontSize: '2rem' }} />
+                                                                        </div>
+                                                                    )}
+                                                                    <div style={{
+                                                                        position: 'absolute',
+                                                                        top: '50%',
+                                                                        left: '50%',
+                                                                        transform: 'translate(-50%, -50%)',
+                                                                        width: '38px',
+                                                                        height: '38px',
+                                                                        borderRadius: '50%',
+                                                                        background: isSelected ? 'rgba(196, 143, 149, 0.95)' : 'rgba(0, 0, 0, 0.65)',
+                                                                        color: 'white',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justify: 'center',
+                                                                        fontSize: '0.95rem'
+                                                                    }}>
+                                                                        <FaPlay style={{ marginLeft: '2px' }} />
+                                                                    </div>
+                                                                </div>
+                                                                <div style={{ padding: '0.75rem' }}>
+                                                                    <h5 style={{ margin: 0, fontSize: '0.9rem', color: '#6e5c53', lineHeight: '1.3', fontWeight: '600' }}>
+                                                                        {video.title}
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
                                 ) : (
                                     <p style={{ color: '#5c544d', fontStyle: 'italic' }}>No videos available.</p>

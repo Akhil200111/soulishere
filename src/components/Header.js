@@ -43,8 +43,8 @@ export default function Header() {
                     <Image 
                         src="/logo.png" 
                         alt="Soulishere" 
-                        width={300} 
-                        height={120} 
+                        width={130} 
+                        height={62} 
                         className="memorial-logo-img" 
                         priority 
                     />
@@ -62,7 +62,7 @@ export default function Header() {
 
                         {/* Col 1 — Logo */}
                         <Link href="/" className="logo">
-                            <Image src="/logo.png" alt="Soulishere" width={150} height={150} className="logo-img" />
+                            <Image src="/logo.png" alt="Soulishere" width={180} height={86} className="logo-img" />
                         </Link>
 
                         {/* Col 2 — Pill nav, centered */}

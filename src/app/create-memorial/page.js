@@ -9,6 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 import { FaPlus, FaTrash, FaUpload } from 'react-icons/fa';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import UserGalleryManager from '@/components/UserGalleryManager';
+import UserVideoManager from '@/components/UserVideoManager';
 
 const LocationPicker = dynamic(() => import('@/components/LocationPicker'), { ssr: false });
 
@@ -853,6 +854,21 @@ function CreateMemorialContent() {
                                 onSaveSuccess={(updated) => {
                                     if (updated?.galleryPhotos) {
                                         setFormData(prev => ({ ...prev, galleryPhotos: updated.galleryPhotos }));
+                                    }
+                                }}
+                            />
+                        </div>
+                    )}
+
+                    {/* YouTube Video Manager for Creators */}
+                    {editId && (
+                        <div className="form-section" style={{ background: 'white', padding: '2rem', borderRadius: '16px', marginBottom: '2rem' }}>
+                            <UserVideoManager
+                                memorial={{ ...formData, _id: editId }}
+                                token={token}
+                                onSaveSuccess={(updated) => {
+                                    if (updated?.youtubeVideos) {
+                                        setFormData(prev => ({ ...prev, youtubeVideos: updated.youtubeVideos }));
                                     }
                                 }}
                             />

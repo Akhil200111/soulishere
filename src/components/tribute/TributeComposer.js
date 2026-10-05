@@ -74,7 +74,7 @@ export default function TributeComposer({
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <FaFeatherAlt style={{ color: '#C48F95', fontSize: '1.1rem' }} />
                         <h3 style={{
-                            fontFamily: "'Great Vibes', cursive",
+                            fontFamily: "'Playball', 'Great Vibes', cursive",
                             fontSize: '2rem',
                             color: '#6e5c53',
                             margin: 0,
