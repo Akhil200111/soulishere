@@ -5222,5 +5222,16 @@ html {
   }
 }
 
+/* Memorial Sub Nav Button Hover Optimization */
+.memorial-sub-tab-btn {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.memorial-sub-tab-btn:hover:not([aria-selected="true"]) {
+  color: #5C4A42 !important;
+  border-bottom-color: rgba(196, 143, 149, 0.4) !important;
+}
+
+
 
 

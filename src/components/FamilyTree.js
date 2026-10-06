@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { 
     FaSearch, 
     FaSearchPlus, 
@@ -78,7 +78,7 @@ function BotanicalLeaves({ isMemorialSubject = false, position = 'right' }) {
     );
 }
 
-export default function FamilyTree({ familyMembers = [], memorial = null }) {
+function FamilyTree({ familyMembers = [], memorial = null }) {
     const [selectedMember, setSelectedMember] = useState(null);
     const [hoveredNodeId, setHoveredNodeId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -1059,3 +1059,6 @@ export default function FamilyTree({ familyMembers = [], memorial = null }) {
         </div>
     );
 }
+
+export default memo(FamilyTree);
+

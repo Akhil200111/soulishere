@@ -457,18 +457,6 @@ export default function MemorialContent({
                                         whiteSpace: 'nowrap',
                                         position: 'relative'
                                     }}
-                                    onMouseOver={(e) => {
-                                        if (!isSubActive) {
-                                            e.currentTarget.style.color = '#5C4A42';
-                                            e.currentTarget.style.borderBottomColor = 'rgba(196, 143, 149, 0.4)';
-                                        }
-                                    }}
-                                    onMouseOut={(e) => {
-                                        if (!isSubActive) {
-                                            e.currentTarget.style.color = '#8C7B70';
-                                            e.currentTarget.style.borderBottomColor = 'transparent';
-                                        }
-                                    }}
                                 >
                                     <subTab.icon style={{ fontSize: '0.8rem', color: isSubActive ? '#C48F95' : '#A39C95', transition: 'color 200ms ease' }} />
                                     <span>{subTab.label}</span>
@@ -485,12 +473,6 @@ export default function MemorialContent({
                         backgroundColor: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
                             ? 'transparent' 
                             : 'rgba(255, 255, 255, 0.88)', 
-                        backdropFilter: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
-                            ? 'none' 
-                            : 'blur(16px)',
-                        WebkitBackdropFilter: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
-                            ? 'none' 
-                            : 'blur(16px)',
                         borderRadius: '24px', 
                         padding: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
                             ? '0' 
@@ -500,14 +482,16 @@ export default function MemorialContent({
                             : '1.5px solid rgba(228, 210, 242, 0.65)',
                         boxShadow: (activeMainTab === 'life-journey' && activeSubTab === 'lineage') 
                             ? 'none' 
-                            : '0 15px 35px rgba(115, 80, 145, 0.06)' 
+                            : '0 15px 35px rgba(115, 80, 145, 0.06)',
+                        transform: 'translateZ(0)',
+                        willChange: 'transform'
                     }}
                 >
-                    <div key={`${activeMainTab}-${activeSubTab}`} className="memorial-tab-pane">
+                    <div className="memorial-tab-pane">
                     
                     {/* LIFE JOURNEY: BIO */}
-                    {activeMainTab === 'life-journey' && activeSubTab === 'bio' && (
-                        <div>
+                    {activeMainTab === 'life-journey' && (
+                        <div style={{ display: activeSubTab === 'bio' ? 'block' : 'none' }}>
                             <h2 style={{ fontFamily: "'Playball', 'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
                                 Biography
                             </h2>
@@ -558,15 +542,15 @@ export default function MemorialContent({
                     )}
 
                     {/* LIFE JOURNEY: LINEAGE */}
-                    {activeMainTab === 'life-journey' && activeSubTab === 'lineage' && (
-                        <div>
+                    {activeMainTab === 'life-journey' && (
+                        <div style={{ display: activeSubTab === 'lineage' ? 'block' : 'none' }}>
                             <FamilyTree familyMembers={memorial.familyMembers || []} memorial={memorial} />
                         </div>
                     )}
 
                     {/* LIFE JOURNEY: MEMORIAL SITE */}
-                    {activeMainTab === 'life-journey' && activeSubTab === 'memorial-site' && (
-                        <div>
+                    {activeMainTab === 'life-journey' && (
+                        <div style={{ display: activeSubTab === 'memorial-site' ? 'block' : 'none' }}>
                             <h2 style={{ fontFamily: "'Playball', 'Great Vibes', cursive", fontSize: '2.5rem', color: '#6e5c53', margin: '0 0 1.5rem 0', fontWeight: 'normal' }}>
                                 Memorial Site
                             </h2>
