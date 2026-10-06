@@ -30,7 +30,6 @@ export default function MemorialContent({
     const [activeMainTab, setActiveMainTab] = useState('life-journey');
     const [activeSubTab, setActiveSubTab] = useState('bio');
     const [guestbookForm, setGuestbookForm] = useState({ name: '', email: '', message: '' });
-    const [previewPhoto, setPreviewPhoto] = useState(null);
     const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
 
     if (!memorial) return null;
@@ -630,68 +629,31 @@ export default function MemorialContent({
                                     <FaImages style={{ color: '#c48f95' }} /> Photo Gallery
                                 </h3>
                                 {memorial.galleryPhotos && memorial.galleryPhotos.length > 0 ? (
-                                    <>
-                                        <div className="memorial-gallery-bento">
-                                            {memorial.galleryPhotos.map((photo, i) => (
-                                                <div 
-                                                    key={i} 
-                                                    className="bento-gallery-card"
-                                                    onClick={() => setPreviewPhoto(photo)}
-                                                    title={photo.description || 'Click to view full photo'}
-                                                >
-                                                    <Image
-                                                        src={photo.url}
-                                                        alt={photo.description || `Gallery photo ${i + 1}`}
-                                                        fill
-                                                        style={{ objectFit: 'cover' }}
-                                                        unoptimized
-                                                        className="bento-gallery-img"
-                                                    />
-                                                    <div className="bento-gallery-overlay">
-                                                        {photo.description && (
-                                                            <p className="bento-gallery-caption">
-                                                                {photo.description}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* Photo Lightbox Modal */}
-                                        {previewPhoto && (
-                                            <Modal 
-                                                isOpen={!!previewPhoto} 
-                                                onClose={() => setPreviewPhoto(null)} 
-                                                title="Photo Memory"
+                                    <div className="memorial-gallery-bento">
+                                        {memorial.galleryPhotos.map((photo, i) => (
+                                            <div 
+                                                key={i} 
+                                                className="bento-gallery-card"
+                                                title={photo.description || `Gallery photo ${i + 1}`}
                                             >
-                                                <div style={{ textAlign: 'center', padding: '0.5rem 1rem 1.5rem 1rem' }}>
-                                                    <div style={{ 
-                                                        position: 'relative', 
-                                                        width: '100%', 
-                                                        maxHeight: '70vh', 
-                                                        display: 'flex', 
-                                                        alignItems: 'center', 
-                                                        justifyContent: 'center',
-                                                        borderRadius: '12px',
-                                                        overflow: 'hidden',
-                                                        backgroundColor: '#faf7fd'
-                                                    }}>
-                                                        <img 
-                                                            src={previewPhoto.url} 
-                                                            alt={previewPhoto.description || 'Memorial Photo'}
-                                                            style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', display: 'block' }}
-                                                        />
-                                                    </div>
-                                                    {previewPhoto.description && (
-                                                        <p style={{ marginTop: '1.25rem', color: '#5c544d', fontSize: '1.05rem', fontStyle: 'italic', lineHeight: 1.5, margin: '1.25rem 0 0 0' }}>
-                                                            &ldquo;{previewPhoto.description}&rdquo;
+                                                <Image
+                                                    src={photo.url}
+                                                    alt={photo.description || `Gallery photo ${i + 1}`}
+                                                    fill
+                                                    style={{ objectFit: 'cover' }}
+                                                    unoptimized
+                                                    className="bento-gallery-img"
+                                                />
+                                                <div className="bento-gallery-overlay">
+                                                    {photo.description && (
+                                                        <p className="bento-gallery-caption">
+                                                            {photo.description}
                                                         </p>
                                                     )}
                                                 </div>
-                                            </Modal>
-                                        )}
-                                    </>
+                                            </div>
+                                        ))}
+                                    </div>
                                 ) : (
                                     <p style={{ color: '#5c544d', fontStyle: 'italic' }}>No photos in the gallery.</p>
                                 )}
@@ -720,27 +682,66 @@ export default function MemorialContent({
                                             const currentId = getVideoId(currentVideo);
 
                                             return (
-                                                <div style={{ background: '#faf7fd', padding: '1.25rem', borderRadius: '16px', border: '1px solid #eedbfa' }}>
-                                                    <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '12px', overflow: 'hidden', backgroundColor: '#000' }}>
-                                                        {currentId ? (
-                                                            <iframe
-                                                                src={`https://www.youtube.com/embed/${currentId}`}
-                                                                title={currentVideo.title || 'Video Memory'}
-                                                                frameBorder="0"
-                                                                allowFullScreen
-                                                                style={{ width: '100%', height: '100%' }}
-                                                            />
-                                                        ) : (
-                                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'white' }}>
-                                                                Video player unavailable
+                                                <div style={{ background: '#faf7fd', padding: '1.5rem 1.25rem', borderRadius: '20px', border: '1px solid #eedbfa', textAlign: 'center' }}>
+                                                    {/* Picture Frame Wrapper */}
+                                                    <div style={{
+                                                        maxWidth: '750px',
+                                                        margin: '0 auto',
+                                                        padding: '16px',
+                                                        borderRadius: '6px',
+                                                        background: 'linear-gradient(135deg, #e8d0a9 0%, #c29b63 20%, #f7e6c7 45%, #9c733a 75%, #d6ae74 100%)',
+                                                        boxShadow: `
+                                                            0 16px 40px rgba(45, 20, 60, 0.2),
+                                                            0 6px 16px rgba(0, 0, 0, 0.15),
+                                                            inset 0 2px 4px rgba(255, 255, 255, 0.9),
+                                                            inset 0 -3px 5px rgba(0, 0, 0, 0.4),
+                                                            inset 3px 0 4px rgba(255, 255, 255, 0.5),
+                                                            inset -3px 0 5px rgba(0, 0, 0, 0.4)
+                                                        `,
+                                                        border: '1px solid #b38b50',
+                                                        position: 'relative'
+                                                    }}>
+                                                        {/* Off-White Cream Matting Board */}
+                                                        <div style={{
+                                                            background: '#fbf9f4',
+                                                            padding: '14px',
+                                                            borderRadius: '3px',
+                                                            boxShadow: 'inset 0 0 8px rgba(0,0,0,0.1), inset 0 2px 4px rgba(0,0,0,0.15)',
+                                                            border: '1px solid #d4c7b3'
+                                                        }}>
+                                                            {/* Dark Inner Bezel Border & Video Player Screen */}
+                                                            <div style={{
+                                                                position: 'relative',
+                                                                width: '100%',
+                                                                aspectRatio: '16/9',
+                                                                borderRadius: '2px',
+                                                                overflow: 'hidden',
+                                                                backgroundColor: '#000',
+                                                                border: '3px solid #1a1612',
+                                                                boxShadow: 'inset 0 0 12px rgba(0,0,0,0.7), 0 2px 5px rgba(0,0,0,0.3)'
+                                                            }}>
+                                                                {currentId ? (
+                                                                    <iframe
+                                                                        src={`https://www.youtube.com/embed/${currentId}`}
+                                                                        title={currentVideo.title || 'Video Memory'}
+                                                                        frameBorder="0"
+                                                                        allowFullScreen
+                                                                        style={{ width: '100%', height: '100%', display: 'block' }}
+                                                                    />
+                                                                ) : (
+                                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'white' }}>
+                                                                        Video player unavailable
+                                                                    </div>
+                                                                )}
                                                             </div>
-                                                        )}
+                                                        </div>
                                                     </div>
-                                                    <h4 style={{ margin: '1rem 0 0.35rem 0', color: '#6e5c53', fontSize: '1.2rem', fontWeight: '600' }}>
+
+                                                    <h4 style={{ margin: '1.25rem 0 0.35rem 0', color: '#6e5c53', fontSize: '1.25rem', fontWeight: '600' }}>
                                                         {currentVideo.title}
                                                     </h4>
                                                     {currentVideo.description && (
-                                                        <p style={{ margin: 0, color: '#5c544d', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                                                        <p style={{ margin: '0 auto', color: '#5c544d', fontSize: '0.95rem', lineHeight: '1.5', maxWidth: '650px' }}>
                                                             {currentVideo.description}
                                                         </p>
                                                     )}
@@ -773,17 +774,26 @@ export default function MemorialContent({
                                                                 key={idx}
                                                                 onClick={() => setSelectedVideoIndex(idx)}
                                                                 style={{
-                                                                    background: 'white',
-                                                                    borderRadius: '12px',
-                                                                    border: isSelected ? '2px solid #c48f95' : '1px solid #eedbfa',
-                                                                    boxShadow: isSelected ? '0 4px 14px rgba(196, 143, 149, 0.25)' : '0 2px 8px rgba(0,0,0,0.04)',
+                                                                    background: '#fcfaf5',
+                                                                    borderRadius: '10px',
+                                                                    padding: '6px',
+                                                                    border: isSelected ? '2px solid #c48f95' : '1px solid #d9ccb8',
+                                                                    boxShadow: isSelected ? '0 4px 14px rgba(196, 143, 149, 0.3)' : '0 2px 8px rgba(0,0,0,0.05)',
                                                                     overflow: 'hidden',
                                                                     cursor: 'pointer',
                                                                     transition: 'all 0.2s ease',
                                                                     opacity: isSelected ? 1 : 0.85
                                                                 }}
                                                             >
-                                                                <div style={{ position: 'relative', width: '100%', height: '125px', backgroundColor: '#1a1025' }}>
+                                                                <div style={{
+                                                                    position: 'relative',
+                                                                    width: '100%',
+                                                                    height: '125px',
+                                                                    backgroundColor: '#1a1025',
+                                                                    borderRadius: '4px',
+                                                                    overflow: 'hidden',
+                                                                    border: '2px solid #1a1612'
+                                                                }}>
                                                                     {thumb ? (
                                                                         <img
                                                                             src={thumb}
@@ -803,18 +813,19 @@ export default function MemorialContent({
                                                                         width: '38px',
                                                                         height: '38px',
                                                                         borderRadius: '50%',
-                                                                        background: isSelected ? 'rgba(196, 143, 149, 0.95)' : 'rgba(0, 0, 0, 0.65)',
+                                                                        background: isSelected ? 'rgba(196, 143, 149, 0.95)' : 'rgba(0, 0, 0, 0.7)',
                                                                         color: 'white',
                                                                         display: 'flex',
                                                                         alignItems: 'center',
                                                                         justify: 'center',
-                                                                        fontSize: '0.95rem'
+                                                                        fontSize: '0.95rem',
+                                                                        boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
                                                                     }}>
                                                                         <FaPlay style={{ marginLeft: '2px' }} />
                                                                     </div>
                                                                 </div>
-                                                                <div style={{ padding: '0.75rem' }}>
-                                                                    <h5 style={{ margin: 0, fontSize: '0.9rem', color: '#6e5c53', lineHeight: '1.3', fontWeight: '600' }}>
+                                                                <div style={{ padding: '0.5rem 0.25rem 0.25rem 0.25rem' }}>
+                                                                    <h5 style={{ margin: 0, fontSize: '0.88rem', color: '#6e5c53', lineHeight: '1.3', fontWeight: '600' }}>
                                                                         {video.title}
                                                                     </h5>
                                                                 </div>

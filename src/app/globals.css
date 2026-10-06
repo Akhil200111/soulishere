@@ -5136,7 +5136,7 @@ html {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
+  cursor: default;
   background-color: #faf7fd;
   transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.35s ease;
 }
