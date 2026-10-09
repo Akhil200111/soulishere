@@ -4,8 +4,9 @@ import Memorial from '@/models/Memorial';
 import User from '@/models/User';
 import { getSession } from '@/lib/auth';
 import { updateMemorialService } from '@/lib/memorialService';
+import crypto from 'crypto';
 
-// GET - Get single memorial
+// GET - Get single memorial with QR access key verification
 export async function GET(request, { params }) {
     try {
         await connectDB();
@@ -20,10 +21,57 @@ export async function GET(request, { params }) {
             );
         }
 
+        // Allow access for public dummy memorial
+        if (memorial.isDummy) {
+            return NextResponse.json({
+                success: true,
+                data: memorial
+            });
+        }
+
+        // Ensure memorial has a qrAccessKey
+        if (!memorial.qrAccessKey) {
+            memorial.qrAccessKey = crypto.randomBytes(16).toString('hex');
+            await memorial.save();
+        }
+
+        // 1. Check logged in session (Super Admin or Memorial Owner)
+        const session = await getSession(request);
+        if (session?.id) {
+            const user = await User.findById(session.id);
+            const memorialOwnerId = memorial.userId?._id 
+                ? memorial.userId._id.toString() 
+                : (memorial.userId ? memorial.userId.toString() : null);
+
+            const isOwner = Boolean(memorialOwnerId && memorialOwnerId === session.id);
+            const isAdmin = Boolean(user && user.role === 'admin');
+
+            if (isOwner || isAdmin) {
+                return NextResponse.json({
+                    success: true,
+                    data: memorial
+                });
+            }
+        }
+
+        // 2. Check QR key from query param or header
+        const { searchParams } = new URL(request.url);
+        const providedKey = searchParams.get('key') || request.headers.get('x-qr-key');
+
+        if (providedKey && providedKey === memorial.qrAccessKey) {
+            return NextResponse.json({
+                success: true,
+                data: memorial
+            });
+        }
+
+        // 3. Unauthorized - Access Restricted
         return NextResponse.json({
-            success: true,
-            data: memorial
-        });
+            success: false,
+            isRestricted: true,
+            message: 'Access restricted. You must scan the official QR code to view this memorial.'
+        }, { status: 403 });
+
     } catch (err) {
         return NextResponse.json(
             { success: false, message: err.message },
@@ -31,6 +79,7 @@ export async function GET(request, { params }) {
         );
     }
 }
+
 
 // PUT - Update memorial
 export async function PUT(request, { params }) {

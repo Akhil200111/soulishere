@@ -294,12 +294,12 @@ export default function AdminPanel() {
                                                         <Link href={`/memorial/${memorial._id}`} style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#faf7fd', color: '#815bb5', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', transition: 'all 0.2s ease' }} onMouseEnter={(e) => e.currentTarget.style.background = '#eedbfa'} onMouseLeave={(e) => e.currentTarget.style.background = '#faf7fd'} title="View">
                                                             <FaEye />
                                                         </Link>
-                                                        {memorial.status === 'published' && Boolean(memorial.qrGenerated) && (
+                                                        {memorial.status === 'published' && (
                                                             <button
                                                                 onClick={() => setActiveQRModal({
                                                                     isOpen: true,
                                                                     name: `${memorial.firstName} ${memorial.lastName}`,
-                                                                    url: getMemorialQRUrl(memorial._id)
+                                                                    url: getMemorialQRUrl(memorial)
                                                                 })}
                                                                 title="View, Download or Print QR Code"
                                                                 style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e0f2fe', color: '#0369a1', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import crypto from 'crypto';
 
 export function extractYouTubeVideoId(url) {
     if (!url) return '';
@@ -277,6 +278,12 @@ const memorialSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    qrAccessKey: {
+        type: String,
+        default: function () {
+            return crypto.randomBytes(16).toString('hex');
+        }
+    },
     hugCount: {
         type: Number,
         default: 0
@@ -298,6 +305,9 @@ const memorialSchema = new mongoose.Schema({
 // Update the updatedAt field and ensure subdocuments are properly formatted before saving
 memorialSchema.pre('save', function () {
     this.updatedAt = Date.now();
+    if (!this.qrAccessKey) {
+        this.qrAccessKey = crypto.randomBytes(16).toString('hex');
+    }
     if (this.familyMembers && Array.isArray(this.familyMembers)) {
         this.familyMembers.forEach(member => {
             if (!member.id) {

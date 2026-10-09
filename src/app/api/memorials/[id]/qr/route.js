@@ -38,17 +38,12 @@ async function checkQRAuth(request, params) {
     }
 
     const isAdmin = user.role === 'admin';
-    const memorialOwnerId = memorial.userId?._id 
-        ? memorial.userId._id.toString() 
-        : (memorial.userId ? memorial.userId.toString() : null);
 
-    const isOwner = Boolean(memorialOwnerId && memorialOwnerId === currentUserId);
-
-    if (!isAdmin && !isOwner) {
-        return { error: 'Not authorized to access QR code for this memorial', status: 403 };
+    if (!isAdmin) {
+        return { error: 'Only super admin is authorized to access QR code for memorials', status: 403 };
     }
 
-    return { session, user, memorial, isAdmin, isOwner };
+    return { session, user, memorial, isAdmin };
 }
 
 // GET - Check/Fetch QR code authorization and status
