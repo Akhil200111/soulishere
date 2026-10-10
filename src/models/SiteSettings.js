@@ -36,7 +36,7 @@ const siteSettingsSchema = new mongoose.Schema({
     pricing: {
         amount: {
             type: Number,
-            default: 1999
+            default: 1499
         },
         currency: {
             type: String,

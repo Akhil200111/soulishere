@@ -9,7 +9,7 @@ export default function AdminSettings({ token }) {
     const [settings, setSettings] = useState({
         seo: { title: '', description: '', keywords: '' },
         images: { gallery: [] },
-        pricing: { amount: 1999, currency: '₹', features: [] }
+        pricing: { amount: 1499, currency: '₹', features: [] }
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -327,7 +327,7 @@ export default function AdminSettings({ token }) {
                             <input
                                 type="number"
                                 name="amount"
-                                value={settings.pricing?.amount || 1999}
+                                value={settings.pricing?.amount !== undefined ? settings.pricing.amount : 1499}
                                 onChange={handlePricingChange}
                                 style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
                             />

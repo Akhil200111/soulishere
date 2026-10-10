@@ -877,7 +877,7 @@ export default function Home() {
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '2rem' }}>
                   <span style={{ fontSize: '4rem', fontWeight: '800', color: '#2d1b4e', lineHeight: 1 }}>
                     {siteSettings?.pricing?.currency || '₹'}
-                    {(siteSettings?.pricing?.amount || 1999).toLocaleString()}
+                    {(siteSettings?.pricing?.amount || 1499).toLocaleString()}
                   </span>
                   <span style={{ color: '#815bb5', fontSize: '1.1rem', fontWeight: '600' }}>/ one-time</span>
                 </div>

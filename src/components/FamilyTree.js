@@ -78,17 +78,18 @@ function BotanicalLeaves({ isMemorialSubject = false, position = 'right' }) {
     );
 }
 
-function FamilyTree({ familyMembers = [], memorial = null }) {
+function FamilyTree({ familyMembers = [], memorial = null, isActive = true }) {
     const [selectedMember, setSelectedMember] = useState(null);
     const [hoveredNodeId, setHoveredNodeId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [zoomLevel, setZoomLevel] = useState(1);
+    const [pan, setPan] = useState({ x: 0, y: 0 });
 
-    // Pan / Drag State
+    // Pan / Drag & Pinch State
     const [isDragging, setIsDragging] = useState(false);
-    const [dragStart, setDragStart] = useState({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
     const [hasDragged, setHasDragged] = useState(false);
-
+    const dragStartRef = useRef(null);
+    const pinchStartRef = useRef(null);
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -104,7 +105,49 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
         return calculateFamilyTreeLayout(familyMembers, memorial);
     }, [familyMembers, memorial]);
 
-    const { nodes, edges, generationBanners, disconnectedNodes, bounds, mainPersonId } = layout;
+    const { nodes, edges, generationBanners, disconnectedNodes, mainPersonId } = layout;
+
+    // Tight, exact bounding box of all deceased/family member nodes and banners
+    const contentBounds = useMemo(() => {
+        if (!nodes || nodes.length === 0) {
+            return { minX: -200, maxX: 200, minY: 0, maxY: 400, width: 400, height: 400, centerX: 0, centerY: 200 };
+        }
+
+        let minX = Infinity;
+        let maxX = -Infinity;
+        let minY = Infinity;
+        let maxY = -Infinity;
+
+        nodes.forEach(node => {
+            // Node avatar is 124px diameter (radius 62px)
+            // Node details text block below avatar extends ±105px horizontally and down to y + 160
+            const left = node.x - 110;
+            const right = node.x + 110;
+            const top = node.y - 80;
+            const bottom = node.y + 160;
+
+            if (left < minX) minX = left;
+            if (right > maxX) maxX = right;
+            if (top < minY) minY = top;
+            if (bottom > maxY) maxY = bottom;
+        });
+
+        if (generationBanners && generationBanners.length > 0) {
+            generationBanners.forEach(b => {
+                if (b.y - 25 < minY) minY = b.y - 25;
+                if (b.y + 25 > maxY) maxY = b.y + 25;
+                if (-140 < minX) minX = -140;
+                if (140 > maxX) maxX = 140;
+            });
+        }
+
+        const width = Math.max(maxX - minX, 240);
+        const height = Math.max(maxY - minY, 240);
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+
+        return { minX, maxX, minY, maxY, width, height, centerX, centerY };
+    }, [nodes, generationBanners]);
 
     const highlightedNodeIds = useMemo(() => {
         if (!searchTerm.trim()) return new Set();
@@ -147,54 +190,97 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
         return active;
     }, [hoveredNodeId, edges, layout.partnerGroups]);
 
-    // Auto-fit view logic: calculates scale & scroll position so ALL nodes are fully visible initially
+    // Auto-fit view logic: calculates scale & translation so ALL deceased & family members fit inside the viewport
     const fitToView = useCallback(() => {
         if (!containerRef.current || !nodes || nodes.length === 0) return;
 
-        const containerWidth = containerRef.current.clientWidth || 900;
-        const containerHeight = containerRef.current.clientHeight || 680;
+        const containerWidth = containerRef.current.clientWidth;
+        const containerHeight = containerRef.current.clientHeight;
+        if (!containerWidth || !containerHeight) return;
 
-        const nodeSpanWidth = Math.max(bounds.maxX - bounds.minX + 340, 650);
-        const nodeSpanHeight = Math.max(bounds.maxY - bounds.minY + 360, 520);
+        const isMobile = containerWidth < 768;
 
-        const scaleX = (containerWidth - 40) / nodeSpanWidth;
-        const scaleY = (containerHeight - 40) / nodeSpanHeight;
+        // Safe margins inside viewport
+        const paddingX = isMobile ? 18 : 45;
+        const paddingY = isMobile ? 22 : 45;
 
-        const autoScale = Math.min(scaleX, scaleY);
-        // Clamp fit scale so all nodes are shown initially while keeping text readable
-        const initialZoom = Math.min(Math.max(autoScale, 0.45), 1.0);
+        const availableWidth = Math.max(containerWidth - paddingX * 2, 160);
+        const availableHeight = Math.max(containerHeight - paddingY * 2, 160);
+
+        const scaleX = availableWidth / contentBounds.width;
+        const scaleY = availableHeight / contentBounds.height;
+
+        // Scale to fit the entire tree
+        const fitScale = Math.min(scaleX, scaleY);
+        // Allow scaling down to 0.15 on mobile so all generations fit cleanly on initial screen
+        const minAllowedZoom = isMobile ? 0.15 : 0.35;
+        const maxAllowedZoom = isMobile ? 0.95 : 1.0;
+        const initialZoom = Math.min(Math.max(fitScale, minAllowedZoom), maxAllowedZoom);
+
+        // Center tree in container
+        const targetPanX = containerWidth / 2 - contentBounds.centerX * initialZoom;
+        const targetPanY = containerHeight / 2 - contentBounds.centerY * initialZoom;
 
         setZoomLevel(initialZoom);
+        setPan({ x: targetPanX, y: targetPanY });
+    }, [contentBounds, nodes]);
 
-        setTimeout(() => {
-            if (!containerRef.current) return;
-            const paddingX = 350;
-            const paddingY = 220;
-            const offsetX = Math.abs(bounds.minX) + paddingX;
-            const offsetY = Math.abs(bounds.minY) + paddingY;
-
-            const treeCenterX = ((bounds.minX + bounds.maxX) / 2) + offsetX;
-            const treeCenterY = ((bounds.minY + bounds.maxY) / 2) + offsetY;
-
-            const targetScrollLeft = treeCenterX * initialZoom - containerWidth / 2;
-            const targetScrollTop = treeCenterY * initialZoom - containerHeight / 2;
-
-            containerRef.current.scrollTo({
-                left: Math.max(0, targetScrollLeft),
-                top: Math.max(0, targetScrollTop),
-                behavior: 'smooth'
-            });
-        }, 60);
-    }, [bounds, nodes]);
-
-    // Initial state trigger: automatically fit all nodes in view when lineage tree is opened
+    // Automatically fit all nodes in view when lineage tree tab is opened or becomes active
     useEffect(() => {
-        const timer = setTimeout(fitToView, 120);
-        return () => clearTimeout(timer);
+        if (isActive) {
+            fitToView();
+            const t1 = setTimeout(fitToView, 60);
+            const t2 = setTimeout(fitToView, 220);
+            return () => {
+                clearTimeout(t1);
+                clearTimeout(t2);
+            };
+        }
+    }, [isActive, fitToView]);
+
+    // Monitor container dimension changes (e.g. mobile orientation change or window resize)
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el || typeof ResizeObserver === 'undefined') return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                if (entry.contentRect.width > 50 && entry.contentRect.height > 50) {
+                    fitToView();
+                }
+            }
+        });
+
+        observer.observe(el);
+        return () => observer.disconnect();
     }, [fitToView]);
 
-    const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.15, 1.6));
-    const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.15, 0.45));
+    const handleZoomIn = () => {
+        if (!containerRef.current) return;
+        const w = containerRef.current.clientWidth;
+        const h = containerRef.current.clientHeight;
+        const newZoom = Math.min(zoomLevel * 1.25, 2.0);
+        const factor = newZoom / zoomLevel;
+        setPan(prev => ({
+            x: w / 2 - (w / 2 - prev.x) * factor,
+            y: h / 2 - (h / 2 - prev.y) * factor
+        }));
+        setZoomLevel(newZoom);
+    };
+
+    const handleZoomOut = () => {
+        if (!containerRef.current) return;
+        const w = containerRef.current.clientWidth;
+        const h = containerRef.current.clientHeight;
+        const newZoom = Math.max(zoomLevel / 1.25, 0.15);
+        const factor = newZoom / zoomLevel;
+        setPan(prev => ({
+            x: w / 2 - (w / 2 - prev.x) * factor,
+            y: h / 2 - (h / 2 - prev.y) * factor
+        }));
+        setZoomLevel(newZoom);
+    };
+
     const handleZoomReset = () => {
         fitToView();
     };
@@ -206,11 +292,20 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
         const handleWheel = (e) => {
             if (e.ctrlKey || e.metaKey) {
                 e.preventDefault();
-                if (e.deltaY < 0) {
-                    setZoomLevel(prev => Math.min(prev + 0.1, 1.6));
-                } else {
-                    setZoomLevel(prev => Math.max(prev - 0.1, 0.45));
-                }
+                const rect = container.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
+                setZoomLevel(prevZoom => {
+                    const nextZoom = Math.min(Math.max(prevZoom * zoomFactor, 0.15), 2.0);
+                    const factor = nextZoom / prevZoom;
+                    setPan(prevPan => ({
+                        x: mouseX - (mouseX - prevPan.x) * factor,
+                        y: mouseY - (mouseY - prevPan.y) * factor
+                    }));
+                    return nextZoom;
+                });
             }
         };
 
@@ -224,70 +319,127 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
 
         setIsDragging(true);
         setHasDragged(false);
-        setDragStart({
+        dragStartRef.current = {
             x: e.clientX,
             y: e.clientY,
-            scrollLeft: containerRef.current ? containerRef.current.scrollLeft : 0,
-            scrollTop: containerRef.current ? containerRef.current.scrollTop : 0
-        });
+            panX: pan.x,
+            panY: pan.y
+        };
     };
 
     const handleMouseMove = (e) => {
-        if (!isDragging || !containerRef.current) return;
-        const dx = e.clientX - dragStart.x;
-        const dy = e.clientY - dragStart.y;
+        if (!isDragging || !dragStartRef.current) return;
+        const dx = e.clientX - dragStartRef.current.x;
+        const dy = e.clientY - dragStartRef.current.y;
 
         if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
             setHasDragged(true);
         }
 
-        containerRef.current.scrollLeft = dragStart.scrollLeft - dx;
-        containerRef.current.scrollTop = dragStart.scrollTop - dy;
+        setPan({
+            x: dragStartRef.current.panX + dx,
+            y: dragStartRef.current.panY + dy
+        });
     };
 
     const handleMouseUp = () => {
         setIsDragging(false);
+        dragStartRef.current = null;
     };
 
     const handleTouchStart = (e) => {
-        if (e.touches.length !== 1) return;
         if (e.target.closest('button, input, a, select')) return;
+
+        if (e.touches.length === 2) {
+            setIsDragging(false);
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            pinchStartRef.current = {
+                dist,
+                zoom: zoomLevel,
+                panX: pan.x,
+                panY: pan.y,
+                midX,
+                midY
+            };
+            return;
+        }
+
+        if (e.touches.length !== 1) return;
 
         const touch = e.touches[0];
         setIsDragging(true);
         setHasDragged(false);
-        setDragStart({
+        dragStartRef.current = {
             x: touch.clientX,
             y: touch.clientY,
-            scrollLeft: containerRef.current ? containerRef.current.scrollLeft : 0,
-            scrollTop: containerRef.current ? containerRef.current.scrollTop : 0
-        });
+            panX: pan.x,
+            panY: pan.y
+        };
     };
 
     const handleTouchMove = (e) => {
-        if (!isDragging || !containerRef.current || e.touches.length !== 1) return;
+        if (e.touches.length === 2 && pinchStartRef.current) {
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const ratio = dist / pinchStartRef.current.dist;
+            const newZoom = Math.min(Math.max(pinchStartRef.current.zoom * ratio, 0.15), 2.0);
+
+            const containerRect = containerRef.current?.getBoundingClientRect();
+            const originX = containerRect ? pinchStartRef.current.midX - containerRect.left : 0;
+            const originY = containerRect ? pinchStartRef.current.midY - containerRect.top : 0;
+
+            const factor = newZoom / pinchStartRef.current.zoom;
+            setZoomLevel(newZoom);
+            setPan({
+                x: originX - (originX - pinchStartRef.current.panX) * factor,
+                y: originY - (originY - pinchStartRef.current.panY) * factor
+            });
+            return;
+        }
+
+        if (!isDragging || !dragStartRef.current || e.touches.length !== 1) return;
+
         const touch = e.touches[0];
-        const dx = touch.clientX - dragStart.x;
-        const dy = touch.clientY - dragStart.y;
+        const dx = touch.clientX - dragStartRef.current.x;
+        const dy = touch.clientY - dragStartRef.current.y;
 
         if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
             setHasDragged(true);
         }
 
-        containerRef.current.scrollLeft = dragStart.scrollLeft - dx;
-        containerRef.current.scrollTop = dragStart.scrollTop - dy;
+        setPan({
+            x: dragStartRef.current.panX + dx,
+            y: dragStartRef.current.panY + dy
+        });
     };
 
-    const handleTouchEnd = () => {
-        setIsDragging(false);
+    const handleTouchEnd = (e) => {
+        if (!e.touches || e.touches.length === 0) {
+            setIsDragging(false);
+            dragStartRef.current = null;
+            pinchStartRef.current = null;
+        } else if (e.touches.length === 1) {
+            pinchStartRef.current = null;
+            const touch = e.touches[0];
+            setIsDragging(true);
+            dragStartRef.current = {
+                x: touch.clientX,
+                y: touch.clientY,
+                panX: pan.x,
+                panY: pan.y
+            };
+        }
     };
 
-    const paddingX = 350;
-    const paddingY = 220;
-    const totalCanvasWidth = bounds.canvasWidth + paddingX * 2;
-    const totalCanvasHeight = bounds.canvasHeight + paddingY * 2;
-    const offsetX = Math.abs(bounds.minX) + paddingX;
-    const offsetY = Math.abs(bounds.minY) + paddingY;
+    const offsetX = 0;
+    const offsetY = 0;
 
     if (!nodes || nodes.length === 0) {
         return (
@@ -303,18 +455,18 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
         <div style={{ position: 'relative', width: '100%', fontFamily: "'Poppins', sans-serif" }}>
             
             {/* Header Toolbar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <div>
-                    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '2.2rem', color: '#4A3E54', margin: 0, fontWeight: '700', letterSpacing: '-0.3px' }}>
+                    <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)', color: '#4A3E54', margin: 0, fontWeight: '700', letterSpacing: '-0.3px', lineHeight: 1.25 }}>
                         Family & Memorial Lineage
                     </h2>
-                    <p style={{ margin: '0.2rem 0 0 0', color: '#7A6B82', fontSize: '0.9rem' }}>
-                        Connected family graph architecture with metallic gold connection links. Click any member to view details.
+                    <p style={{ margin: '0.2rem 0 0 0', color: '#7A6B82', fontSize: '0.85rem' }}>
+                        Interactive ancestral & family tree. Click any member to view details.
                     </p>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    <div style={{ position: 'relative', minWidth: '200px' }}>
+                    <div style={{ position: 'relative', minWidth: '180px' }}>
                         <FaSearch style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#A39C95', fontSize: '0.85rem' }} />
                         <input
                             type="text"
@@ -393,10 +545,9 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                 style={{
                     position: 'relative',
                     width: '100%',
-                    height: '680px',
-                    overflow: 'auto',
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
+                    height: 'min(78vh, 680px)',
+                    minHeight: '440px',
+                    overflow: 'hidden',
                     backgroundColor: 'rgba(255, 255, 255, 0.25)',
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
@@ -411,14 +562,14 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                     cursor: isDragging ? 'grabbing' : 'grab',
                     userSelect: 'none',
                     WebkitUserSelect: 'none',
-                    touchAction: 'pan-x pan-y'
+                    touchAction: 'none'
                 }}
             >
                 {/* Floating Helper Badge */}
                 <div style={{
-                    position: 'sticky',
-                    top: '16px',
-                    left: '16px',
+                    position: 'absolute',
+                    top: '14px',
+                    left: '14px',
                     zIndex: 25,
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -431,20 +582,22 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                     fontWeight: '500',
                     backdropFilter: 'blur(8px)',
                     boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
-                    pointerEvents: 'none',
-                    float: 'left'
+                    pointerEvents: 'none'
                 }}>
                     <FaHandPaper style={{ fontSize: '0.75rem', color: '#E8C88B' }} /> Drag canvas to pan • Click node for details
                 </div>
 
-                {/* Scaled Inner Canvas Layer */}
+                {/* GPU-Accelerated Transformed Inner Canvas Layer */}
                 <div style={{
-                    width: `${totalCanvasWidth}px`,
-                    height: `${totalCanvasHeight}px`,
-                    transform: `scale(${zoomLevel})`,
-                    transformOrigin: 'top left',
-                    transition: isDragging ? 'none' : 'transform 0.22s ease-out',
-                    position: 'relative'
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoomLevel})`,
+                    transformOrigin: '0 0',
+                    transition: isDragging ? 'none' : 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
+                    willChange: 'transform'
                 }}>
 
                     {/* SVG Connector Layer */}
@@ -453,8 +606,7 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                             position: 'absolute',
                             top: 0,
                             left: 0,
-                            width: '100%',
-                            height: '100%',
+                            overflow: 'visible',
                             pointerEvents: 'none',
                             zIndex: 3
                         }}
@@ -697,8 +849,8 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                             key={`gen_banner_${banner.level}`}
                             style={{
                                 position: 'absolute',
-                                top: `${banner.y + offsetY}px`,
-                                left: '50%',
+                                top: `${banner.y}px`,
+                                left: `${contentBounds.centerX}px`,
                                 transform: 'translateX(-50%)',
                                 zIndex: 2,
                                 display: 'flex',
@@ -713,7 +865,8 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                                 fontWeight: '700',
                                 letterSpacing: '1.5px',
                                 textTransform: 'uppercase',
-                                boxShadow: '0 2px 10px rgba(184, 134, 11, 0.06)'
+                                boxShadow: '0 2px 10px rgba(184, 134, 11, 0.06)',
+                                whiteSpace: 'nowrap'
                             }}
                         >
                             <span style={{ color: '#7A9A60' }}>🌿</span>
@@ -893,7 +1046,7 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                                     )}
 
                                     {/* Dates */}
-                                    {member.dates && (
+                                    {member.dates && member.dates !== 'nill' && !member.dates.toLowerCase().includes('nill') && (
                                         <p style={{ 
                                             margin: 0, 
                                             fontSize: '0.78rem', 
@@ -1020,7 +1173,7 @@ function FamilyTree({ familyMembers = [], memorial = null }) {
                                 </span>
                             )}
 
-                            {selectedMember.dates && (
+                            {selectedMember.dates && selectedMember.dates !== 'nill' && !selectedMember.dates.toLowerCase().includes('nill') && (
                                 <p style={{ margin: '0.5rem 0 0 0', color: '#8C7B70', fontSize: '0.92rem', fontWeight: '500' }}>
                                     {selectedMember.dates}
                                 </p>

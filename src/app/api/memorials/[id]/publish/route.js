@@ -47,7 +47,7 @@ export async function POST(request, { params }) {
                 qrGenerated: false,
                 paymentId: paymentId,
                 paymentStatus: 'completed',
-                paymentAmount: paymentAmount || 1999,
+                paymentAmount: paymentAmount || 1499,
                 paidAt: new Date()
             },
             { new: true }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { 
     FaHeart, 
@@ -14,11 +14,15 @@ import {
     FaCompass,
     FaFeatherAlt,
     FaUser,
-    FaBookOpen
+    FaBookOpen,
+    FaTimes,
+    FaChevronLeft,
+    FaChevronRight
 } from 'react-icons/fa';
 import FamilyTree from '@/components/FamilyTree';
 import TributeWall from '@/components/tribute/TributeWall';
 import Modal from '@/components/Modal';
+import MemorialVideoPlayer from '@/components/MemorialVideoPlayer';
 
 export default function MemorialContent({ 
     memorial, 
@@ -31,6 +35,24 @@ export default function MemorialContent({
     const [activeSubTab, setActiveSubTab] = useState('bio');
     const [guestbookForm, setGuestbookForm] = useState({ name: '', email: '', message: '' });
     const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
+    const [lightboxIndex, setLightboxIndex] = useState(null);
+
+    useEffect(() => {
+        if (lightboxIndex === null || !memorial?.galleryPhotos) return;
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setLightboxIndex(null);
+            } else if (e.key === 'ArrowLeft') {
+                setLightboxIndex((prev) => (prev > 0 ? prev - 1 : memorial.galleryPhotos.length - 1));
+            } else if (e.key === 'ArrowRight') {
+                setLightboxIndex((prev) => (prev < memorial.galleryPhotos.length - 1 ? prev + 1 : 0));
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [lightboxIndex, memorial?.galleryPhotos]);
 
     if (!memorial) return null;
 
@@ -440,7 +462,20 @@ export default function MemorialContent({
                                     aria-selected={isSubActive}
                                     id={`subtab-${subTab.id}`}
                                     className="memorial-nav-btn memorial-sub-tab-btn"
-                                    onClick={() => setActiveSubTab(subTab.id)}
+                                    onClick={() => {
+                                        setActiveSubTab(subTab.id);
+                                        if (subTab.id === 'lineage') {
+                                            setTimeout(() => {
+                                                const el = document.getElementById('memorial-lineage-container');
+                                                if (el && typeof window !== 'undefined' && window.innerWidth < 768) {
+                                                    const rect = el.getBoundingClientRect();
+                                                    if (rect.top < 60 || rect.top > 320) {
+                                                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                    }
+                                                }
+                                            }, 60);
+                                        }
+                                    }}
                                     style={{
                                         background: 'transparent',
                                         color: isSubActive ? '#2C221E' : '#8C7B70',
@@ -543,8 +578,12 @@ export default function MemorialContent({
 
                     {/* LIFE JOURNEY: LINEAGE */}
                     {activeMainTab === 'life-journey' && (
-                        <div style={{ display: activeSubTab === 'lineage' ? 'block' : 'none' }}>
-                            <FamilyTree familyMembers={memorial.familyMembers || []} memorial={memorial} />
+                        <div id="memorial-lineage-container" style={{ display: activeSubTab === 'lineage' ? 'block' : 'none' }}>
+                            <FamilyTree 
+                                familyMembers={memorial.familyMembers || []} 
+                                memorial={memorial} 
+                                isActive={activeMainTab === 'life-journey' && activeSubTab === 'lineage'}
+                            />
                         </div>
                     )}
 
@@ -618,7 +657,9 @@ export default function MemorialContent({
                                             <div 
                                                 key={i} 
                                                 className="bento-gallery-card"
-                                                title={photo.description || `Gallery photo ${i + 1}`}
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={() => setLightboxIndex(i)}
+                                                title={photo.description || `Click to expand photo ${i + 1}`}
                                             >
                                                 <Image
                                                     src={photo.url}
@@ -705,12 +746,10 @@ export default function MemorialContent({
                                                                 boxShadow: 'inset 0 0 12px rgba(0,0,0,0.7), 0 2px 5px rgba(0,0,0,0.3)'
                                                             }}>
                                                                 {currentId ? (
-                                                                    <iframe
-                                                                        src={`https://www.youtube.com/embed/${currentId}`}
+                                                                    <MemorialVideoPlayer
+                                                                        key={`${currentId}-${selectedVideoIndex}`}
+                                                                        videoId={currentId}
                                                                         title={currentVideo.title || 'Video Memory'}
-                                                                        frameBorder="0"
-                                                                        allowFullScreen
-                                                                        style={{ width: '100%', height: '100%', display: 'block' }}
                                                                     />
                                                                 ) : (
                                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'white' }}>
@@ -835,6 +874,190 @@ export default function MemorialContent({
                     </div>
                 </div>
             </div>
+
+            {/* Lightbox Modal for Photo Gallery */}
+            {lightboxIndex !== null && memorial.galleryPhotos?.[lightboxIndex] && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        inset: 0,
+                        zIndex: 99999,
+                        background: 'rgba(12, 8, 20, 0.95)',
+                        backdropFilter: 'blur(12px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '1.5rem',
+                        boxSizing: 'border-box'
+                    }}
+                    onClick={() => setLightboxIndex(null)}
+                >
+                    {/* Header Bar */}
+                    <div 
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            maxWidth: '1200px',
+                            color: 'white',
+                            padding: '0.5rem 1rem'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div style={{ fontSize: '0.95rem', fontWeight: '500', color: 'rgba(255,255,255,0.75)' }}>
+                            Photo {lightboxIndex + 1} of {memorial.galleryPhotos.length}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setLightboxIndex(null)}
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.15)',
+                                border: 'none',
+                                color: 'white',
+                                width: '42px',
+                                height: '42px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                fontSize: '1.2rem',
+                                transition: 'all 0.2s ease'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
+                            title="Close (Esc)"
+                        >
+                            <FaTimes />
+                        </button>
+                    </div>
+
+                    {/* Center Container with Nav Arrows & Image */}
+                    <div 
+                        style={{
+                            position: 'relative',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            flex: 1,
+                            maxHeight: 'calc(100vh - 160px)',
+                            padding: '1rem 0'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Prev Arrow */}
+                        {memorial.galleryPhotos.length > 1 && (
+                            <button
+                                type="button"
+                                onClick={() => setLightboxIndex(prev => prev > 0 ? prev - 1 : memorial.galleryPhotos.length - 1)}
+                                style={{
+                                    position: 'absolute',
+                                    left: '1rem',
+                                    zIndex: 10,
+                                    background: 'rgba(255, 255, 255, 0.18)',
+                                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                                    color: 'white',
+                                    width: '48px',
+                                    height: '48px',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    fontSize: '1.4rem',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.38)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)'}
+                                title="Previous Photo (Left Arrow)"
+                            >
+                                <FaChevronLeft />
+                            </button>
+                        )}
+
+                        {/* Main Image */}
+                        <div style={{
+                            position: 'relative',
+                            maxHeight: '100%',
+                            maxWidth: '90vw',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <img
+                                src={memorial.galleryPhotos[lightboxIndex].url}
+                                alt={memorial.galleryPhotos[lightboxIndex].description || `Photo ${lightboxIndex + 1}`}
+                                style={{
+                                    maxHeight: 'calc(80vh - 40px)',
+                                    maxWidth: '85vw',
+                                    objectFit: 'contain',
+                                    borderRadius: '16px',
+                                    boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+                                    border: '1px solid rgba(255, 255, 255, 0.15)'
+                                }}
+                            />
+                        </div>
+
+                        {/* Next Arrow */}
+                        {memorial.galleryPhotos.length > 1 && (
+                            <button
+                                type="button"
+                                onClick={() => setLightboxIndex(prev => prev < memorial.galleryPhotos.length - 1 ? prev + 1 : 0)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    zIndex: 10,
+                                    background: 'rgba(255, 255, 255, 0.18)',
+                                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                                    color: 'white',
+                                    width: '48px',
+                                    height: '48px',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    fontSize: '1.4rem',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.38)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)'}
+                                title="Next Photo (Right Arrow)"
+                            >
+                                <FaChevronRight />
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Footer Caption */}
+                    {memorial.galleryPhotos[lightboxIndex].description && (
+                        <div 
+                            style={{
+                                maxWidth: '800px',
+                                width: '100%',
+                                textAlign: 'center',
+                                background: 'rgba(255, 255, 255, 0.12)',
+                                backdropFilter: 'blur(8px)',
+                                padding: '0.85rem 1.5rem',
+                                borderRadius: '50px',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                fontSize: '0.95rem',
+                                fontWeight: '400',
+                                lineHeight: '1.4'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {memorial.galleryPhotos[lightboxIndex].description}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

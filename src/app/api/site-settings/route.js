@@ -31,8 +31,24 @@ export async function GET() {
                         '/images/gallery_3.png',
                         '/images/gallery_4.png'
                     ]
+                },
+                pricing: {
+                    amount: 1499,
+                    currency: '₹',
+                    features: [
+                        'YouTube Video Embedding',
+                        'Profile & Cover Pictures',
+                        'Complete Guest Book',
+                        'Family Tree Documentation',
+                        'Life Timeline & Events',
+                        'Premium Design Templates',
+                        'Permanent Memorial Page'
+                    ]
                 }
             });
+        } else if (settings.pricing && settings.pricing.amount === 1999) {
+            settings.pricing.amount = 1499;
+            await settings.save();
         }
 
         return NextResponse.json({ success: true, data: settings });
@@ -55,15 +71,19 @@ export async function PUT(request) {
 
         // Update the single settings document
         // We use findOneAndUpdate with upsert to ensure we handle the singleton correctly
+        const updateFields = {
+            seo: body.seo,
+            images: body.images,
+            updatedAt: new Date()
+        };
+
+        if (body.pricing) {
+            updateFields.pricing = body.pricing;
+        }
+
         const settings = await SiteSettings.findOneAndUpdate(
             {},
-            {
-                $set: {
-                    seo: body.seo,
-                    images: body.images,
-                    updatedAt: new Date()
-                }
-            },
+            { $set: updateFields },
             { new: true, upsert: true, setDefaultsOnInsert: true }
         );
 
