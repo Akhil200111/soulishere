@@ -193,7 +193,7 @@ export default function MemorialCard({ memorial, showActions = true }) {
                             onMouseEnter={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '0.9'; }}
                             onMouseLeave={(e) => { if(!loadingPayment) e.currentTarget.style.opacity = '1'; }}
                             >
-                                {loadingPayment ? 'Processing...' : 'Pay ₹1000 & Request QR Code'}
+                                {loadingPayment ? 'Processing...' : 'Pay ₹1499 & Request QR Code'}
                             </button>
                         )}
 

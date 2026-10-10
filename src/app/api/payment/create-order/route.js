@@ -31,7 +31,7 @@ export async function POST(request) {
             return NextResponse.json({ success: false, message: 'Only draft memorials can be submitted for QR generation' }, { status: 400 });
         }
 
-        const QR_GENERATION_PRICE_INR = 1000; 
+        const QR_GENERATION_PRICE_INR = 1499; 
 
         const options = {
             amount: QR_GENERATION_PRICE_INR * 100, // Razorpay expects amount in paise
