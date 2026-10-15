@@ -4,6 +4,8 @@ import Memorial from '@/models/Memorial';
 import connectDB from '@/lib/mongodb';
 import { getSession } from '@/lib/auth';
 
+import { getMemorialPricing } from '@/lib/pricingService';
+
 // POST - Create Razorpay order
 export async function POST(request) {
     try {
@@ -11,7 +13,6 @@ export async function POST(request) {
             key_id: process.env.RAZORPAY_KEY_ID || 'dummy_key',
             key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret'
         });
-
 
         const session = await getSession(request);
         if (!session) {
@@ -31,11 +32,15 @@ export async function POST(request) {
             return NextResponse.json({ success: false, message: 'Only draft memorials can be submitted for QR generation' }, { status: 400 });
         }
 
-        const QR_GENERATION_PRICE_INR = 1499; 
+        // Fetch dynamic pricing from database - never trust amount from client
+        const pricing = await getMemorialPricing();
+        const unitAmount = Number(pricing.amount);
+        const amountInPaise = Math.round(unitAmount * 100);
+        const currencyCode = pricing.currencyCode || 'INR';
 
         const options = {
-            amount: QR_GENERATION_PRICE_INR * 100, // Razorpay expects amount in paise
-            currency: 'INR',
+            amount: amountInPaise, // Razorpay expects amount in paise
+            currency: currencyCode,
             receipt: `receipt_memorial_${memorialId.toString()}`
         };
 
@@ -46,7 +51,11 @@ export async function POST(request) {
             orderId: order.id,
             amount: options.amount,
             currency: options.currency,
-            keyId: process.env.RAZORPAY_KEY_ID
+            keyId: process.env.RAZORPAY_KEY_ID,
+            packageName: pricing.packageName,
+            unitAmount: unitAmount,
+            currencySymbol: pricing.currency || '₹',
+            formattedPrice: `${pricing.currency || '₹'}${unitAmount.toLocaleString()}`
         });
     } catch (err) {
         return NextResponse.json(

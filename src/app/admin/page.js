@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
-import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaTimesCircle, FaStar, FaImages, FaQrcode } from 'react-icons/fa';
+import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaTimesCircle, FaStar, FaImages, FaQrcode, FaTag } from 'react-icons/fa';
 import AdminSettings from '@/components/AdminSettings';
+import AdminPricingManager from '@/components/AdminPricingManager';
 import AdminDummyMemorial from '@/components/AdminDummyMemorial';
 import AdminGalleryManager from '@/components/AdminGalleryManager';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -165,6 +166,14 @@ export default function AdminPanel() {
                 >
                     <FaUsers className="sidebar-icon" />
                     Users
+                </button>
+                <button 
+                    onClick={() => setActiveTab('pricing')} 
+                    className={`sidebar-nav-item ${activeTab === 'pricing' ? 'active' : ''}`}
+                    style={{ background: activeTab === 'pricing' ? 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)' : 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }}
+                >
+                    <FaTag className="sidebar-icon" />
+                    Pricing Management
                 </button>
                 <button 
                     onClick={() => setActiveTab('settings')} 
@@ -395,6 +404,11 @@ export default function AdminPanel() {
                                 </div>
                             )}
                         </>
+                    )}
+
+                    {/* Pricing Management Tab */}
+                    {activeTab === 'pricing' && (
+                        <AdminPricingManager token={token} />
                     )}
 
                     {/* Settings Tab */}

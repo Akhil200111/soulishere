@@ -4,6 +4,8 @@ import Memorial from '@/models/Memorial';
 import User from '@/models/User';
 import { getSession } from '@/lib/auth';
 
+import { getMemorialPricing } from '@/lib/pricingService';
+
 // POST - Publish memorial after payment
 export async function POST(request, { params }) {
     try {
@@ -39,6 +41,9 @@ export async function POST(request, { params }) {
             );
         }
 
+        const pricing = await getMemorialPricing();
+        const finalAmount = (paymentAmount && Number(paymentAmount) > 0) ? Number(paymentAmount) : Number(pricing.amount);
+
         // Update memorial to requested status after payment
         memorial = await Memorial.findByIdAndUpdate(
             id,
@@ -47,7 +52,7 @@ export async function POST(request, { params }) {
                 qrGenerated: false,
                 paymentId: paymentId,
                 paymentStatus: 'completed',
-                paymentAmount: paymentAmount || 1499,
+                paymentAmount: finalAmount,
                 paidAt: new Date()
             },
             { new: true }

@@ -34,13 +34,43 @@ const siteSettingsSchema = new mongoose.Schema({
         gallery: [String]
     },
     pricing: {
+        packageName: {
+            type: String,
+            default: 'Complete Memorial Package',
+            trim: true
+        },
+        description: {
+            type: String,
+            default: 'One complete package to preserve your legacy forever. No hidden fees, no subscriptions, just a single one-time payment.',
+            trim: true
+        },
         amount: {
             type: Number,
-            default: 1499
+            default: 1499,
+            min: [1, 'Price amount must be at least 1']
         },
         currency: {
             type: String,
-            default: '₹'
+            default: '₹',
+            trim: true
+        },
+        currencyCode: {
+            type: String,
+            default: 'INR',
+            trim: true
+        },
+        originalAmount: {
+            type: Number,
+            default: null
+        },
+        minPrice: {
+            type: Number,
+            default: 100,
+            min: [1, 'Minimum price must be at least 1']
+        },
+        maxPrice: {
+            type: Number,
+            default: 50000
         },
         features: {
             type: [String],
@@ -53,6 +83,14 @@ const siteSettingsSchema = new mongoose.Schema({
                 'Premium Design Templates',
                 'Permanent Memorial Page'
             ]
+        },
+        isActive: {
+            type: Boolean,
+            default: true
+        },
+        updatedAt: {
+            type: Date,
+            default: Date.now
         }
     },
     updatedAt: {
@@ -61,4 +99,9 @@ const siteSettingsSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.models.SiteSettings || mongoose.model('SiteSettings', siteSettingsSchema);
+// Delete existing model in development to prevent schema caching issues
+if (mongoose.models.SiteSettings) {
+    delete mongoose.models.SiteSettings;
+}
+
+export default mongoose.model('SiteSettings', siteSettingsSchema);

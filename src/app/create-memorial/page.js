@@ -5,8 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { FaPlus, FaTrash, FaUpload } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaUpload, FaInfoCircle } from 'react-icons/fa';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import UserGalleryManager from '@/components/UserGalleryManager';
 import UserVideoManager from '@/components/UserVideoManager';
@@ -22,6 +23,7 @@ function CreateMemorialContent() {
     const [loading, setLoading] = useState(false);
     const [dataLoading, setDataLoading] = useState(!!editId);
     const [uploading, setUploading] = useState(false);
+    const [pricing, setPricing] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -104,6 +106,20 @@ function CreateMemorialContent() {
             router.push('/');
         }
     }, [authLoading, isAuthenticated, router]);
+
+    useEffect(() => {
+        const fetchPricing = async () => {
+            try {
+                const res = await axios.get('/api/pricing');
+                if (res.data.success) {
+                    setPricing(res.data.data);
+                }
+            } catch (e) {
+                console.error('Failed to load pricing info:', e);
+            }
+        };
+        fetchPricing();
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -383,6 +399,37 @@ function CreateMemorialContent() {
                 <p style={{ color: 'var(--gray)', marginBottom: '2rem' }}>
                     {editId ? 'Update the details below.' : 'Fill in the details below to create a beautiful memorial for your loved one.'}
                 </p>
+
+                {!editId && pricing && (
+                    <div style={{
+                        background: 'white',
+                        border: '1px solid #eedbfa',
+                        borderRadius: '16px',
+                        padding: '1.25rem 1.5rem',
+                        marginBottom: '2rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
+                        gap: '1rem',
+                        boxShadow: '0 4px 15px rgba(129, 91, 181, 0.05)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#eedbfa', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#815bb5', flexShrink: 0 }}>
+                                <FaInfoCircle size={18} />
+                            </div>
+                            <div>
+                                <strong style={{ color: '#2d1b4e', fontSize: '0.95rem' }}>Free Draft Creation:</strong>
+                                <p style={{ margin: 0, color: '#665e75', fontSize: '0.88rem' }}>
+                                    You can design, build, and preview your memorial for free. Permanent publishing & physical QR plaque activation is a single one-time payment of {pricing.currency}{Number(pricing.amount).toLocaleString()}.
+                                </p>
+                            </div>
+                        </div>
+                        <Link href="/pricing" target="_blank" style={{ color: '#815bb5', fontSize: '0.88rem', fontWeight: '600', textDecoration: 'none' }}>
+                            View Package Details →
+                        </Link>
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit}>
                     {/* Basic Information */}

@@ -9,7 +9,17 @@ export default function AdminSettings({ token }) {
     const [settings, setSettings] = useState({
         seo: { title: '', description: '', keywords: '' },
         images: { gallery: [] },
-        pricing: { amount: 1499, currency: '₹', features: [] }
+        pricing: { 
+            packageName: 'Complete Memorial Package',
+            description: 'One complete package to preserve your legacy forever.',
+            amount: 1499, 
+            currency: '₹', 
+            currencyCode: 'INR',
+            originalAmount: null,
+            minPrice: 100,
+            maxPrice: 50000,
+            features: [] 
+        }
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -311,8 +321,19 @@ export default function AdminSettings({ token }) {
             )}
             {activeTab === 'pricing' && (
                 <div style={{ maxWidth: '800px' }}>
-                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <div className="form-group" style={{ flex: 1 }}>
+                    <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Package Name</label>
+                        <input
+                            type="text"
+                            name="packageName"
+                            value={settings.pricing?.packageName || 'Complete Memorial Package'}
+                            onChange={handlePricingChange}
+                            style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                        />
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <div className="form-group" style={{ flex: 1, minWidth: '150px' }}>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Currency Symbol</label>
                             <input
                                 type="text"
@@ -322,12 +343,46 @@ export default function AdminSettings({ token }) {
                                 style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
                             />
                         </div>
-                        <div className="form-group" style={{ flex: 1 }}>
+                        <div className="form-group" style={{ flex: 1, minWidth: '150px' }}>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Price Amount</label>
                             <input
                                 type="number"
                                 name="amount"
-                                value={settings.pricing?.amount !== undefined ? settings.pricing.amount : 1499}
+                                value={settings.pricing?.amount != null ? settings.pricing.amount : 1499}
+                                onChange={handlePricingChange}
+                                style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                            />
+                        </div>
+                        <div className="form-group" style={{ flex: 1, minWidth: '150px' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Original Price (Optional)</label>
+                            <input
+                                type="number"
+                                name="originalAmount"
+                                value={settings.pricing?.originalAmount != null ? settings.pricing.originalAmount : ''}
+                                onChange={handlePricingChange}
+                                placeholder="e.g. 2499"
+                                style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <div className="form-group" style={{ flex: 1, minWidth: '150px' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Min Allowed Price</label>
+                            <input
+                                type="number"
+                                name="minPrice"
+                                value={settings.pricing?.minPrice != null ? settings.pricing.minPrice : 100}
+                                onChange={handlePricingChange}
+                                style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                            />
+                        </div>
+                        <div className="form-group" style={{ flex: 1, minWidth: '150px' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Max Allowed Price</label>
+                            <input
+                                type="number"
+                                name="maxPrice"
+                                value={settings.pricing?.maxPrice != null ? settings.pricing.maxPrice : 50000}
                                 onChange={handlePricingChange}
                                 style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}
                             />
@@ -342,7 +397,7 @@ export default function AdminSettings({ token }) {
                             <div key={index} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
                                 <input
                                     type="text"
-                                    value={feature}
+                                    value={feature || ''}
                                     onChange={(e) => handleFeatureChange(index, e.target.value)}
                                     placeholder="Feature description"
                                     style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid #ddd' }}

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import QRCode from 'react-qr-code';
-import { FaPalette, FaMousePointer, FaShareAlt, FaComments, FaInfinity, FaChevronDown, FaCheck, FaQrcode, FaLeaf, FaImage, FaUsers, FaUserPlus, FaFileAlt, FaPen, FaCommentDots, FaUserAlt, FaStar, FaMapMarkerAlt, FaShieldAlt } from 'react-icons/fa';
+import { FaPalette, FaMousePointer, FaShareAlt, FaComments, FaInfinity, FaChevronDown, FaCheck, FaQrcode, FaLeaf, FaImage, FaUsers, FaUserPlus, FaFileAlt, FaPen, FaCommentDots, FaUserAlt, FaStar, FaMapMarkerAlt, FaShieldAlt, FaHeart } from 'react-icons/fa';
 import ParticleBackground from '@/components/ParticleBackground';
 import CloudsBackground from '@/components/CloudsBackground';
 import HorizontalScrollSection from '@/components/HorizontalScrollSection';
@@ -180,14 +180,601 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Features Section with Memorial Preview */}
+      {/* Lineage Section */}
+      <div id="lineageSection" style={{
+        padding: '7rem 0 6.5rem 0',
+        position: 'relative',
+        overflow: 'hidden',
+        background: 'radial-gradient(rgba(165, 125, 205, 0.28) 1.2px, transparent 1.2px) 0 0 / 28px 28px, radial-gradient(ellipse at 50% 25%, #faf4fe 0%, #f4ecfb 50%, #eee3f8 100%)',
+        backgroundColor: '#f4ecfb'
+      }}>
+        {/* Top Subtle Ethereal Wave Accent */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, overflow: 'hidden', height: '45px', pointerEvents: 'none', zIndex: 1 }}>
+          <svg viewBox="0 0 1200 45" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+            <path d="M0,0 L1200,0 L1200,15 Q600,45 0,15 Z" fill="rgba(235, 222, 250, 0.55)" />
+            <path d="M0,0 L1200,0 L1200,8 Q600,30 0,8 Z" fill="rgba(255, 255, 255, 0.7)" />
+          </svg>
+        </div>
+
+        {/* Bottom Subtle Ethereal Wave Accent */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, overflow: 'hidden', height: '65px', pointerEvents: 'none', zIndex: 1 }}>
+          <svg viewBox="0 0 1200 65" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+            <path d="M0,65 L1200,65 L1200,35 Q600,5 0,35 Z" fill="rgba(232, 218, 248, 0.5)" />
+            <path d="M0,65 L1200,65 L1200,50 Q600,25 0,50 Z" fill="rgba(250, 247, 253, 0.95)" />
+          </svg>
+        </div>
+
+        {/* Ambient Watercolor Floral Corner Accents with radial gradient mask */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-10px',
+          left: '-10px',
+          width: '260px',
+          height: '260px',
+          backgroundImage: "url('/images/lineage_corner_left.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'bottom left',
+          WebkitMaskImage: 'radial-gradient(circle at 0% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
+          maskImage: 'radial-gradient(circle at 0% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
+          mixBlendMode: 'multiply',
+          opacity: 0.85,
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
+        <div style={{
+          position: 'absolute',
+          bottom: '-10px',
+          right: '-10px',
+          width: '260px',
+          height: '260px',
+          backgroundImage: "url('/images/lineage_corner_right.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'bottom right',
+          WebkitMaskImage: 'radial-gradient(circle at 100% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
+          maskImage: 'radial-gradient(circle at 100% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
+          mixBlendMode: 'multiply',
+          opacity: 0.85,
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
+        {/* Decorative Sparkle Stars */}
+        <div style={{ position: 'absolute', top: '16%', left: '15%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
+        <div style={{ position: 'absolute', top: '56%', left: '11%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
+        <div style={{ position: 'absolute', top: '19%', right: '16%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
+        <div style={{ position: 'absolute', top: '64%', right: '13%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
+        <div style={{ position: 'absolute', top: '90%', right: '22%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
+
+        <div className="container" style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+              <div style={{ width: '45px', height: '1px', background: '#d5c4e3' }}></div>
+              <span style={{ color: '#3d2556', fontWeight: '600', letterSpacing: '4px', fontSize: '0.85rem', textTransform: 'uppercase' }}>Family Lineage</span>
+              <div style={{ width: '45px', height: '1px', background: '#d5c4e3' }}></div>
+            </div>
+            <h2 className="responsive-h2" style={{ color: '#2d1b4e', marginBottom: '1rem' }}>
+              Every Life Is Part of a Story
+            </h2>
+            <p style={{ color: '#665e75', fontSize: '1.15rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.65 }}>
+              Honor generations. Celebrate connections. Keep your family&apos;s story alive for today and tomorrow.
+            </p>
+          </div>
+
+          {/* Parents & Ancestors Generation Badge */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.2rem' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
+              border: '1px solid #ebd9b5',
+              borderRadius: '50px',
+              padding: '0.45rem 1.6rem',
+              boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+              color: '#6b5135',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              letterSpacing: '2px',
+              textTransform: 'uppercase'
+            }}>
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <span>PARENTS &amp; ANCESTORS</span>
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+            </div>
+          </div>
+
+          {/* Parents Tier Container with Centered Axis */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '540px',
+            margin: '0 auto'
+          }}>
+            {/* Horizontal Golden Connector Line between Parents */}
+            <div style={{
+              position: 'absolute',
+              top: '64px',
+              left: '75px',
+              right: '75px',
+              height: '2px',
+              background: 'linear-gradient(90deg, #c9a347, #f0d588, #c9a347)',
+              zIndex: 1
+            }}></div>
+
+            {/* Central Heart Medallion & Botanical Tips */}
+            <div style={{
+              position: 'absolute',
+              top: '64px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              {/* Left botanical leaf */}
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style={{ marginRight: '-1px' }}>
+                <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
+              </svg>
+              {/* Gold Heart Ring */}
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #fffdf8 0%, #f9f1df 100%)',
+                border: '2px solid #c9a347',
+                boxShadow: '0 3px 10px rgba(201, 163, 71, 0.35)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <FaHeart style={{ color: '#b68733', fontSize: '0.75rem' }} />
+              </div>
+              {/* Right botanical leaf */}
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style={{ marginLeft: '-1px', transform: 'scaleX(-1)' }}>
+                <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
+              </svg>
+            </div>
+
+            {/* Vertical Line Dropping from Parents Heart to Main Generation */}
+            <div style={{
+              position: 'absolute',
+              top: '64px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '2px',
+              height: '190px',
+              background: 'linear-gradient(180deg, #c9a347 0%, #d8b765 100%)',
+              zIndex: 1
+            }}>
+              {/* Downward golden arrow right above Main Generation badge */}
+              <div style={{
+                position: 'absolute',
+                bottom: '-12px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '16px',
+                height: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 13 L1 4 C 4 5, 10 5, 13 4 Z" fill="#c9a347" />
+                  <path d="M7 10 L7 0" stroke="#c9a347" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Two Parent Cards */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              position: 'relative',
+              zIndex: 2
+            }}>
+              {/* Father: Anoop Menon */}
+              <div style={{
+                width: '150px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center'
+              }}>
+                {/* Avatar with luxury golden frame */}
+                <div style={{
+                  position: 'relative',
+                  width: '128px',
+                  height: '128px',
+                  borderRadius: '50%',
+                  padding: '5px',
+                  background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
+                  boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4',
+                  cursor: 'pointer',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 15px 35px rgba(180, 140, 60, 0.32), 0 0 0 3px #fdfaf4';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                    e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4';
+                  }}
+                >
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    border: '2px solid #fdfaf4',
+                    overflow: 'hidden',
+                    position: 'relative'
+                  }}>
+                    <Image
+                      src="/images/lineage_father.png"
+                      alt="Anoop Menon"
+                      width={128}
+                      height={128}
+                      unoptimized={true}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  {/* Botanical Sprig on outer ring */}
+                  <div style={{ position: 'absolute', top: '14px', right: '-10px', zIndex: 3, pointerEvents: 'none' }}>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                      <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
+                      <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
+                      <circle cx="15" cy="24" r="3" fill="#e7b748" />
+                      <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
+                    </svg>
+                  </div>
+                </div>
+
+                <h4 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: '1.35rem',
+                  fontWeight: '600',
+                  color: '#2d1b4e',
+                  marginTop: '0.9rem',
+                  marginBottom: '0.35rem'
+                }}>
+                  Anoop Menon
+                </h4>
+                <span style={{
+                  display: 'inline-block',
+                  background: '#f4ede2',
+                  border: '1px solid #ebd9c2',
+                  color: '#6d553d',
+                  padding: '0.2rem 1.15rem',
+                  borderRadius: '20px',
+                  fontSize: '0.82rem',
+                  fontWeight: '600'
+                }}>
+                  Father
+                </span>
+                <p style={{
+                  color: '#6f637d',
+                  fontSize: '0.92rem',
+                  fontWeight: '500',
+                  marginTop: '0.45rem',
+                  marginBottom: 0
+                }}>
+                  1935 – 2000
+                </p>
+              </div>
+
+              {/* Mother: Marry */}
+              <div style={{
+                width: '150px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center'
+              }}>
+                {/* Avatar with luxury golden frame */}
+                <div style={{
+                  position: 'relative',
+                  width: '128px',
+                  height: '128px',
+                  borderRadius: '50%',
+                  padding: '5px',
+                  background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
+                  boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4',
+                  cursor: 'pointer',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 15px 35px rgba(180, 140, 60, 0.32), 0 0 0 3px #fdfaf4';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                    e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4';
+                  }}
+                >
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    border: '2px solid #fdfaf4',
+                    overflow: 'hidden',
+                    position: 'relative'
+                  }}>
+                    <Image
+                      src="/images/lineage_mother.png"
+                      alt="Marry"
+                      width={128}
+                      height={128}
+                      unoptimized={true}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  {/* Botanical Sprig on outer ring (flipped) */}
+                  <div style={{ position: 'absolute', top: '14px', left: '-10px', zIndex: 3, pointerEvents: 'none', transform: 'scaleX(-1)' }}>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                      <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
+                      <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
+                      <circle cx="15" cy="24" r="3" fill="#e7b748" />
+                      <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                      <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
+                    </svg>
+                  </div>
+                </div>
+
+                <h4 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: '1.35rem',
+                  fontWeight: '600',
+                  color: '#2d1b4e',
+                  marginTop: '0.9rem',
+                  marginBottom: '0.35rem'
+                }}>
+                  Marry
+                </h4>
+                <span style={{
+                  display: 'inline-block',
+                  background: '#f4ede2',
+                  border: '1px solid #ebd9c2',
+                  color: '#6d553d',
+                  padding: '0.2rem 1.15rem',
+                  borderRadius: '20px',
+                  fontSize: '0.82rem',
+                  fontWeight: '600'
+                }}>
+                  Mother
+                </span>
+                <p style={{
+                  color: '#6f637d',
+                  fontSize: '0.92rem',
+                  fontWeight: '500',
+                  marginTop: '0.45rem',
+                  marginBottom: 0
+                }}>
+                  1940 – 2008
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Generation Badge */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem', position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
+              border: '1px solid #ebd9b5',
+              borderRadius: '50px',
+              padding: '0.45rem 1.6rem',
+              boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+              color: '#6b5135',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              letterSpacing: '2px',
+              textTransform: 'uppercase'
+            }}>
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <span>MAIN GENERATION</span>
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+            </div>
+          </div>
+
+          {/* Vertical Connecting Stem down to Jeevan Kumar */}
+          <div style={{
+            width: '2px',
+            height: '38px',
+            background: 'linear-gradient(180deg, #d8b765 0%, #c9a347 100%)',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1
+          }}></div>
+
+          {/* Memorial Subject (Jeevan Kumar) */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            position: 'relative',
+            zIndex: 2,
+            width: '180px'
+          }}>
+            {/* Memorial Subject Ribbon Badge */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              background: 'linear-gradient(135deg, #aa5873 0%, #8c3f58 100%)',
+              color: '#ffffff',
+              padding: '0.35rem 1.25rem',
+              borderRadius: '50px',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              letterSpacing: '0.4px',
+              boxShadow: '0 4px 14px rgba(140, 63, 88, 0.35)',
+              position: 'relative',
+              zIndex: 4,
+              marginBottom: '-13px'
+            }}>
+              <FaStar style={{ fontSize: '0.7rem' }} />
+              <span>Memorial Subject</span>
+            </div>
+
+            {/* Avatar with luxury golden frame */}
+            <div style={{
+              position: 'relative',
+              width: '136px',
+              height: '136px',
+              borderRadius: '50%',
+              padding: '6px',
+              background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
+              boxShadow: '0 12px 30px rgba(180, 140, 60, 0.25), 0 0 0 3px #fdfaf4',
+              cursor: 'pointer',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+            }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 18px 40px rgba(180, 140, 60, 0.35), 0 0 0 3px #fdfaf4';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 12px 30px rgba(180, 140, 60, 0.25), 0 0 0 3px #fdfaf4';
+              }}
+            >
+              <div style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                border: '2px solid #fdfaf4',
+                overflow: 'hidden',
+                position: 'relative'
+              }}>
+                <Image
+                  src="/images/lineage_subject.png"
+                  alt="Jeevan Kumar"
+                  width={136}
+                  height={136}
+                  unoptimized={true}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              {/* Botanical Sprig on outer ring */}
+              <div style={{ position: 'absolute', top: '14px', right: '-10px', zIndex: 3, pointerEvents: 'none' }}>
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
+                  <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
+                  <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
+                  <circle cx="15" cy="24" r="3" fill="#e7b748" />
+                  <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                  <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                  <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                  <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
+                  <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
+                </svg>
+              </div>
+            </div>
+
+            <h4 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: '1.45rem',
+              fontWeight: '600',
+              color: '#2d1b4e',
+              marginTop: '0.9rem',
+              marginBottom: '0.3rem'
+            }}>
+              Jeevan Kumar
+            </h4>
+            <p style={{
+              color: '#6f637d',
+              fontSize: '0.95rem',
+              fontWeight: '500',
+              marginTop: '0.2rem',
+              marginBottom: 0
+            }}>
+              1992 – 2026
+            </p>
+          </div>
+
+          {/* Bottom CTA Button */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.75rem', position: 'relative', zIndex: 2 }}>
+            <Link
+              href={sampleMemorialId ? `/memorial/${sampleMemorialId}` : '/auth?mode=signup'}
+              style={{
+                background: 'linear-gradient(135deg, #44225d 0%, #2f1444 100%)',
+                color: '#ffffff',
+                padding: '0.85rem 2.4rem',
+                borderRadius: '50px',
+                fontSize: '0.98rem',
+                fontWeight: '600',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                boxShadow: '0 10px 25px rgba(47, 20, 68, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                border: '1px solid rgba(255, 255, 255, 0.15)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 15px 35px rgba(47, 20, 68, 0.45)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(47, 20, 68, 0.3)';
+              }}
+            >
+              <span>Explore the family story</span>
+              <span style={{ fontSize: '1.1rem' }}>→</span>
+            </Link>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Why Choose Us Section (Commented Out)
+      // Features Section with Memorial Preview
       <div style={{ padding: '8rem 0', position: 'relative', overflow: 'hidden', background: "linear-gradient(rgba(250, 247, 253, 0.85), rgba(250, 247, 253, 0.95)), url('/images/family.png') center/cover no-repeat" }}>
-        {/* Subtle decorative background blob */}
+        // Subtle decorative background blob
         <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '400px', height: '400px', background: 'var(--primary)', opacity: 0.04, filter: 'blur(80px)', borderRadius: '50%' }}></div>
 
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
 
-          {/* Section Header */}
+          // Section Header
           <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
               <div style={{ width: '50px', height: '1px', background: '#d5c4e3' }}></div>
@@ -207,7 +794,7 @@ export default function Home() {
           <div className="features-grid-mobile">
 
 
-            {/* Laptop Image Container (Moved to bottom for mobile) */}
+            // Laptop Image Container (Moved to bottom for mobile)
             <div style={{ flex: 1, minWidth: '320px', position: 'relative' }}>
               <div style={{
                 position: 'relative',
@@ -225,7 +812,7 @@ export default function Home() {
             </div>
 
 
-            {/* Right: Text and Feature Cards */}
+            // Right: Text and Feature Cards
             <div style={{ flex: 1, minWidth: '320px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.5)' }}>
@@ -239,7 +826,7 @@ export default function Home() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
-                {/* Card 1 */}
+                // Card 1
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -268,7 +855,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Card 2 */}
+                // Card 2
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -297,7 +884,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Card 3 */}
+                // Card 3
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -362,10 +949,10 @@ export default function Home() {
             onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 50px rgba(162, 118, 212, 0.15)'; e.currentTarget.style.transition = 'all 0.3s ease'; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 40px rgba(162, 118, 212, 0.08)'; e.currentTarget.style.transition = 'all 0.3s ease'; }}
           >
-            {/* Top Right Star */}
+            // Top Right Star
             <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', color: '#b388eb', fontSize: '1.2rem' }}></div>
 
-            {/* Icon Container */}
+            // Icon Container
             <div style={{
               width: '64px',
               height: '64px',
@@ -383,12 +970,12 @@ export default function Home() {
 
             <h3 style={{ fontSize: '1.4rem', color: '#2d1b4e', marginBottom: '0.75rem', fontWeight: '500', fontFamily: 'serif' }}>{f.title}</h3>
 
-            {/* Separator Line */}
+            // Separator Line
             <div style={{ width: '25px', height: '2px', background: '#b388eb', marginBottom: '1.25rem' }}></div>
 
             <p style={{ color: '#665e75', lineHeight: 1.6, margin: 0, fontSize: '0.95rem' }}>{f.description}</p>
 
-            {/* Bottom Right Swoosh */}
+            // Bottom Right Swoosh
             <div style={{
               position: 'absolute',
               bottom: '-15px',
@@ -410,6 +997,7 @@ export default function Home() {
         ))}
 
       </div>
+      */}
       {/* How It Works */}
       <HorizontalScrollSection
         title={
@@ -830,8 +1418,7 @@ export default function Home() {
               </div>
 
               <p style={{ color: '#665e75', fontSize: '1.15rem', marginBottom: '3rem', lineHeight: 1.6, maxWidth: '450px' }}>
-                One complete package to preserve your legacy forever.<br />
-                No hidden fees, no subscriptions, just a single one-time payment.
+                {siteSettings?.pricing?.description || 'One complete package to preserve your legacy forever. No hidden fees, no subscriptions, just a single one-time payment.'}
               </p>
 
               <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -872,15 +1459,29 @@ export default function Home() {
                   <span style={{ fontSize: '1rem', marginTop: '0.25rem', display: 'block' }}></span>
                 </div>
 
-                <h3 style={{ fontSize: '1.35rem', color: '#2d1b4e', marginBottom: '1.5rem', fontWeight: '700' }}>Complete Memorial Package</h3>
+                <h3 style={{ fontSize: '1.35rem', color: '#2d1b4e', marginBottom: '1.5rem', fontWeight: '700' }}>
+                  {siteSettings?.pricing?.packageName || 'Complete Memorial Package'}
+                </h3>
 
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '4rem', fontWeight: '800', color: '#2d1b4e', lineHeight: 1 }}>
                     {siteSettings?.pricing?.currency || '₹'}
-                    {(siteSettings?.pricing?.amount || 1499).toLocaleString()}
+                    {Number(siteSettings?.pricing?.amount || 1499).toLocaleString()}
                   </span>
                   <span style={{ color: '#815bb5', fontSize: '1.1rem', fontWeight: '600' }}>/ one-time</span>
                 </div>
+
+                {siteSettings?.pricing?.originalAmount && Number(siteSettings.pricing.originalAmount) > Number(siteSettings.pricing.amount || 1499) && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                    <span style={{ textDecoration: 'line-through', color: '#9ca3af', fontSize: '1.25rem' }}>
+                      {siteSettings?.pricing?.currency || '₹'}
+                      {Number(siteSettings.pricing.originalAmount).toLocaleString()}
+                    </span>
+                    <span style={{ background: '#fee2e2', color: '#dc2626', fontSize: '0.8rem', fontWeight: '700', padding: '0.2rem 0.6rem', borderRadius: '50px' }}>
+                      Save {Math.round(((Number(siteSettings.pricing.originalAmount) - Number(siteSettings.pricing.amount || 1499)) / Number(siteSettings.pricing.originalAmount)) * 100)}%
+                    </span>
+                  </div>
+                )}
 
                 {/* Separator */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '2.5rem', width: '100%' }}>

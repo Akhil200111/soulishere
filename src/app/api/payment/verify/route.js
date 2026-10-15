@@ -3,6 +3,7 @@ import crypto from 'crypto';
 
 import Memorial from '@/models/Memorial';
 import connectDB from '@/lib/mongodb';
+import { getMemorialPricing } from '@/lib/pricingService';
 
 // POST - Verify Razorpay payment
 export async function POST(request) {
@@ -20,12 +21,15 @@ export async function POST(request) {
         if (isAuthentic) {
             await connectDB();
             if (memorialId) {
+                const pricing = await getMemorialPricing();
+                const recordedAmount = (amount && Number(amount) > 0) ? Number(amount) : Number(pricing.amount);
+
                 await Memorial.findByIdAndUpdate(memorialId, {
                     status: 'requested',
                     qrGenerated: false,
                     paymentId: razorpay_payment_id,
                     paymentStatus: 'completed',
-                    paymentAmount: amount,
+                    paymentAmount: recordedAmount,
                     paidAt: Date.now()
                 });
             }

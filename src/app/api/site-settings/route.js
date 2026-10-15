@@ -4,6 +4,9 @@ import connectDB from '@/lib/mongodb';
 import SiteSettings from '@/models/SiteSettings';
 import { getSession } from '@/lib/auth';
 
+import User from '@/models/User';
+import { validatePricingData, DEFAULT_PRICING } from '@/lib/pricingService';
+
 export async function GET() {
     try {
         await connectDB();
@@ -32,23 +35,8 @@ export async function GET() {
                         '/images/gallery_4.png'
                     ]
                 },
-                pricing: {
-                    amount: 1499,
-                    currency: '₹',
-                    features: [
-                        'YouTube Video Embedding',
-                        'Profile & Cover Pictures',
-                        'Complete Guest Book',
-                        'Family Tree Documentation',
-                        'Life Timeline & Events',
-                        'Premium Design Templates',
-                        'Permanent Memorial Page'
-                    ]
-                }
+                pricing: { ...DEFAULT_PRICING }
             });
-        } else if (settings.pricing && settings.pricing.amount === 1999) {
-            settings.pricing.amount = 1499;
-            await settings.save();
         }
 
         return NextResponse.json({ success: true, data: settings });
@@ -61,16 +49,19 @@ export async function GET() {
 export async function PUT(request) {
     try {
         const session = await getSession(request);
-        // Basic auth check - in a real app check for admin role
         if (!session) {
             return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
         }
 
         await connectDB();
+        const user = await User.findById(session.id);
+        if (!user || user.role !== 'admin') {
+            return NextResponse.json({ success: false, message: 'Admin access required' }, { status: 403 });
+        }
+
         const body = await request.json();
 
         // Update the single settings document
-        // We use findOneAndUpdate with upsert to ensure we handle the singleton correctly
         const updateFields = {
             seo: body.seo,
             images: body.images,
@@ -78,7 +69,15 @@ export async function PUT(request) {
         };
 
         if (body.pricing) {
-            updateFields.pricing = body.pricing;
+            const validation = validatePricingData(body.pricing);
+            if (!validation.isValid) {
+                return NextResponse.json({ success: false, error: validation.errors.join(' ') }, { status: 400 });
+            }
+            updateFields.pricing = {
+                ...body.pricing,
+                amount: Number(body.pricing.amount),
+                updatedAt: new Date()
+            };
         }
 
         const settings = await SiteSettings.findOneAndUpdate(

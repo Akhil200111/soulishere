@@ -12,6 +12,7 @@ import { FaThLarge, FaPlus, FaSignOutAlt, FaLayerGroup, FaCheckCircle, FaEdit } 
 function DashboardContent() {
     const { user, isAuthenticated, isAdmin, loading: authLoading, logout } = useAuth();
     const [memorials, setMemorials] = useState([]);
+    const [pricing, setPricing] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('all');
     const router = useRouter();
@@ -39,21 +40,27 @@ function DashboardContent() {
     }, [authLoading, isAuthenticated, isAdmin, router, tokenParam]);
 
     useEffect(() => {
-        const fetchMemorials = async () => {
+        const fetchDashboardData = async () => {
             if (!isAuthenticated) return;
 
             try {
-                const res = await axios.get('/api/memorials');
-                setMemorials(res.data.data || []);
+                const [memorialsRes, pricingRes] = await Promise.all([
+                    axios.get('/api/memorials'),
+                    axios.get('/api/pricing')
+                ]);
+                setMemorials(memorialsRes.data.data || []);
+                if (pricingRes.data.success) {
+                    setPricing(pricingRes.data.data);
+                }
             } catch (err) {
-                console.error('Error fetching memorials:', err);
+                console.error('Error fetching dashboard data:', err);
             } finally {
                 setLoading(false);
             }
         };
 
         if (isAuthenticated) {
-            fetchMemorials();
+            fetchDashboardData();
         }
     }, [isAuthenticated]);
 
@@ -204,7 +211,7 @@ function DashboardContent() {
                 ) : (
                     <div className="memorial-grid-modern">
                         {filteredMemorials.map(memorial => (
-                            <MemorialCard key={memorial._id} memorial={memorial} />
+                            <MemorialCard key={memorial._id} memorial={memorial} pricing={pricing} />
                         ))}
                     </div>
                 )}
