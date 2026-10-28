@@ -71,6 +71,7 @@ export default function Header() {
                                 <ul>
                                     <li><Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link></li>
                                     <li><Link href="/features" className={pathname === '/features' ? 'active' : ''}>Features</Link></li>
+                                    <li><Link href="/contact" className={pathname === '/contact' ? 'active' : ''}>Contact</Link></li>
                                     {isAuthenticated && (
                                         <li>
                                             <Link href={isAdmin ? "/admin" : "/dashboard"} className={pathname.startsWith('/dashboard') || pathname.startsWith('/admin') ? 'active' : ''}>

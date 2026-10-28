@@ -9,25 +9,37 @@ export default function Footer() {
     const pathname = usePathname();
 
     if (
-        pathname === '/auth' || 
-        pathname.startsWith('/dashboard') || 
-        pathname.startsWith('/admin') || 
-        pathname.startsWith('/create-memorial') || 
+        pathname === '/auth' ||
+        pathname.startsWith('/dashboard') ||
+        pathname.startsWith('/admin') ||
+        pathname.startsWith('/create-memorial') ||
         pathname.startsWith('/edit-memorial') ||
-        pathname === '/demo' || 
+        pathname === '/demo' ||
         pathname.startsWith('/memorial/')
     ) {
         return null;
     }
 
     return (
-        <footer style={{ background: '#110022', color: 'rgba(255,255,255,0.7)', padding: '5rem 0 2rem 0', fontFamily: 'inherit' }}>
+        <footer style={{ position: 'relative', background: '#110022', color: 'rgba(255,255,255,0.7)', padding: '5rem 0 2rem 0', fontFamily: 'inherit' }}>
+            <Link 
+                href="/" 
+                style={{ 
+                    position: 'absolute', 
+                    top: '1.5rem', 
+                    right: '2.5rem', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    zIndex: 10 
+                }}
+            >
+                <Image src="/logo.png" alt="Soulishere" width={60} height={60} style={{ height: '45px', width: 'auto' }} />
+            </Link>
             <div className="container">
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', marginBottom: '4rem', justifyContent: 'space-between' }}>
                     {/* Brand */}
                     <div style={{ flex: '1 1 300px' }}>
-                        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', marginBottom: '1.5rem' }}>
-                            <Image src="/logo.png" alt="Soulishere" width={60} height={60} style={{ height: '45px', width: 'auto', marginRight: '15px' }} />
+                        <Link href="/" style={{ display: 'inline-block', textDecoration: 'none', marginBottom: '1.5rem' }}>
                             <span style={{ fontWeight: '700', fontSize: '1.5rem', color: 'white', letterSpacing: '-0.5px' }}>Soulishere</span>
                         </Link>
                         <p style={{ lineHeight: 1.6, fontSize: '1.05rem', maxWidth: '350px' }}>
@@ -49,6 +61,7 @@ export default function Footer() {
                         <h4 style={{ color: 'white', fontSize: '1.15rem', fontWeight: '600', marginBottom: '1.5rem' }}>Company</h4>
                         <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <li><Link href="/about" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = 'var(--pink)'} onMouseLeave={(e) => e.target.style.color = 'rgba(255,255,255,0.7)'}>About Us</Link></li>
+                            <li><Link href="/contact" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = 'var(--pink)'} onMouseLeave={(e) => e.target.style.color = 'rgba(255,255,255,0.7)'}>Contact Us</Link></li>
                             <li><Link href="/privacy" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = 'var(--pink)'} onMouseLeave={(e) => e.target.style.color = 'rgba(255,255,255,0.7)'}>Privacy Policy</Link></li>
                             <li><Link href="/terms" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = 'var(--pink)'} onMouseLeave={(e) => e.target.style.color = 'rgba(255,255,255,0.7)'}>Terms of Service</Link></li>
                         </ul>

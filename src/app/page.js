@@ -182,7 +182,7 @@ export default function Home() {
 
       {/* Lineage Section */}
       <div id="lineageSection" style={{
-        padding: '7rem 0 6.5rem 0',
+        padding: '4.5rem 0 4rem 0',
         position: 'relative',
         overflow: 'hidden',
         background: 'radial-gradient(rgba(165, 125, 205, 0.28) 1.2px, transparent 1.2px) 0 0 / 28px 28px, radial-gradient(ellipse at 50% 25%, #faf4fe 0%, #f4ecfb 50%, #eee3f8 100%)',
@@ -271,40 +271,40 @@ export default function Home() {
         <div className="container" style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
           {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-              <div style={{ width: '45px', height: '1px', background: '#d5c4e3' }}></div>
-              <span style={{ color: '#3d2556', fontWeight: '600', letterSpacing: '4px', fontSize: '0.85rem', textTransform: 'uppercase' }}>Family Lineage</span>
-              <div style={{ width: '45px', height: '1px', background: '#d5c4e3' }}></div>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', marginBottom: '0.8rem' }}>
+              <div style={{ width: '40px', height: '1px', background: '#d5c4e3' }}></div>
+              <span style={{ color: '#3d2556', fontWeight: '600', letterSpacing: '4px', fontSize: '0.82rem', textTransform: 'uppercase' }}>Family Lineage</span>
+              <div style={{ width: '40px', height: '1px', background: '#d5c4e3' }}></div>
             </div>
-            <h2 className="responsive-h2" style={{ color: '#2d1b4e', marginBottom: '1rem' }}>
+            <h2 className="responsive-h2" style={{ color: '#2d1b4e', marginBottom: '0.8rem' }}>
               Every Life Is Part of a Story
             </h2>
-            <p style={{ color: '#665e75', fontSize: '1.15rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.65 }}>
+            <p style={{ color: '#665e75', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
               Honor generations. Celebrate connections. Keep your family&apos;s story alive for today and tomorrow.
             </p>
           </div>
 
           {/* Parents & Ancestors Generation Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.65rem',
+              gap: '0.55rem',
               background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
               border: '1px solid #ebd9b5',
               borderRadius: '50px',
-              padding: '0.45rem 1.6rem',
+              padding: '0.38rem 1.4rem',
               boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
               color: '#6b5135',
-              fontSize: '0.82rem',
+              fontSize: '0.78rem',
               fontWeight: '700',
               letterSpacing: '2px',
               textTransform: 'uppercase'
             }}>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
               <span>PARENTS &amp; ANCESTORS</span>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
             </div>
           </div>
 
@@ -312,15 +312,15 @@ export default function Home() {
           <div style={{
             position: 'relative',
             width: '100%',
-            maxWidth: '540px',
+            maxWidth: '480px',
             margin: '0 auto'
           }}>
             {/* Horizontal Golden Connector Line between Parents */}
             <div style={{
               position: 'absolute',
-              top: '64px',
-              left: '75px',
-              right: '75px',
+              top: '50px',
+              left: '60px',
+              right: '60px',
               height: '2px',
               background: 'linear-gradient(90deg, #c9a347, #f0d588, #c9a347)',
               zIndex: 1
@@ -329,7 +329,7 @@ export default function Home() {
             {/* Central Heart Medallion & Botanical Tips */}
             <div style={{
               position: 'absolute',
-              top: '64px',
+              top: '50px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               zIndex: 3,
@@ -338,25 +338,25 @@ export default function Home() {
               justifyContent: 'center'
             }}>
               {/* Left botanical leaf */}
-              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style={{ marginRight: '-1px' }}>
+              <svg width="16" height="10" viewBox="0 0 18 12" fill="none" style={{ marginRight: '-1px' }}>
                 <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
               </svg>
               {/* Gold Heart Ring */}
               <div style={{
-                width: '32px',
-                height: '32px',
+                width: '28px',
+                height: '28px',
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #fffdf8 0%, #f9f1df 100%)',
                 border: '2px solid #c9a347',
-                boxShadow: '0 3px 10px rgba(201, 163, 71, 0.35)',
+                boxShadow: '0 3px 8px rgba(201, 163, 71, 0.35)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <FaHeart style={{ color: '#b68733', fontSize: '0.75rem' }} />
+                <FaHeart style={{ color: '#b68733', fontSize: '0.68rem' }} />
               </div>
               {/* Right botanical leaf */}
-              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style={{ marginLeft: '-1px', transform: 'scaleX(-1)' }}>
+              <svg width="16" height="10" viewBox="0 0 18 12" fill="none" style={{ marginLeft: '-1px', transform: 'scaleX(-1)' }}>
                 <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
               </svg>
             </div>
@@ -364,27 +364,27 @@ export default function Home() {
             {/* Vertical Line Dropping from Parents Heart to Main Generation */}
             <div style={{
               position: 'absolute',
-              top: '64px',
+              top: '50px',
               left: '50%',
               transform: 'translateX(-50%)',
               width: '2px',
-              height: '190px',
+              height: '120px',
               background: 'linear-gradient(180deg, #c9a347 0%, #d8b765 100%)',
               zIndex: 1
             }}>
               {/* Downward golden arrow right above Main Generation badge */}
               <div style={{
                 position: 'absolute',
-                bottom: '-12px',
+                bottom: '-11px',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '16px',
-                height: '16px',
+                width: '14px',
+                height: '14px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                   <path d="M7 13 L1 4 C 4 5, 10 5, 13 4 Z" fill="#c9a347" />
                   <path d="M7 10 L7 0" stroke="#c9a347" strokeWidth="2" strokeLinecap="round" />
                 </svg>
@@ -399,33 +399,33 @@ export default function Home() {
               position: 'relative',
               zIndex: 2
             }}>
-              {/* Father: Anoop Menon */}
+              {/* Father: Anoop Menon (Initial A) */}
               <div style={{
-                width: '150px',
+                width: '135px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center'
               }}>
-                {/* Avatar with luxury golden frame */}
+                {/* Symbolic Avatar with luxury golden frame & initial A */}
                 <div style={{
                   position: 'relative',
-                  width: '128px',
-                  height: '128px',
+                  width: '100px',
+                  height: '100px',
                   borderRadius: '50%',
-                  padding: '5px',
+                  padding: '4.5px',
                   background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-                  boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4',
+                  boxShadow: '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
                   cursor: 'pointer',
                   transition: 'transform 0.3s ease, box-shadow 0.3s ease'
                 }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 15px 35px rgba(180, 140, 60, 0.32), 0 0 0 3px #fdfaf4';
+                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4';
+                    e.currentTarget.style.boxShadow = '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
                   }}
                 >
                   <div style={{
@@ -433,21 +433,41 @@ export default function Home() {
                     height: '100%',
                     borderRadius: '50%',
                     border: '2px solid #fdfaf4',
-                    overflow: 'hidden',
-                    position: 'relative'
+                    background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}>
-                    <Image
-                      src="/images/lineage_father.png"
-                      alt="Anoop Menon"
-                      width={128}
-                      height={128}
-                      unoptimized={true}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    {/* Inner delicate gold concentric ring */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '5px',
+                      left: '5px',
+                      right: '5px',
+                      bottom: '5px',
+                      borderRadius: '50%',
+                      border: '1.5px solid rgba(212, 175, 55, 0.5)',
+                      pointerEvents: 'none'
+                    }}></div>
+                    <span style={{
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontStyle: 'italic',
+                      fontWeight: '500',
+                      fontSize: '2.75rem',
+                      color: '#2d1b4e',
+                      lineHeight: 1,
+                      userSelect: 'none',
+                      position: 'relative',
+                      zIndex: 2
+                    }}>
+                      A
+                    </span>
                   </div>
-                  {/* Botanical Sprig on outer ring */}
-                  <div style={{ position: 'absolute', top: '14px', right: '-10px', zIndex: 3, pointerEvents: 'none' }}>
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  {/* Botanical Sprig on outer ring (top-right) */}
+                  <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
+                    <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
                       <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
                       <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
                       <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
@@ -463,11 +483,11 @@ export default function Home() {
 
                 <h4 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: '1.35rem',
+                  fontSize: '1.25rem',
                   fontWeight: '600',
                   color: '#2d1b4e',
-                  marginTop: '0.9rem',
-                  marginBottom: '0.35rem'
+                  marginTop: '0.65rem',
+                  marginBottom: '0.25rem'
                 }}>
                   Anoop Menon
                 </h4>
@@ -476,51 +496,51 @@ export default function Home() {
                   background: '#f4ede2',
                   border: '1px solid #ebd9c2',
                   color: '#6d553d',
-                  padding: '0.2rem 1.15rem',
+                  padding: '0.18rem 1rem',
                   borderRadius: '20px',
-                  fontSize: '0.82rem',
+                  fontSize: '0.78rem',
                   fontWeight: '600'
                 }}>
                   Father
                 </span>
                 <p style={{
                   color: '#6f637d',
-                  fontSize: '0.92rem',
+                  fontSize: '0.86rem',
                   fontWeight: '500',
-                  marginTop: '0.45rem',
+                  marginTop: '0.35rem',
                   marginBottom: 0
                 }}>
                   1935 – 2000
                 </p>
               </div>
 
-              {/* Mother: Marry */}
+              {/* Mother: Marry (Initial M) */}
               <div style={{
-                width: '150px',
+                width: '135px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center'
               }}>
-                {/* Avatar with luxury golden frame */}
+                {/* Symbolic Avatar with luxury golden frame & initial M */}
                 <div style={{
                   position: 'relative',
-                  width: '128px',
-                  height: '128px',
+                  width: '100px',
+                  height: '100px',
                   borderRadius: '50%',
-                  padding: '5px',
+                  padding: '4.5px',
                   background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-                  boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4',
+                  boxShadow: '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
                   cursor: 'pointer',
                   transition: 'transform 0.3s ease, box-shadow 0.3s ease'
                 }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 15px 35px rgba(180, 140, 60, 0.32), 0 0 0 3px #fdfaf4';
+                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 3px #fdfaf4';
+                    e.currentTarget.style.boxShadow = '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
                   }}
                 >
                   <div style={{
@@ -528,21 +548,41 @@ export default function Home() {
                     height: '100%',
                     borderRadius: '50%',
                     border: '2px solid #fdfaf4',
-                    overflow: 'hidden',
-                    position: 'relative'
+                    background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}>
-                    <Image
-                      src="/images/lineage_mother.png"
-                      alt="Marry"
-                      width={128}
-                      height={128}
-                      unoptimized={true}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    {/* Inner delicate gold concentric ring */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '5px',
+                      left: '5px',
+                      right: '5px',
+                      bottom: '5px',
+                      borderRadius: '50%',
+                      border: '1.5px solid rgba(212, 175, 55, 0.5)',
+                      pointerEvents: 'none'
+                    }}></div>
+                    <span style={{
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontStyle: 'italic',
+                      fontWeight: '500',
+                      fontSize: '2.75rem',
+                      color: '#2d1b4e',
+                      lineHeight: 1,
+                      userSelect: 'none',
+                      position: 'relative',
+                      zIndex: 2
+                    }}>
+                      M
+                    </span>
                   </div>
-                  {/* Botanical Sprig on outer ring (flipped) */}
-                  <div style={{ position: 'absolute', top: '14px', left: '-10px', zIndex: 3, pointerEvents: 'none', transform: 'scaleX(-1)' }}>
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  {/* Botanical Sprig on outer ring (top-right as in user's design) */}
+                  <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
+                    <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
                       <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
                       <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
                       <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
@@ -558,11 +598,11 @@ export default function Home() {
 
                 <h4 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: '1.35rem',
+                  fontSize: '1.25rem',
                   fontWeight: '600',
                   color: '#2d1b4e',
-                  marginTop: '0.9rem',
-                  marginBottom: '0.35rem'
+                  marginTop: '0.65rem',
+                  marginBottom: '0.25rem'
                 }}>
                   Marry
                 </h4>
@@ -571,18 +611,18 @@ export default function Home() {
                   background: '#f4ede2',
                   border: '1px solid #ebd9c2',
                   color: '#6d553d',
-                  padding: '0.2rem 1.15rem',
+                  padding: '0.18rem 1rem',
                   borderRadius: '20px',
-                  fontSize: '0.82rem',
+                  fontSize: '0.78rem',
                   fontWeight: '600'
                 }}>
                   Mother
                 </span>
                 <p style={{
                   color: '#6f637d',
-                  fontSize: '0.92rem',
+                  fontSize: '0.86rem',
                   fontWeight: '500',
-                  marginTop: '0.45rem',
+                  marginTop: '0.35rem',
                   marginBottom: 0
                 }}>
                   1940 – 2008
@@ -592,39 +632,39 @@ export default function Home() {
           </div>
 
           {/* Main Generation Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.8rem', position: 'relative', zIndex: 2 }}>
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.65rem',
+              gap: '0.55rem',
               background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
               border: '1px solid #ebd9b5',
               borderRadius: '50px',
-              padding: '0.45rem 1.6rem',
+              padding: '0.38rem 1.4rem',
               boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
               color: '#6b5135',
-              fontSize: '0.82rem',
+              fontSize: '0.78rem',
               fontWeight: '700',
               letterSpacing: '2px',
               textTransform: 'uppercase'
             }}>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
               <span>MAIN GENERATION</span>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.85rem' }} />
+              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
             </div>
           </div>
 
           {/* Vertical Connecting Stem down to Jeevan Kumar */}
           <div style={{
             width: '2px',
-            height: '38px',
+            height: '28px',
             background: 'linear-gradient(180deg, #d8b765 0%, #c9a347 100%)',
             margin: '0 auto',
             position: 'relative',
             zIndex: 1
           }}></div>
 
-          {/* Memorial Subject (Jeevan Kumar) */}
+          {/* Memorial Subject (Jeevan Kumar, Initial J) */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -632,48 +672,48 @@ export default function Home() {
             textAlign: 'center',
             position: 'relative',
             zIndex: 2,
-            width: '180px'
+            width: '170px'
           }}>
             {/* Memorial Subject Ribbon Badge */}
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.45rem',
+              gap: '0.4rem',
               background: 'linear-gradient(135deg, #aa5873 0%, #8c3f58 100%)',
               color: '#ffffff',
-              padding: '0.35rem 1.25rem',
+              padding: '0.3rem 1.15rem',
               borderRadius: '50px',
-              fontSize: '0.8rem',
+              fontSize: '0.76rem',
               fontWeight: '600',
-              letterSpacing: '0.4px',
-              boxShadow: '0 4px 14px rgba(140, 63, 88, 0.35)',
+              letterSpacing: '0.3px',
+              boxShadow: '0 4px 12px rgba(140, 63, 88, 0.32)',
               position: 'relative',
               zIndex: 4,
-              marginBottom: '-13px'
+              marginBottom: '-12px'
             }}>
-              <FaStar style={{ fontSize: '0.7rem' }} />
+              <FaStar style={{ fontSize: '0.68rem' }} />
               <span>Memorial Subject</span>
             </div>
 
-            {/* Avatar with luxury golden frame */}
+            {/* Avatar with luxury golden frame (Initial J) */}
             <div style={{
               position: 'relative',
-              width: '136px',
-              height: '136px',
+              width: '104px',
+              height: '104px',
               borderRadius: '50%',
-              padding: '6px',
+              padding: '5px',
               background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-              boxShadow: '0 12px 30px rgba(180, 140, 60, 0.25), 0 0 0 3px #fdfaf4',
+              boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
               cursor: 'pointer',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease'
             }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 18px 40px rgba(180, 140, 60, 0.35), 0 0 0 3px #fdfaf4';
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 16px 35px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 12px 30px rgba(180, 140, 60, 0.25), 0 0 0 3px #fdfaf4';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
               }}
             >
               <div style={{
@@ -681,21 +721,41 @@ export default function Home() {
                 height: '100%',
                 borderRadius: '50%',
                 border: '2px solid #fdfaf4',
-                overflow: 'hidden',
-                position: 'relative'
+                background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                <Image
-                  src="/images/lineage_subject.png"
-                  alt="Jeevan Kumar"
-                  width={136}
-                  height={136}
-                  unoptimized={true}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+                {/* Inner delicate gold concentric ring */}
+                <div style={{
+                  position: 'absolute',
+                  top: '5px',
+                  left: '5px',
+                  right: '5px',
+                  bottom: '5px',
+                  borderRadius: '50%',
+                  border: '1.5px solid rgba(212, 175, 55, 0.5)',
+                  pointerEvents: 'none'
+                }}></div>
+                <span style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontWeight: '500',
+                  fontSize: '2.85rem',
+                  color: '#2d1b4e',
+                  lineHeight: 1,
+                  userSelect: 'none',
+                  position: 'relative',
+                  zIndex: 2
+                }}>
+                  J
+                </span>
               </div>
-              {/* Botanical Sprig on outer ring */}
-              <div style={{ position: 'absolute', top: '14px', right: '-10px', zIndex: 3, pointerEvents: 'none' }}>
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              {/* Botanical Sprig on outer ring (top-right) */}
+              <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
+                <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
                   <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
                   <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
                   <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
@@ -711,17 +771,17 @@ export default function Home() {
 
             <h4 style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: '1.45rem',
+              fontSize: '1.32rem',
               fontWeight: '600',
               color: '#2d1b4e',
-              marginTop: '0.9rem',
-              marginBottom: '0.3rem'
+              marginTop: '0.65rem',
+              marginBottom: '0.2rem'
             }}>
               Jeevan Kumar
             </h4>
             <p style={{
               color: '#6f637d',
-              fontSize: '0.95rem',
+              fontSize: '0.88rem',
               fontWeight: '500',
               marginTop: '0.2rem',
               marginBottom: 0
@@ -731,15 +791,15 @@ export default function Home() {
           </div>
 
           {/* Bottom CTA Button */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.75rem', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', position: 'relative', zIndex: 2 }}>
             <Link
               href={sampleMemorialId ? `/memorial/${sampleMemorialId}` : '/auth?mode=signup'}
               style={{
                 background: 'linear-gradient(135deg, #44225d 0%, #2f1444 100%)',
                 color: '#ffffff',
-                padding: '0.85rem 2.4rem',
+                padding: '0.8rem 2.2rem',
                 borderRadius: '50px',
-                fontSize: '0.98rem',
+                fontSize: '0.95rem',
                 fontWeight: '600',
                 textDecoration: 'none',
                 display: 'inline-flex',
@@ -1421,50 +1481,42 @@ export default function Home() {
                 {siteSettings?.pricing?.description || 'One complete package to preserve your legacy forever. No hidden fees, no subscriptions, just a single one-time payment.'}
               </p>
 
-              <div style={{ position: 'relative', display: 'inline-block' }}>
-                <div style={{ position: 'absolute', top: '10%', left: '10%', right: '10%', bottom: '10%', background: 'linear-gradient(135deg, #e4c1f9, #a276d4)', opacity: 0.2, filter: 'blur(40px)', borderRadius: '50%' }}></div>
-                <Image src={siteSettings?.images?.pricingIllustration || "/images/pricing_illustration.png"} alt="Pricing" width={450} height={400} unoptimized={true} style={{ maxWidth: '100%', width: '450px', height: 'auto', position: 'relative', zIndex: 1, filter: 'drop-shadow(0 20px 40px rgba(162, 118, 212, 0.15))' }} />
+              <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
+                <div style={{ position: 'absolute', top: '10%', left: '10%', right: '10%', bottom: '10%', background: 'linear-gradient(135deg, #e4c1f9, #a276d4)', opacity: 0.25, filter: 'blur(50px)', borderRadius: '50%' }}></div>
+                <Image
+                  src={siteSettings?.images?.pricingIllustration || "/images/pricing_illustration.png"}
+                  alt="In Loving Memory Memorial Celebration"
+                  width={480}
+                  height={360}
+                  unoptimized={true}
+                  style={{
+                    maxWidth: '100%',
+                    width: '450px',
+                    height: 'auto',
+                    position: 'relative',
+                    zIndex: 1,
+                    filter: 'drop-shadow(0 20px 40px rgba(129, 91, 181, 0.15))',
+                    display: 'block'
+                  }}
+                />
               </div>
             </div>
 
             {/* Right Side: Pricing Card */}
-            <div style={{ flex: 1, minWidth: '360px' }}>
-              <div style={{
-                background: '#fff',
-                borderRadius: '32px',
-                padding: '3.5rem 3rem',
-                boxShadow: '0 20px 60px rgba(162, 118, 212, 0.1)',
-                border: '1px solid rgba(255,255,255,1)',
-                position: 'relative',
-                overflow: 'visible' // To let the ribbon hang
-              }}>
+            <div className="landing-pricing-col">
+              <div className="landing-pricing-card">
                 {/* Ribbon Badge */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-15px',
-                  right: '30px',
-                  background: 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)',
-                  color: 'white',
-                  padding: '1.5rem 1rem 2rem 1rem',
-                  width: '120px',
-                  textAlign: 'center',
-                  fontSize: '0.8rem',
-                  fontWeight: '700',
-                  letterSpacing: '1px',
-                  lineHeight: 1.4,
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%)',
-                  boxShadow: '0 10px 20px rgba(61, 37, 86, 0.2)'
-                }}>
+                <div className="landing-pricing-ribbon">
                   ALL FEATURES<br />INCLUDED<br />
                   <span style={{ fontSize: '1rem', marginTop: '0.25rem', display: 'block' }}></span>
                 </div>
 
-                <h3 style={{ fontSize: '1.35rem', color: '#2d1b4e', marginBottom: '1.5rem', fontWeight: '700' }}>
+                <h3 className="landing-pricing-title">
                   {siteSettings?.pricing?.packageName || 'Complete Memorial Package'}
                 </h3>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '4rem', fontWeight: '800', color: '#2d1b4e', lineHeight: 1 }}>
+                  <span className="landing-pricing-amount">
                     {siteSettings?.pricing?.currency || '₹'}
                     {Number(siteSettings?.pricing?.amount || 1499).toLocaleString()}
                   </span>
@@ -1547,11 +1599,11 @@ export default function Home() {
       </div>
 
       {/* FAQ */}
-      <div style={{ padding: '8rem 0', background: '#faf7fd' }}>
+      <div className="faq-section">
         <div className="container" style={{ maxWidth: '900px' }}>
 
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
               <div style={{ width: '40px', height: '1px', background: '#d5c4e3' }}></div>
               <span style={{ color: '#a276d4', fontSize: '1.2rem' }}></span>
@@ -1575,72 +1627,36 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="faq-list">
             {faqs.map((faq, index) => {
               const Icon = [FaFileAlt, FaShieldAlt, FaShareAlt, FaUsers, FaPen][index % 5];
               const isOpen = openFaq === index;
               return (
-                <div key={index} style={{
+                <div key={index} className="faq-item-card" style={{
                   background: isOpen ? '#fdfafc' : '#fff',
-                  borderRadius: '16px',
                   boxShadow: isOpen ? '0 10px 30px rgba(162, 118, 212, 0.1)' : '0 5px 15px rgba(162, 118, 212, 0.05)',
                   border: isOpen ? '2px solid #e4c1f9' : '1px solid #eedbfa',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
                 }}>
                   <div
+                    className="faq-header-row"
                     onClick={() => toggleFAQ(index)}
-                    style={{
-                      padding: '1.5rem',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      gap: '1rem'
-                    }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1 }}>
-                      <div style={{
-                        background: '#eedbfa',
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}>
-                        <Icon style={{ color: '#6c43a6', fontSize: '1.1rem' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: 1, minWidth: 0 }}>
+                      <div className="faq-icon-box">
+                        <Icon />
                       </div>
-                      <span style={{ fontSize: '1.15rem', fontWeight: '700', color: '#2d1b4e' }}>{faq.q}</span>
+                      <span className="faq-question-text">{faq.q}</span>
                     </div>
 
-                    <div style={{
-                      background: '#eedbfa',
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0
-                    }}>
+                    <div className="faq-chevron-box">
                       <FaChevronDown style={{
-                        color: '#6c43a6',
-                        fontSize: '0.8rem',
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                        transition: 'transform 0.3s ease'
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
                       }} />
                     </div>
                   </div>
 
-                  <div style={{
-                    maxHeight: isOpen ? '500px' : '0',
-                    opacity: isOpen ? 1 : 0,
-                    padding: isOpen ? '0 1.5rem 1.5rem 4.75rem' : '0 1.5rem 0 4.75rem',
-                    transition: 'all 0.4s ease'
-                  }}>
-                    <p style={{ margin: 0, color: '#665e75', lineHeight: 1.7, fontSize: '0.95rem' }}>
+                  <div className={`faq-answer-body ${isOpen ? 'is-open' : ''}`}>
+                    <p>
                       {faq.a}
                     </p>
                   </div>

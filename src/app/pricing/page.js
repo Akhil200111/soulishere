@@ -122,46 +122,22 @@ export default function PricingPage() {
                 </div>
 
                 {/* Main Pricing Showcase Card */}
-                <div style={{
-                    maxWidth: '680px',
-                    margin: '0 auto 5rem auto',
-                    background: 'white',
-                    borderRadius: '32px',
-                    padding: '3.5rem 3rem',
-                    boxShadow: '0 25px 70px rgba(129, 91, 181, 0.12)',
-                    border: '1px solid #eedbfa',
-                    position: 'relative'
-                }}>
+                <div className="pricing-page-card">
                     {/* Ribbon */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '-15px',
-                        right: '30px',
-                        background: 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)',
-                        color: 'white',
-                        padding: '1.25rem 1rem 1.75rem 1rem',
-                        width: '120px',
-                        textAlign: 'center',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        letterSpacing: '1px',
-                        lineHeight: 1.3,
-                        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%)',
-                        boxShadow: '0 10px 20px rgba(61, 37, 86, 0.2)'
-                    }}>
+                    <div className="pricing-page-ribbon">
                         ALL FEATURES<br />INCLUDED
                     </div>
 
-                    <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#815bb5', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    <span className="pricing-page-subtitle">
                         Lifetime Remembrance
                     </span>
 
-                    <h2 style={{ fontSize: '1.8rem', color: '#2d1b4e', fontFamily: 'serif', marginTop: '0.5rem', marginBottom: '1.5rem', fontWeight: '700' }}>
+                    <h2 className="pricing-page-title">
                         {pricing?.packageName || 'Complete Memorial Package'}
                     </h2>
 
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '3.8rem', fontWeight: '800', color: '#2d1b4e', lineHeight: 1 }}>
+                        <span className="pricing-page-amount">
                             {currency}{amount.toLocaleString()}
                         </span>
                         <span style={{ color: '#815bb5', fontSize: '1.1rem', fontWeight: '600' }}>/ one-time</span>

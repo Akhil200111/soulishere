@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
-import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaTimesCircle, FaStar, FaImages, FaQrcode, FaTag } from 'react-icons/fa';
+import { FaUsers, FaBook, FaMoneyBill, FaEye, FaEdit, FaTrash, FaCog, FaSignOutAlt, FaCheckCircle, FaTimesCircle, FaStar, FaImages, FaQrcode, FaTag, FaEnvelope } from 'react-icons/fa';
 import AdminSettings from '@/components/AdminSettings';
 import AdminPricingManager from '@/components/AdminPricingManager';
 import AdminDummyMemorial from '@/components/AdminDummyMemorial';
 import AdminGalleryManager from '@/components/AdminGalleryManager';
+import AdminEnquiryManager from '@/components/AdminEnquiryManager';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import QRModal from '@/components/QRModal';
 import { getMemorialQRUrl } from '@/lib/qr';
@@ -20,6 +21,7 @@ export default function AdminPanel() {
     const [stats, setStats] = useState(null);
     const [memorials, setMemorials] = useState([]);
     const [users, setUsers] = useState([]);
+    const [unviewedEnquiriesCount, setUnviewedEnquiriesCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('memorials');
     const [activeQRModal, setActiveQRModal] = useState({ isOpen: false, name: '', url: '' });
@@ -39,14 +41,17 @@ export default function AdminPanel() {
                     headers: { Authorization: `Bearer ${token}` }
                 };
 
-                const [statsRes, memorialsRes, usersRes] = await Promise.all([
+                const [statsRes, memorialsRes, usersRes, enquiriesRes] = await Promise.all([
                     axios.get('/api/admin/stats', config),
                     axios.get('/api/admin/memorials', config),
-                    axios.get('/api/admin/users', config)
+                    axios.get('/api/admin/users', config),
+                    axios.get('/api/admin/enquiries', config).catch(() => ({ data: { data: [] } }))
                 ]);
                 setStats(statsRes.data.data);
                 setMemorials(memorialsRes.data.data || []);
                 setUsers(usersRes.data.data || []);
+                const enquiriesList = enquiriesRes.data?.data || [];
+                setUnviewedEnquiriesCount(enquiriesList.filter(e => !e.viewed).length);
             } catch (err) {
                 console.error('Error fetching admin data:', err);
             } finally {
@@ -190,6 +195,37 @@ export default function AdminPanel() {
                 >
                     <FaImages className="sidebar-icon" />
                     Gallery Manager
+                </button>
+                <button 
+                    onClick={() => setActiveTab('enquiries')} 
+                    className={`sidebar-nav-item ${activeTab === 'enquiries' ? 'active' : ''}`}
+                    style={{ 
+                        background: activeTab === 'enquiries' ? 'linear-gradient(135deg, #815bb5 0%, #3d2556 100%)' : 'transparent', 
+                        border: 'none', 
+                        cursor: 'pointer', 
+                        textAlign: 'left', 
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                    }}
+                >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <FaEnvelope className="sidebar-icon" />
+                        Enquiry
+                    </span>
+                    {unviewedEnquiriesCount > 0 && (
+                        <span style={{ 
+                            background: '#ef4444', 
+                            color: 'white', 
+                            borderRadius: '50px', 
+                            padding: '0.15rem 0.55rem', 
+                            fontSize: '0.72rem', 
+                            fontWeight: '700' 
+                        }}>
+                            {unviewedEnquiriesCount}
+                        </span>
+                    )}
                 </button>
                 <button 
                     onClick={() => setActiveTab('dummy-memorial')} 
@@ -424,6 +460,14 @@ export default function AdminPanel() {
                     {/* Gallery Manager Tab */}
                     {activeTab === 'gallery' && (
                         <AdminGalleryManager token={token} />
+                    )}
+
+                    {/* Enquiry Tab */}
+                    {activeTab === 'enquiries' && (
+                        <AdminEnquiryManager 
+                            token={token} 
+                            onUnviewedCountChange={setUnviewedEnquiriesCount}
+                        />
                     )}
 
                 </div>

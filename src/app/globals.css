@@ -5232,6 +5232,361 @@ html {
   border-bottom-color: rgba(196, 143, 149, 0.4) !important;
 }
 
+/* ==========================================================================
+   Pricing Card Responsive Styling (Landing Page & Pricing Page)
+   Fixes "Complete Memorial Package" text collision with "ALL FEATURES INCLUDED" badge on mobile
+   ========================================================================== */
+
+.landing-pricing-col {
+  flex: 1;
+  min-width: 320px;
+  width: 100%;
+}
+
+.landing-pricing-card {
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 20px 60px rgba(162, 118, 212, 0.1);
+  border: 1px solid rgba(255, 255, 255, 1);
+  position: relative;
+  overflow: visible;
+}
+
+.landing-pricing-ribbon {
+  position: absolute;
+  top: -15px;
+  right: 30px;
+  background: linear-gradient(135deg, #815bb5 0%, #3d2556 100%);
+  color: #ffffff;
+  padding: 1.5rem 1rem 2rem 1rem;
+  width: 120px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+  box-shadow: 0 10px 20px rgba(61, 37, 86, 0.2);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.landing-pricing-title {
+  font-size: 1.35rem;
+  color: #2d1b4e;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  padding-right: 130px; /* Reserves space so text never collides with ribbon badge */
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.landing-pricing-amount {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #2d1b4e;
+  line-height: 1;
+}
+
+/* Pricing Page Showcase Card equivalents */
+.pricing-page-card {
+  max-width: 680px;
+  margin: 0 auto 5rem auto;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 25px 70px rgba(129, 91, 181, 0.12);
+  border: 1px solid #eedbfa;
+  position: relative;
+  overflow: visible;
+}
+
+.pricing-page-ribbon {
+  position: absolute;
+  top: -15px;
+  right: 30px;
+  background: linear-gradient(135deg, #815bb5 0%, #3d2556 100%);
+  color: #ffffff;
+  padding: 1.25rem 1rem 1.75rem 1rem;
+  width: 120px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+  box-shadow: 0 10px 20px rgba(61, 37, 86, 0.2);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pricing-page-subtitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #815bb5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  padding-right: 130px;
+}
+
+.pricing-page-title {
+  font-size: 1.8rem;
+  color: #2d1b4e;
+  font-family: serif;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  padding-right: 130px;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.pricing-page-amount {
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: #2d1b4e;
+  line-height: 1;
+}
+
+/* Tablet & Mobile Screens */
+@media (max-width: 768px) {
+  .landing-pricing-col {
+    min-width: 100%;
+  }
+
+  .landing-pricing-card,
+  .pricing-page-card {
+    padding: 2.25rem 1.5rem;
+    border-radius: 24px;
+  }
+
+  .landing-pricing-ribbon,
+  .pricing-page-ribbon {
+    top: -12px;
+    right: 16px;
+    width: 96px;
+    padding: 0.85rem 0.5rem 1.35rem 0.5rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+  }
+
+  .landing-pricing-title {
+    font-size: 1.05rem;
+    padding-right: 102px; /* Buffer for 96px ribbon at right:16px */
+    margin-bottom: 1.25rem;
+  }
+
+  .pricing-page-subtitle {
+    padding-right: 102px;
+    font-size: 0.8rem;
+  }
+
+  .pricing-page-title {
+    font-size: 1.25rem;
+    padding-right: 102px;
+    margin-bottom: 1.25rem;
+  }
+
+  .landing-pricing-amount,
+  .pricing-page-amount {
+    font-size: 2.75rem;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  .landing-pricing-card,
+  .pricing-page-card {
+    padding: 2rem 1.15rem;
+    border-radius: 20px;
+  }
+
+  .landing-pricing-ribbon,
+  .pricing-page-ribbon {
+    top: -10px;
+    right: 12px;
+    width: 86px;
+    padding: 0.75rem 0.4rem 1.2rem 0.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .landing-pricing-title {
+    font-size: 0.92rem;
+    padding-right: 92px; /* Buffer for 86px ribbon at right:12px */
+    margin-bottom: 1rem;
+    line-height: 1.35;
+  }
+
+  .pricing-page-subtitle {
+    padding-right: 92px;
+    font-size: 0.75rem;
+  }
+
+  .pricing-page-title {
+    font-size: 1.1rem;
+    padding-right: 92px;
+    margin-bottom: 1rem;
+  }
+
+  .landing-pricing-amount,
+  .pricing-page-amount {
+    font-size: 2.3rem;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   FAQ SECTION RESPONSIVE STYLES
+═══════════════════════════════════════════ */
+.faq-section {
+  padding: 8rem 0;
+  background: #faf7fd;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.faq-item-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-header-row {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  gap: 1.25rem;
+}
+
+.faq-icon-box {
+  background: #eedbfa;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faq-icon-box svg {
+  color: #6c43a6;
+  font-size: 1.1rem;
+}
+
+.faq-question-text {
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: #2d1b4e;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.faq-chevron-box {
+  background: #eedbfa;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faq-chevron-box svg {
+  color: #6c43a6;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.faq-answer-body {
+  max-height: 0;
+  opacity: 0;
+  padding: 0 1.5rem 0 4.75rem;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.faq-answer-body.is-open {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0 1.5rem 1.5rem 4.75rem;
+}
+
+.faq-answer-body p {
+  margin: 0;
+  color: #665e75;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 4.5rem 0 3.5rem 0;
+  }
+
+  .faq-list {
+    gap: 0.65rem;
+  }
+
+  .faq-item-card {
+    border-radius: 12px;
+  }
+
+  .faq-header-row {
+    padding: 0.72rem 0.95rem;
+    gap: 0.75rem;
+  }
+
+  .faq-icon-box {
+    width: 32px;
+    height: 32px;
+  }
+
+  .faq-icon-box svg {
+    font-size: 0.88rem;
+  }
+
+  .faq-question-text {
+    font-size: 0.94rem;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  .faq-chevron-box {
+    width: 28px;
+    height: 28px;
+  }
+
+  .faq-chevron-box svg {
+    font-size: 0.72rem;
+  }
+
+  .faq-answer-body {
+    padding: 0 0.95rem 0 0.95rem;
+  }
+
+  .faq-answer-body.is-open {
+    padding: 0 0.95rem 0.95rem 0.95rem;
+  }
+
+  .faq-answer-body p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+}
+
 
 
 
