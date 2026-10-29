@@ -181,13 +181,168 @@ export default function Home() {
       </div>
 
       {/* Lineage Section */}
-      <div id="lineageSection" style={{
-        padding: '4.5rem 0 4rem 0',
+      <div id="lineageSection" className="lineage-feature-section" style={{
+        padding: '6.5rem 0 6rem 0',
         position: 'relative',
         overflow: 'hidden',
-        background: 'radial-gradient(rgba(165, 125, 205, 0.28) 1.2px, transparent 1.2px) 0 0 / 28px 28px, radial-gradient(ellipse at 50% 25%, #faf4fe 0%, #f4ecfb 50%, #eee3f8 100%)',
-        backgroundColor: '#f4ecfb'
+        background: 'radial-gradient(rgba(165, 125, 205, 0.2) 1.2px, transparent 1.2px) 0 0 / 28px 28px, radial-gradient(ellipse at 50% 25%, #fcf8fd 0%, #f6edf9 50%, #eee3f8 100%)',
+        backgroundColor: '#f6edf9'
       }}>
+        {/* Scoped Styles & Animations */}
+        <style>{`
+          .lineage-feature-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4.5rem;
+            width: 100%;
+          }
+          .lineage-text-col {
+            flex: 1 1 50%;
+            max-width: 550px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+          }
+          .lineage-visual-col {
+            flex: 1 1 50%;
+            max-width: 490px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+          }
+          .lineage-heading {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.3rem, 3.8vw, 3.4rem);
+            font-weight: 500;
+            color: #2d1b4e;
+            line-height: 1.18;
+            letter-spacing: -0.5px;
+            margin-bottom: 1.5rem;
+          }
+          .lineage-desc {
+            color: #5c4e6f;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 400;
+          }
+          .lineage-cta-btn {
+            background: linear-gradient(135deg, #3d1b54 0%, #20003b 100%);
+            color: #ffffff !important;
+            padding: 0.95rem 2.4rem;
+            border-radius: 50px;
+            font-size: 1.02rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 12px 28px rgba(36, 0, 70, 0.28);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+          }
+          .lineage-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(36, 0, 70, 0.42);
+            border-color: rgba(212, 175, 55, 0.85);
+            background: linear-gradient(135deg, #492166 0%, #2a004e 100%);
+            color: #ffffff !important;
+          }
+          .lineage-cta-btn:hover .lineage-arrow {
+            transform: translateX(5px);
+          }
+          .lineage-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 1.15rem;
+          }
+          .lineage-visual-art {
+            animation: lineageFloat 6s ease-in-out infinite alternate;
+            will-change: transform;
+          }
+          .lineage-pulse-ring {
+            animation: lineagePulse 3.8s ease-in-out infinite alternate;
+            transform-origin: 250px 220px;
+          }
+          .lineage-star-1 {
+            animation: lineageTwinkle 3.2s ease-in-out infinite alternate;
+          }
+          .lineage-star-2 {
+            animation: lineageTwinkle 4s ease-in-out infinite alternate 1s;
+          }
+          .lineage-star-3 {
+            animation: lineageTwinkle 3.6s ease-in-out infinite alternate 0.5s;
+          }
+          .lineage-star-4 {
+            animation: lineageTwinkle 4.4s ease-in-out infinite alternate 1.5s;
+          }
+          @keyframes lineageFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+          }
+          @keyframes lineagePulse {
+            0% { transform: scale(0.96); opacity: 0.4; }
+            100% { transform: scale(1.08); opacity: 0.95; }
+          }
+          @keyframes lineageTwinkle {
+            0% { opacity: 0.28; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1.15); }
+          }
+          @media (max-width: 991px) {
+            .lineage-feature-grid {
+              flex-direction: column;
+              text-align: center;
+              gap: 3.5rem;
+            }
+            .lineage-text-col {
+              max-width: 620px;
+              margin: 0 auto;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+            }
+            .lineage-heading {
+              font-size: 2.6rem;
+            }
+            .lineage-desc {
+              font-size: 1.05rem;
+              margin-bottom: 1.8rem;
+            }
+            .lineage-visual-col {
+              width: 100%;
+              max-width: 440px;
+              margin: 0 auto;
+            }
+          }
+          @media (max-width: 576px) {
+            .lineage-feature-section {
+              padding: 4.5rem 0 4rem 0 !important;
+            }
+            .lineage-heading {
+              font-size: 2.05rem;
+              line-height: 1.22;
+            }
+            .lineage-desc {
+              font-size: 0.98rem;
+              line-height: 1.68;
+            }
+            .lineage-cta-btn {
+              width: 100%;
+              justify-content: center;
+              padding: 0.9rem 1.8rem;
+              font-size: 0.98rem;
+            }
+            .lineage-visual-col {
+              max-width: 330px;
+            }
+          }
+        `}</style>
+
         {/* Top Subtle Ethereal Wave Accent */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, overflow: 'hidden', height: '45px', pointerEvents: 'none', zIndex: 1 }}>
           <svg viewBox="0 0 1200 45" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
@@ -204,13 +359,13 @@ export default function Home() {
           </svg>
         </div>
 
-        {/* Ambient Watercolor Floral Corner Accents with radial gradient mask */}
+        {/* Ambient Watercolor Floral Corner Accents */}
         <div style={{
           position: 'absolute',
           bottom: '-10px',
           left: '-10px',
-          width: '260px',
-          height: '260px',
+          width: '240px',
+          height: '240px',
           backgroundImage: "url('/images/lineage_corner_left.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
@@ -218,7 +373,7 @@ export default function Home() {
           WebkitMaskImage: 'radial-gradient(circle at 0% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
           maskImage: 'radial-gradient(circle at 0% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
           mixBlendMode: 'multiply',
-          opacity: 0.85,
+          opacity: 0.7,
           pointerEvents: 'none',
           zIndex: 0
         }} />
@@ -227,8 +382,8 @@ export default function Home() {
           position: 'absolute',
           bottom: '-10px',
           right: '-10px',
-          width: '260px',
-          height: '260px',
+          width: '240px',
+          height: '240px',
           backgroundImage: "url('/images/lineage_corner_right.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
@@ -236,593 +391,194 @@ export default function Home() {
           WebkitMaskImage: 'radial-gradient(circle at 100% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
           maskImage: 'radial-gradient(circle at 100% 100%, black 25%, rgba(0,0,0,0.8) 50%, transparent 80%)',
           mixBlendMode: 'multiply',
-          opacity: 0.85,
+          opacity: 0.7,
           pointerEvents: 'none',
           zIndex: 0
         }} />
 
-        {/* Decorative Sparkle Stars */}
-        <div style={{ position: 'absolute', top: '16%', left: '15%', pointerEvents: 'none', zIndex: 1 }}>
+        {/* Ambient Decorative Gold Sparkle Stars */}
+        <div className="lineage-star-1" style={{ position: 'absolute', top: '14%', left: '8%', pointerEvents: 'none', zIndex: 1 }}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
             <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
           </svg>
         </div>
-        <div style={{ position: 'absolute', top: '56%', left: '11%', pointerEvents: 'none', zIndex: 1 }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 190, 112, 0.7))' }}>
-            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
-          </svg>
-        </div>
-        <div style={{ position: 'absolute', top: '19%', right: '16%', pointerEvents: 'none', zIndex: 1 }}>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
-            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
-          </svg>
-        </div>
-        <div style={{ position: 'absolute', top: '64%', right: '13%', pointerEvents: 'none', zIndex: 1 }}>
+        <div className="lineage-star-2" style={{ position: 'absolute', top: '78%', left: '6%', pointerEvents: 'none', zIndex: 1 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 190, 112, 0.7))' }}>
             <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
           </svg>
         </div>
-        <div style={{ position: 'absolute', top: '90%', right: '22%', pointerEvents: 'none', zIndex: 1 }}>
+        <div className="lineage-star-3" style={{ position: 'absolute', top: '16%', right: '10%', pointerEvents: 'none', zIndex: 1 }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 5px rgba(232, 190, 112, 0.7))' }}>
             <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
           </svg>
         </div>
+        <div className="lineage-star-4" style={{ position: 'absolute', top: '82%', right: '8%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#e8be70" style={{ filter: 'drop-shadow(0 0 6px rgba(232, 190, 112, 0.7))' }}>
+            <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+          </svg>
+        </div>
 
-        <div className="container" style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Main Two-Column Content Container */}
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <div className="lineage-feature-grid">
 
-          {/* Section Header */}
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem', marginBottom: '0.8rem' }}>
-              <div style={{ width: '40px', height: '1px', background: '#d5c4e3' }}></div>
-              <span style={{ color: '#3d2556', fontWeight: '600', letterSpacing: '4px', fontSize: '0.82rem', textTransform: 'uppercase' }}>Family Lineage</span>
-              <div style={{ width: '40px', height: '1px', background: '#d5c4e3' }}></div>
-            </div>
-            <h2 className="responsive-h2" style={{ color: '#2d1b4e', marginBottom: '0.8rem' }}>
-              Every Life Is Part of a Story
-            </h2>
-            <p style={{ color: '#665e75', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
-              Honor generations. Celebrate connections. Keep your family&apos;s story alive for today and tomorrow.
-            </p>
-          </div>
-
-          {/* Parents & Ancestors Generation Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.55rem',
-              background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
-              border: '1px solid #ebd9b5',
-              borderRadius: '50px',
-              padding: '0.38rem 1.4rem',
-              boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-              color: '#6b5135',
-              fontSize: '0.78rem',
-              fontWeight: '700',
-              letterSpacing: '2px',
-              textTransform: 'uppercase'
-            }}>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
-              <span>PARENTS &amp; ANCESTORS</span>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
-            </div>
-          </div>
-
-          {/* Parents Tier Container with Centered Axis */}
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            maxWidth: '480px',
-            margin: '0 auto'
-          }}>
-            {/* Horizontal Golden Connector Line between Parents */}
-            <div style={{
-              position: 'absolute',
-              top: '50px',
-              left: '60px',
-              right: '60px',
-              height: '2px',
-              background: 'linear-gradient(90deg, #c9a347, #f0d588, #c9a347)',
-              zIndex: 1
-            }}></div>
-
-            {/* Central Heart Medallion & Botanical Tips */}
-            <div style={{
-              position: 'absolute',
-              top: '50px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 3,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              {/* Left botanical leaf */}
-              <svg width="16" height="10" viewBox="0 0 18 12" fill="none" style={{ marginRight: '-1px' }}>
-                <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
-              </svg>
-              {/* Gold Heart Ring */}
+            {/* Left Column: Text & CTA */}
+            <div className="lineage-text-col">
+              {/* Eyebrow Pill Badge */}
               <div style={{
-                width: '28px',
-                height: '28px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #fffdf8 0%, #f9f1df 100%)',
-                border: '2px solid #c9a347',
-                boxShadow: '0 3px 8px rgba(201, 163, 71, 0.35)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <FaHeart style={{ color: '#b68733', fontSize: '0.68rem' }} />
-              </div>
-              {/* Right botanical leaf */}
-              <svg width="16" height="10" viewBox="0 0 18 12" fill="none" style={{ marginLeft: '-1px', transform: 'scaleX(-1)' }}>
-                <path d="M16 6 C 10 3, 6 1, 2 6 C 6 11, 10 9, 16 6 Z" fill="#d4af37" />
-              </svg>
-            </div>
-
-            {/* Vertical Line Dropping from Parents Heart to Main Generation */}
-            <div style={{
-              position: 'absolute',
-              top: '50px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '2px',
-              height: '120px',
-              background: 'linear-gradient(180deg, #c9a347 0%, #d8b765 100%)',
-              zIndex: 1
-            }}>
-              {/* Downward golden arrow right above Main Generation badge */}
-              <div style={{
-                position: 'absolute',
-                bottom: '-11px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '14px',
-                height: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                  <path d="M7 13 L1 4 C 4 5, 10 5, 13 4 Z" fill="#c9a347" />
-                  <path d="M7 10 L7 0" stroke="#c9a347" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Two Parent Cards */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              position: 'relative',
-              zIndex: 2
-            }}>
-              {/* Father: Anoop Menon (Initial A) */}
-              <div style={{
-                width: '135px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center'
-              }}>
-                {/* Symbolic Avatar with luxury golden frame & initial A */}
-                <div style={{
-                  position: 'relative',
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  padding: '4.5px',
-                  background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-                  boxShadow: '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-                }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
-                  }}
-                >
-                  <div style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '50%',
-                    border: '2px solid #fdfaf4',
-                    background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    {/* Inner delicate gold concentric ring */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '5px',
-                      left: '5px',
-                      right: '5px',
-                      bottom: '5px',
-                      borderRadius: '50%',
-                      border: '1.5px solid rgba(212, 175, 55, 0.5)',
-                      pointerEvents: 'none'
-                    }}></div>
-                    <span style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontStyle: 'italic',
-                      fontWeight: '500',
-                      fontSize: '2.75rem',
-                      color: '#2d1b4e',
-                      lineHeight: 1,
-                      userSelect: 'none',
-                      position: 'relative',
-                      zIndex: 2
-                    }}>
-                      A
-                    </span>
-                  </div>
-                  {/* Botanical Sprig on outer ring (top-right) */}
-                  <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
-                    <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
-                      <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
-                      <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
-                      <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
-                      <circle cx="15" cy="24" r="3" fill="#e7b748" />
-                      <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
-                    </svg>
-                  </div>
-                </div>
-
-                <h4 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: '1.25rem',
-                  fontWeight: '600',
-                  color: '#2d1b4e',
-                  marginTop: '0.65rem',
-                  marginBottom: '0.25rem'
-                }}>
-                  Anoop Menon
-                </h4>
-                <span style={{
-                  display: 'inline-block',
-                  background: '#f4ede2',
-                  border: '1px solid #ebd9c2',
-                  color: '#6d553d',
-                  padding: '0.18rem 1rem',
-                  borderRadius: '20px',
-                  fontSize: '0.78rem',
-                  fontWeight: '600'
-                }}>
-                  Father
-                </span>
-                <p style={{
-                  color: '#6f637d',
-                  fontSize: '0.86rem',
-                  fontWeight: '500',
-                  marginTop: '0.35rem',
-                  marginBottom: 0
-                }}>
-                  1935 – 2000
-                </p>
-              </div>
-
-              {/* Mother: Marry (Initial M) */}
-              <div style={{
-                width: '135px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center'
-              }}>
-                {/* Symbolic Avatar with luxury golden frame & initial M */}
-                <div style={{
-                  position: 'relative',
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  padding: '4.5px',
-                  background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-                  boxShadow: '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-                }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.boxShadow = '0 8px 22px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
-                  }}
-                >
-                  <div style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: '50%',
-                    border: '2px solid #fdfaf4',
-                    background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    {/* Inner delicate gold concentric ring */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '5px',
-                      left: '5px',
-                      right: '5px',
-                      bottom: '5px',
-                      borderRadius: '50%',
-                      border: '1.5px solid rgba(212, 175, 55, 0.5)',
-                      pointerEvents: 'none'
-                    }}></div>
-                    <span style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontStyle: 'italic',
-                      fontWeight: '500',
-                      fontSize: '2.75rem',
-                      color: '#2d1b4e',
-                      lineHeight: 1,
-                      userSelect: 'none',
-                      position: 'relative',
-                      zIndex: 2
-                    }}>
-                      M
-                    </span>
-                  </div>
-                  {/* Botanical Sprig on outer ring (top-right as in user's design) */}
-                  <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
-                    <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
-                      <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
-                      <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
-                      <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
-                      <circle cx="15" cy="24" r="3" fill="#e7b748" />
-                      <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                      <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
-                    </svg>
-                  </div>
-                </div>
-
-                <h4 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: '1.25rem',
-                  fontWeight: '600',
-                  color: '#2d1b4e',
-                  marginTop: '0.65rem',
-                  marginBottom: '0.25rem'
-                }}>
-                  Marry
-                </h4>
-                <span style={{
-                  display: 'inline-block',
-                  background: '#f4ede2',
-                  border: '1px solid #ebd9c2',
-                  color: '#6d553d',
-                  padding: '0.18rem 1rem',
-                  borderRadius: '20px',
-                  fontSize: '0.78rem',
-                  fontWeight: '600'
-                }}>
-                  Mother
-                </span>
-                <p style={{
-                  color: '#6f637d',
-                  fontSize: '0.86rem',
-                  fontWeight: '500',
-                  marginTop: '0.35rem',
-                  marginBottom: 0
-                }}>
-                  1940 – 2008
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Generation Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.8rem', position: 'relative', zIndex: 2 }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.55rem',
-              background: 'linear-gradient(180deg, #fefcf8 0%, #faf3e6 100%)',
-              border: '1px solid #ebd9b5',
-              borderRadius: '50px',
-              padding: '0.38rem 1.4rem',
-              boxShadow: '0 4px 14px rgba(184, 151, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-              color: '#6b5135',
-              fontSize: '0.78rem',
-              fontWeight: '700',
-              letterSpacing: '2px',
-              textTransform: 'uppercase'
-            }}>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
-              <span>MAIN GENERATION</span>
-              <FaLeaf style={{ color: '#7ea458', fontSize: '0.8rem' }} />
-            </div>
-          </div>
-
-          {/* Vertical Connecting Stem down to Jeevan Kumar */}
-          <div style={{
-            width: '2px',
-            height: '28px',
-            background: 'linear-gradient(180deg, #d8b765 0%, #c9a347 100%)',
-            margin: '0 auto',
-            position: 'relative',
-            zIndex: 1
-          }}></div>
-
-          {/* Memorial Subject (Jeevan Kumar, Initial J) */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            position: 'relative',
-            zIndex: 2,
-            width: '170px'
-          }}>
-            {/* Memorial Subject Ribbon Badge */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              background: 'linear-gradient(135deg, #aa5873 0%, #8c3f58 100%)',
-              color: '#ffffff',
-              padding: '0.3rem 1.15rem',
-              borderRadius: '50px',
-              fontSize: '0.76rem',
-              fontWeight: '600',
-              letterSpacing: '0.3px',
-              boxShadow: '0 4px 12px rgba(140, 63, 88, 0.32)',
-              position: 'relative',
-              zIndex: 4,
-              marginBottom: '-12px'
-            }}>
-              <FaStar style={{ fontSize: '0.68rem' }} />
-              <span>Memorial Subject</span>
-            </div>
-
-            {/* Avatar with luxury golden frame (Initial J) */}
-            <div style={{
-              position: 'relative',
-              width: '104px',
-              height: '104px',
-              borderRadius: '50%',
-              padding: '5px',
-              background: 'linear-gradient(135deg, #d4af37 0%, #fae6a0 35%, #b58c28 70%, #edd388 100%)',
-              boxShadow: '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4',
-              cursor: 'pointer',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-            }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 16px 35px rgba(180, 140, 60, 0.32), 0 0 0 2px #fdfaf4';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 10px 25px rgba(180, 140, 60, 0.22), 0 0 0 2px #fdfaf4';
-              }}
-            >
-              <div style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                border: '2px solid #fdfaf4',
-                background: 'radial-gradient(circle at 45% 45%, #fffdf8 0%, #faf3e6 65%, #faeed7 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-                overflow: 'hidden'
-              }}>
-                {/* Inner delicate gold concentric ring */}
-                <div style={{
-                  position: 'absolute',
-                  top: '5px',
-                  left: '5px',
-                  right: '5px',
-                  bottom: '5px',
-                  borderRadius: '50%',
-                  border: '1.5px solid rgba(212, 175, 55, 0.5)',
-                  pointerEvents: 'none'
-                }}></div>
-                <span style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontStyle: 'italic',
-                  fontWeight: '500',
-                  fontSize: '2.85rem',
-                  color: '#2d1b4e',
-                  lineHeight: 1,
-                  userSelect: 'none',
-                  position: 'relative',
-                  zIndex: 2
-                }}>
-                  J
-                </span>
-              </div>
-              {/* Botanical Sprig on outer ring (top-right) */}
-              <div style={{ position: 'absolute', top: '10px', right: '-8px', zIndex: 3, pointerEvents: 'none' }}>
-                <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
-                  <path d="M10 30 C 16 24, 24 18, 32 12" stroke="#8da067" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M17 23 C 17 15, 25 13, 29 16 C 29 20, 24 26, 17 23 Z" fill="#6c924f" />
-                  <path d="M25 17 C 25 10, 32 9, 35 12 C 35 17, 29 20, 25 17 Z" fill="#7fa85b" />
-                  <circle cx="15" cy="24" r="3" fill="#e7b748" />
-                  <circle cx="13" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                  <circle cx="17" cy="23" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                  <circle cx="15" cy="26" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                  <circle cx="15" cy="21" r="2.2" fill="#f5ce6f" opacity="0.9" />
-                  <circle cx="15" cy="24" r="1.4" fill="#a4721d" />
-                </svg>
-              </div>
-            </div>
-
-            <h4 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: '1.32rem',
-              fontWeight: '600',
-              color: '#2d1b4e',
-              marginTop: '0.65rem',
-              marginBottom: '0.2rem'
-            }}>
-              Jeevan Kumar
-            </h4>
-            <p style={{
-              color: '#6f637d',
-              fontSize: '0.88rem',
-              fontWeight: '500',
-              marginTop: '0.2rem',
-              marginBottom: 0
-            }}>
-              1992 – 2026
-            </p>
-          </div>
-
-          {/* Bottom CTA Button */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', position: 'relative', zIndex: 2 }}>
-            <Link
-              href={sampleMemorialId ? `/memorial/${sampleMemorialId}` : '/auth?mode=signup'}
-              style={{
-                background: 'linear-gradient(135deg, #44225d 0%, #2f1444 100%)',
-                color: '#ffffff',
-                padding: '0.8rem 2.2rem',
-                borderRadius: '50px',
-                fontSize: '0.95rem',
-                fontWeight: '600',
-                textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.65rem',
-                boxShadow: '0 10px 25px rgba(47, 20, 68, 0.3)',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                border: '1px solid rgba(255, 255, 255, 0.15)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 15px 35px rgba(47, 20, 68, 0.45)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 10px 25px rgba(47, 20, 68, 0.3)';
-              }}
-            >
-              <span>Explore the family story</span>
-              <span style={{ fontSize: '1.1rem' }}>→</span>
-            </Link>
-          </div>
+                marginBottom: '1.25rem',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 242, 253, 0.75) 100%)',
+                border: '1px solid rgba(201, 163, 71, 0.35)',
+                borderRadius: '50px',
+                padding: '0.35rem 1.15rem',
+                boxShadow: '0 4px 14px rgba(184, 151, 95, 0.1)'
+              }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#c9a347">
+                  <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+                </svg>
+                <span style={{
+                  color: '#4a2574',
+                  fontWeight: '700',
+                  letterSpacing: '2.5px',
+                  fontSize: '0.78rem',
+                  textTransform: 'uppercase'
+                }}>
+                  Family Lineage &amp; Heritage
+                </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#c9a347">
+                  <path d="M12 0 C 12 7, 13 11, 24 12 C 13 13, 12 17, 12 24 C 12 17, 11 13, 0 12 C 11 11, 12 7, 12 0 Z" />
+                </svg>
+              </div>
 
+              {/* Heading */}
+              <h2 className="lineage-heading">
+                Every Family Has a Story Worth Remembering
+              </h2>
+
+              {/* Description */}
+              <p className="lineage-desc">
+                Discover your roots, honor the generations before you, and preserve the connections that make your family unique. Create a lasting legacy for the generations yet to come.
+              </p>
+
+              {/* Minimal Editorial Value Tags */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1.25rem',
+                flexWrap: 'wrap',
+                marginBottom: '2.25rem'
+              }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.88rem', color: '#68597a', fontWeight: '500' }}>
+                  <span style={{ color: '#c9a347', fontSize: '0.8rem' }}>✦</span>
+                  <span>Ancestral Roots</span>
+                </div>
+                <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#d5c4e3' }} />
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.88rem', color: '#68597a', fontWeight: '500' }}>
+                  <span style={{ color: '#c9a347', fontSize: '0.8rem' }}>✦</span>
+                  <span>Generational Bonds</span>
+                </div>
+                <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#d5c4e3' }} />
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.88rem', color: '#68597a', fontWeight: '500' }}>
+                  <span style={{ color: '#c9a347', fontSize: '0.8rem' }}>✦</span>
+                  <span>Living Legacy</span>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div>
+                <Link
+                  href={sampleMemorialId ? `/memorial/${sampleMemorialId}` : '/demo'}
+                  className="lineage-cta-btn"
+                  aria-label="Explore Family Lineage"
+                >
+                  <span>Explore Family Lineage</span>
+                  <span className="lineage-arrow">→</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Given Lineage Family Tree Showcase */}
+            <div className="lineage-visual-col">
+              {/* Ambient radial halo behind card */}
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '420px',
+                height: '520px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(232, 190, 112, 0.22) 0%, rgba(186, 140, 226, 0.24) 45%, transparent 70%)',
+                filter: 'blur(45px)',
+                pointerEvents: 'none',
+                zIndex: 0
+              }} />
+
+              {/* Luxury Editorial Tree Showcase Card */}
+              <div className="lineage-tree-visual-card lineage-visual-art" style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '470px',
+                borderRadius: '32px',
+                background: 'radial-gradient(rgba(165, 125, 205, 0.22) 1.2px, transparent 1.2px) 0 0 / 23.5px 23.5px, linear-gradient(180deg, #F8F2FE 0%, #F4EDFD 50%, #F0E8FD 100%)',
+                backgroundColor: '#F4EDFD',
+                border: '1.5px solid rgba(212, 175, 55, 0.38)',
+                boxShadow: '0 25px 60px rgba(90, 45, 130, 0.1), 0 4px 20px rgba(212, 175, 55, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.95)',
+                padding: '1.25rem 1rem 0.95rem 1rem',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                zIndex: 1
+              }}>
+                {/* Seamless Edge-Blended Image Container */}
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden'
+                }}>
+                  <Image
+                    src="/images/lineage_family_tree.jpg"
+                    alt="Soulishere Multi-Generational Family Lineage Tree"
+                    width={528}
+                    height={645}
+                    priority
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      objectFit: 'contain',
+                      WebkitMaskImage: 'radial-gradient(ellipse 96% 96% at 50% 50%, black 82%, rgba(0,0,0,0.5) 92%, transparent 100%)',
+                      maskImage: 'radial-gradient(ellipse 96% 96% at 50% 50%, black 82%, rgba(0,0,0,0.5) 92%, transparent 100%)'
+                    }}
+                  />
+                </div>
+
+                {/* Bottom Editorial Caption Badge */}
+                <div style={{
+                  marginTop: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.74rem',
+                  letterSpacing: '2.5px',
+                  color: '#5b3c75',
+                  textTransform: 'uppercase',
+                  fontWeight: '600'
+                }}>
+                  <span style={{ color: '#c9a347', fontSize: '0.75rem' }}>✦</span>
+                  <span>Multi-Generational Heritage Tree</span>
+                  <span style={{ color: '#c9a347', fontSize: '0.75rem' }}>✦</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
